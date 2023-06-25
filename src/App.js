@@ -1,10 +1,15 @@
 import "./App.css";
-import { BrowserRouter } from "react-router-dom";
+import {BrowserRouter, Routes, Route} from "react-router-dom";
+import Form from "./components/form";
 
 function App() {
+  return(
   <BrowserRouter>
-    return <div className="App"></div>;
-  </BrowserRouter>;
+    <Routes>
+      <Route path="/form" element={<Form />} />
+    </Routes>
+  </BrowserRouter>
+)
 }
 
 export default App;
