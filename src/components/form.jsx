@@ -28,7 +28,7 @@ function Form(props) {
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <input type="text" name="username" value={formData.username} onChange={handleInputChange} />
+                <input type="text" name="email" value={formData.email} onChange={handleInputChange} />
                 <input type="password" name="password" value={formData.password} onChange={handleInputChange} />
                 <button type="submit">Войти</button>
             </form>
