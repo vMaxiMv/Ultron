@@ -16,16 +16,14 @@ function Form(props) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const email = formData.username;
+        const username = formData.username;
         const password = formData.password;
 
         try {
-            const response = await axios.post('http://localhost:5000/api/login', { email, password });
-            // console.log(response.data); // Обработка ответа от сервера
-            if(response.status === 302){
-                const redirectUrl = response.headers['location']
-                window.location.href = redirectUrl;
-            }
+            const response = await axios.post('http://localhost:5000/api/login', { username, password });
+            const redirectUrl = response.data['redirect_url']
+                window.location.href = redirectUrl; // Обработка ответа от сервера
+
         } catch (error) {
             console.error(error); // Обработка ошибок при отправке запроса
         }
