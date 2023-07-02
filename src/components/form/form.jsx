@@ -2,10 +2,11 @@
 
 import React, {useState} from 'react';
 import axios from "axios";
-import {redirect} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 
 function Form(props) {
+    const navigate = useNavigate()
     const [formData, setFormData] = useState({ username: '', password: '' });
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -22,7 +23,8 @@ function Form(props) {
         try {
             const response = await axios.post('http://localhost:5000/api/login', { username, password });
             const redirectUrl = response.data['redirect_url']
-                window.location.href = redirectUrl; // Обработка ответа от сервера
+                // window.location.href = redirectUrl; // Обработка ответа от сервера
+                navigate(redirectUrl)
 
         } catch (error) {
             console.error(error); // Обработка ошибок при отправке запроса
