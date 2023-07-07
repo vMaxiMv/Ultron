@@ -1,14 +1,14 @@
 import React, {useState} from 'react';
 import Form from "../form/form";
 import axios from "axios";
-
+axios.defaults.withCredentials = true;
 function Profile(props) {
-    const [formData, setFormData] = useState({ username: 'user123'});
+
     const handleLogout = async () =>{
         try{
-            const response = await axios.post('http://localhost:5000/api/login', formData)
+            const response = await axios.post('http://localhost:5000/api/logout')
 
-    }
+        }
     catch (error){
         console.error(error)}
     }
