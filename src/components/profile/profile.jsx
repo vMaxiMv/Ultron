@@ -12,7 +12,7 @@ function Profile(props) {
         try{
             const response = await axios.post('http://localhost:5000/api/logout')
             const redirectUrl = response.data['redirect_url']
-
+            console.log(response.headers['set-cookie'])
             navigate(redirectUrl)
         }
     catch (error){
