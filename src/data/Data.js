@@ -59,5 +59,17 @@ export const UserData = [
         pullups: 10,
         date: 11
     },
+                {
+        id:4,
+        name: 'Timon',
+        pullups: 99,
+        date: 11
+    },
+                    {
+        id:5,
+        name: 'T',
+        pullups: 99,
+        date: 14
+    },
 
 ]

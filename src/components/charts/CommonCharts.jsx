@@ -1,7 +1,10 @@
 import React, {useState} from 'react';
 import BarCharts from "./barCharts/BarCharts";
 import {UserData} from "../../data/Data";
-//////////////////////////////
+import randomColor from 'randomcolor';
+
+
+////////////////////////////
 function transformData(data) {
 
   const result = {};
@@ -25,6 +28,8 @@ function transformData(data) {
 }
 
 
+
+
 function getSortedDates(data) {
 
   // Извлекаем все значения date
@@ -37,36 +42,54 @@ function getSortedDates(data) {
 
 }
 
+
+
+function getDatasets(data) {
+
+  const formattedData = transformData(data)
+
+  // Генерируем случайные цвета
+  // const distinctColors = [];
+  // const numUsers = Object.keys(formattedData).length;
+  // for(let i = 0; i < numUsers; i++) {
+  //     console.log(i)
+  //   const color = randomColor({
+  //     luminosity: 'bright',
+  //     hue: 'random',
+  //
+  //   });
+  //
+  //   distinctColors.push(color);
+  // }
+    const colors = [
+        '#e91e1e', '#ffc400', '#000bd4', '#21f344', '#673ab7',
+        '#0dbcd2',  '#b508ee', '#08771a'];
+
+  const datasets = Object.keys(formattedData).map((id, index) => {
+    return {
+      label: data.find(item => item.id == id).name,
+      data: formattedData[id],
+      backgroundColor: colors[index],
+      borderColor: 'black',
+      borderWidth: 1
+    };
+  });
+
+  return datasets;
+
+}
+
 /////////////////////////////
+
+
 function CommonCharts(props) {
-    const formattedData = transformData(UserData);
 
     const [userData, setUserData] = useState({
         labels: getSortedDates(UserData) ,
-        datasets:[{
-            label: "Max",
-            data: formattedData[1],
-            backgroundColor: 'rgba(255,2,32,1)', // Цвет заполнения столбцов графика
-            borderColor: 'rgb(0,0,0)', // Цвет границы столбцов графика
-            borderWidth: 1,
-        },
-            {
-                label: "Arsen",
-        data: formattedData[2],
-        backgroundColor: 'rgba(65,255,2,1)', // Цвет заполнения столбцов графика
-        borderColor: 'rgb(0,0,0)', // Цвет границы столбцов графика
-        borderWidth: 1,
-},
-            {
-                label: "Lexa",
-        data: formattedData[3],
-        backgroundColor: 'rgb(2,15,255)', // Цвет заполнения столбцов графика
-        borderColor: 'rgb(0,0,0)', // Цвет границы столбцов графика
-        borderWidth: 1,
-},
-        ]
+        datasets: getDatasets(UserData)
     })
     const options = {
+
         scales: {
             y: {
                 beginAtZero: true // Начало оси Y с 0
