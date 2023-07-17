@@ -1,34 +1,30 @@
 import React, {useState} from 'react';
 import BarCharts from "./barCharts/BarCharts";
 import {UserData} from "../../data/Data";
-import randomColor from 'randomcolor';
 
 
 ////////////////////////////
 function transformData(data) {
-
+    //console.log(data)
   const result = {};
 
-  // Находим максимальный год
-  const maxYear = Math.max(...data.map(item => item.date));
+  const uniqueSortedDates = getSortedDates(data)
 
   data.forEach(item => {
-    if (!result[item.id]) {
-      // Создаем массив по умолчанию нужной длины
-      result[item.id] = new Array(maxYear - 9).fill(0);
-    }
-
-    // Заполняем массив данными
-    const index = item.date - 10;
-    result[item.id][index] = item.pullups;
+    const index = uniqueSortedDates.indexOf(item.date)
+      if(index!==-1) {
+          if (!result[item.id]) {
+              // Создаем массив по умолчанию нужной длины
+              result[item.id] = new Array(uniqueSortedDates.length).fill(0);
+          }
+          // Заполняем массив данными
+          result[item.id][index] = item.pullups;
+      }
   });
-
+    console.log(result)
   return result;
 
 }
-
-
-
 
 function getSortedDates(data) {
 
@@ -38,6 +34,7 @@ function getSortedDates(data) {
   // Удаляем дубликаты и сортируем
   const uniqueSortedDates = [...new Set(dates)].sort((a, b) => a - b);
 
+console.log(uniqueSortedDates)
   return uniqueSortedDates;
 
 }
@@ -48,19 +45,7 @@ function getDatasets(data) {
 
   const formattedData = transformData(data)
 
-  // Генерируем случайные цвета
-  // const distinctColors = [];
-  // const numUsers = Object.keys(formattedData).length;
-  // for(let i = 0; i < numUsers; i++) {
-  //     console.log(i)
-  //   const color = randomColor({
-  //     luminosity: 'bright',
-  //     hue: 'random',
-  //
-  //   });
-  //
-  //   distinctColors.push(color);
-  // }
+
     const colors = [
         '#e91e1e', '#ffc400', '#000bd4', '#21f344', '#673ab7',
         '#0dbcd2',  '#b508ee', '#08771a'];
@@ -71,10 +56,9 @@ function getDatasets(data) {
       data: formattedData[id],
       backgroundColor: colors[index],
       borderColor: 'black',
-      borderWidth: 1
+      borderWidth: 2
     };
-  });
-
+  })
   return datasets;
 
 }
@@ -83,23 +67,43 @@ function getDatasets(data) {
 
 
 function CommonCharts(props) {
+    const WhiteColor = 'white'
 
     const [userData, setUserData] = useState({
         labels: getSortedDates(UserData) ,
         datasets: getDatasets(UserData)
     })
     const options = {
-
         scales: {
+            x: {
+                grid:{
+                    color: WhiteColor
+                },
+                ticks:{
+                    color: WhiteColor,
+                    font:{
+                        size:16
+                    }
+                }
+            },
             y: {
-                beginAtZero: true // Начало оси Y с 0
+                beginAtZero: true, // Начало оси Y с 0
+                grid:{
+                    color: WhiteColor
+                },
+                ticks:{
+                    color: WhiteColor,
+                    font:{
+                        size:16
+                    }
+                }
             }
         },
         plugins: {
             legend: {
                 labels: {
                     render: 'value',
-                    color: 'black' // Изменение цвета шрифта на черный
+                    color: WhiteColor // Изменение цвета шрифта на черный
                 }
             }
         }
