@@ -21,7 +21,7 @@ function transformData(data) {
           result[item.id][index] = item.pullups;
       }
   });
-    console.log(result)
+
   return result;
 
 }
@@ -34,7 +34,7 @@ function getSortedDates(data) {
   // Удаляем дубликаты и сортируем
   const uniqueSortedDates = [...new Set(dates)].sort((a, b) => a - b);
 
-console.log(uniqueSortedDates)
+
   return uniqueSortedDates;
 
 }
