@@ -10,31 +10,7 @@ import {useForm} from "react-hook-form";
 
 function Form_login(props) {
     const navigate = useNavigate()
-        // const [formData, setFormData] = useState({ username: '', password: '' });
-    // const handleInputChange = (e) => {
-    //     const { name, value } = e.target;
-    //     // Обновляем состояние с новыми значениями полей ввода
-    //     setFormData((prevData) => ({ ...prevData, [name]: value }));
-    // };
-
     const {register, handleSubmit, formState:{errors}} = useForm()
-
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //
-    //     const username = formData.username;
-    //     const password = formData.password;
-    //
-    //     try {
-    //         const response = await axios.post('http://localhost:5000/api/login', { username, password });
-    //         const redirectUrl = response.data['redirect_url']
-    //             // window.location.href = redirectUrl; // Обработка ответа от сервера
-    //             navigate(redirectUrl)
-    //
-    //     } catch (error) {
-    //         console.error(error); // Обработка ошибок при отправке запроса
-    //     }
-    // };
 
     const onSubmit = async (data)=>{
         const {username, password} = data;

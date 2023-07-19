@@ -2,6 +2,9 @@ import React, {useState} from 'react';
 import Form_login from "../form_login/form_login";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import p from "./profile.module.css"
+import BarCharts from "../charts/barCharts/BarCharts";
+import CommonCharts from "../charts/CommonCharts";
 
 axios.defaults.withCredentials = true;
 
@@ -18,10 +21,26 @@ function Profile(props) {
     catch (error){
         console.error(error)}
     }
+    const dataObject = {73: 'подтягивания', 74: 'отжимания от пола', 75: 'брусья', 76: 'жим лежа'}
+
     return (
-        <div>
-            <h1>Ваш профиль</h1>
-            <button onClick={handleLogout}>Выйти</button>
+        <div className={p.wrapper}>
+            <div className={p.main_block}>
+                <button onClick={handleLogout}>Выйти</button>
+            </div>
+            <h2>Активности</h2>
+            <div className={p.container}>
+                    <div className={p.list}>{
+                        Object.entries(dataObject).map(([key, value]) => (
+                            <button key={key}> {`${value}`}</button>
+                        ))
+                    }
+                    </div>
+                <div className={p.graphics}>
+                    <CommonCharts/>
+                </div>
+
+            </div>
         </div>
     );
 }

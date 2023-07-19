@@ -19,7 +19,7 @@ function App() {
       <Route path="/registration" element={<FormRegistration />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/test" element={<Test />} />
-      <Route path="/barChart" element={<CommonCharts />} />
+      {/*<Route path="/barChart" element={<CommonCharts />} />*/}
     </Routes>
   </div>
 </div>
