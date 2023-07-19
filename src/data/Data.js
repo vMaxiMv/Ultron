@@ -1,6 +1,31 @@
-export let UserData = [
-]
 
-export function updateUserData(data){
-    UserData = data
+// data.js
+import {useEffect, useState} from 'react';
+import {getDatasets, getSortedDates} from "../components/charts/CommonCharts";
+
+export const UserData = [];
+
+export function updateUserData(data) {
+    UserData.length = 0; // Clear the array
+    UserData.push(...data); // Add new data to the array
 }
+
+export function useUserData() {
+    const [userData, setUserData] = useState({
+        labels: getSortedDates(UserData),
+        datasets: getDatasets(UserData),
+    });
+
+    useEffect(() => {
+        setUserData({
+            labels: getSortedDates(UserData),
+            datasets: getDatasets(UserData),
+        });
+    }, [UserData]);
+
+    return userData;
+}
+
+// Your existing transformData, getSortedDates, and getDatasets functions
+// ...
+

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import BarCharts from "./barCharts/BarCharts";
-import {UserData} from "../../data/Data";
+import {UserData, useUserData} from "../../data/Data";
 
 
 ////////////////////////////
@@ -26,7 +26,7 @@ function transformData(data) {
 
 }
 
-function getSortedDates(data) {
+export function getSortedDates(data) {
 
   // Извлекаем все значения date
   const dates = data.map(item => item.date);
@@ -41,7 +41,7 @@ function getSortedDates(data) {
 
 
 
-function getDatasets(data) {
+export function getDatasets(data) {
 
   const formattedData = transformData(data)
 
@@ -68,11 +68,8 @@ function getDatasets(data) {
 
 function CommonCharts(props) {
     const WhiteColor = 'white'
+    const userData = useUserData()
 
-    const [userData, setUserData] = useState({
-        labels: getSortedDates(UserData) ,
-        datasets: getDatasets(UserData)
-    })
     const options = {
         scales: {
             x: {

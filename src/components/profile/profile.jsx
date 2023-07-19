@@ -1,11 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import Form_login from "../form_login/form_login";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import p from "./profile.module.css"
-import BarCharts from "../charts/barCharts/BarCharts";
 import CommonCharts from "../charts/CommonCharts";
-import {updateUserData, UserData} from "../../data/Data";
+import {updateUserData} from "../../data/Data";
 
 axios.defaults.withCredentials = true;
 
