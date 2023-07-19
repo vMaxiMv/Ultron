@@ -34,8 +34,16 @@ function Profile(props) {
     catch (error){
         console.error(error)}
     }
-    //const dataObject = {73: 'подтягивания', 74: 'отжимания от пола', 75: 'брусья', 76: 'жим лежа'}
 
+    const PostId = async (id)=> {
+        try {
+            const response = await axios.post('http://localhost:5000/data_for_chart',{id})
+            console.log(response.data)
+        }
+        catch (error){
+            console.log(error)
+        }
+    }
     return (
         <div className={p.wrapper}>
             <div className={p.main_block}>
@@ -45,7 +53,7 @@ function Profile(props) {
             <div className={p.container}>
                     <div className={p.list}>{
                         Object.entries(dataObject).map(([key, value]) => (
-                            <button key={key}> {`${value}`}</button>
+                            <button onClick={()=> PostId(key)} key={key}> {`${value}`}</button>
                         ))
                     }
                     </div>
