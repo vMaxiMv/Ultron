@@ -5,6 +5,7 @@ import {useNavigate} from "react-router-dom";
 import p from "./profile.module.css"
 import BarCharts from "../charts/barCharts/BarCharts";
 import CommonCharts from "../charts/CommonCharts";
+import {updateUserData, UserData} from "../../data/Data";
 
 axios.defaults.withCredentials = true;
 
@@ -38,7 +39,7 @@ function Profile(props) {
     const PostId = async (id)=> {
         try {
             const response = await axios.post('http://localhost:5000/data_for_chart',{id})
-            console.log(response.data)
+            updateUserData(response.data)
         }
         catch (error){
             console.log(error)
