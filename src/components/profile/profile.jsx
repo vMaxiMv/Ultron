@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Form_login from "../form_login/form_login";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
@@ -10,6 +10,19 @@ axios.defaults.withCredentials = true;
 
 function Profile(props) {
     const navigate = useNavigate()
+    const [dataObject, setDataObject] = useState({})
+
+    useEffect(()=>{
+        const fetchData = async ()=>{
+            try{
+                const response = await axios.get('http://localhost:5000/data_for_chart')
+                setDataObject(response.data)
+            } catch (error){
+                console.log(error)
+            }
+        }
+        fetchData()
+    }, [])
 
     const handleLogout = async () =>{
         try{
@@ -21,7 +34,7 @@ function Profile(props) {
     catch (error){
         console.error(error)}
     }
-    const dataObject = {73: 'подтягивания', 74: 'отжимания от пола', 75: 'брусья', 76: 'жим лежа'}
+    //const dataObject = {73: 'подтягивания', 74: 'отжимания от пола', 75: 'брусья', 76: 'жим лежа'}
 
     return (
         <div className={p.wrapper}>
