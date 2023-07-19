@@ -5,7 +5,6 @@ import Nav from "./components/nav/nav";
 import Profile from "./components/profile/profile";
 import Test from "./components/test/test";
 import FormRegistration from "./components/form_registration/form_registration";
-import BarCharts from "./components/charts/barCharts/BarCharts";
 import CommonCharts from "./components/charts/CommonCharts";
 
 
