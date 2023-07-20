@@ -16,8 +16,9 @@ function Profile(props) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/data_for_chart');
-                setDataObject(response.data);
+                // const response = await axios.get('http://localhost:5000/data_for_chart');
+                const  test_data = {73: 'подтягивания', 74: 'отжимания от пола', 75: 'брусья', 76: 'жим лежа'}
+                setDataObject(test_data);
             } catch (error) {
                 console.log(error);
             }
@@ -40,8 +41,14 @@ function Profile(props) {
     const PostId = async (id) => {
         try {
             setShowCharts(false);
-            const response = await axios.post('http://localhost:5000/data_for_chart', { id });
-            updateUserData(response.data);
+            // const response = await axios.post('http://localhost:5000/data_for_chart', { id });
+            const test_data = [
+            {id_user: 56, id_entery: 58, name: 'Арсений', amount: 80, date_added: '2023-07-19'},
+            {id_user: 56, id_entery: 59, name: 'Арсений', amount: 0, date_added: '2023-07-19'},
+            {id_user: 56, id_entery: 60, name: 'Арсений', amount: 75, date_added: '2023-07-19'},
+            {id_user: 56, id_entery: 62, name: 'Арсений', amount: 120, date_added: '2023-07-20'}
+            ];
+            updateUserData(test_data);
             setShowCharts(true); // Show the CommonCharts component after getting the response
         } catch (error) {
             console.log(error);
