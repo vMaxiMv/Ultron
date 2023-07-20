@@ -15,7 +15,7 @@ function transformData(data) {
       if(index!==-1) {
           if (!result[item.id_user]) {
               // Создаем массив по умолчанию нужной длины
-              result[item.id_user] = new Array(ArrayLength).fill(0);
+              result[item.id_user] = new Array(ArrayLength+1).fill(0);
           }
           // Заполняем массив данными
           result[item.id_user][index] = item.amount;
@@ -37,17 +37,39 @@ export function DateArrayLength (data) {
     return differenceInDays
 }
 
+// export function getSortedDates(data) {
+//   // Извлекаем все значения date
+//     const dates = data.map(item => item.date_added);
+//     const dataObject = dates.map((dateString) => new Date(dateString))
+//     dataObject.sort((a,b) => a-b)
+//     const uniqueSortedDates = dataObject.filter((date, index, array)=> index=== array.findIndex((d)=>d.getTime()=== date.getTime()))
+//     const sortedDatesArray = uniqueSortedDates.map(date => date.toISOString().slice(0,10))
+//
+//
+//   return sortedDatesArray;
+// }
 export function getSortedDates(data) {
-  // Извлекаем все значения date
+    // Извлекаем все значения date
     const dates = data.map(item => item.date_added);
     const dataObject = dates.map((dateString) => new Date(dateString))
-    dataObject.sort((a,b) => a-b)
-    const uniqueSortedDates = dataObject.filter((date, index, array)=> index=== array.findIndex((d)=>d.getTime()=== date.getTime()))
-    const sortedDatesArray = uniqueSortedDates.map(date => date.toISOString().slice(0,10))
+    dataObject.sort((a, b) => a - b);
 
+    const sortedDatesArray = [];
+    const currentDate = new Date(dataObject[0]);
 
-  return sortedDatesArray;
+    // Перебираем отсортированные даты и добавляем пропущенные даты в массив
+    dataObject.forEach((date) => {
+        while (currentDate < date) {
+            sortedDatesArray.push(currentDate.toISOString().slice(0, 10));
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+        sortedDatesArray.push(date.toISOString().slice(0, 10));
+        currentDate.setDate(currentDate.getDate() + 1);
+    });
+
+    return sortedDatesArray;
 }
+
 
 
 
