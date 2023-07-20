@@ -8,13 +8,14 @@ function transformData(data) {
   const result = {};
 
   const uniqueSortedDates = getSortedDates(data)
+    const ArrayLength = DateArrayLength(data)
 
   data.forEach(item => {
     const index = uniqueSortedDates.indexOf(item.date_added)
       if(index!==-1) {
           if (!result[item.id_user]) {
               // Создаем массив по умолчанию нужной длины
-              result[item.id_user] = new Array(uniqueSortedDates.length).fill(0);
+              result[item.id_user] = new Array(ArrayLength).fill(0);
           }
           // Заполняем массив данными
           result[item.id_user][index] = item.amount;
@@ -24,7 +25,17 @@ function transformData(data) {
   return result;
 
 }
+export function DateArrayLength (data) {
+    const dates = data.map(item => item.date_added);
+    const dataObject = dates.map((dateString) => new Date(dateString))
 
+    const maxDate = new Date(Math.max.apply(null, dataObject));
+    const minDate = new Date(Math.min.apply(null, dataObject));
+
+    const differenceInMilliseconds = maxDate - minDate;
+    const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
+    return differenceInDays
+}
 
 export function getSortedDates(data) {
   // Извлекаем все значения date
