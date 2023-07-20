@@ -11,14 +11,14 @@ function transformData(data) {
   const uniqueSortedDates = getSortedDates(data)
 
   data.forEach(item => {
-    const index = uniqueSortedDates.indexOf(item.date)
+    const index = uniqueSortedDates.indexOf(item.date_added)
       if(index!==-1) {
           if (!result[item.id]) {
               // Создаем массив по умолчанию нужной длины
               result[item.id] = new Array(uniqueSortedDates.length).fill(0);
           }
           // Заполняем массив данными
-          result[item.id][index] = item.pullups;
+          result[item.id][index] = item.amount;
       }
   });
 
@@ -29,7 +29,7 @@ function transformData(data) {
 export function getSortedDates(data) {
 
   // Извлекаем все значения date
-  const dates = data.map(item => item.date);
+  const dates = data.map(item => item.date_added);
 
   // Удаляем дубликаты и сортируем
   const uniqueSortedDates = [...new Set(dates)].sort((a, b) => a - b);
