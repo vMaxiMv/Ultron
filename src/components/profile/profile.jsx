@@ -38,6 +38,7 @@ function Profile(props) {
 
     const PostId = async (id) => {
         try {
+            setShowCharts(false);
             const response = await axios.post('http://localhost:5000/data_for_chart', { id });
             updateUserData(response.data);
             setShowCharts(true); // Show the CommonCharts component after getting the response

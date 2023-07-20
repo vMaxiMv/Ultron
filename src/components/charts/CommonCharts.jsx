@@ -13,12 +13,12 @@ function transformData(data) {
   data.forEach(item => {
     const index = uniqueSortedDates.indexOf(item.date_added)
       if(index!==-1) {
-          if (!result[item.id]) {
+          if (!result[item.id_user]) {
               // Создаем массив по умолчанию нужной длины
-              result[item.id] = new Array(uniqueSortedDates.length).fill(0);
+              result[item.id_user] = new Array(uniqueSortedDates.length).fill(0);
           }
           // Заполняем массив данными
-          result[item.id][index] = item.amount;
+          result[item.id_user][index] = item.amount;
       }
   });
 
@@ -50,10 +50,10 @@ export function getDatasets(data) {
         '#e91e1e', '#ffc400', '#000bd4', '#21f344', '#673ab7',
         '#0dbcd2',  '#b508ee', '#08771a'];
 
-  const datasets = Object.keys(formattedData).map((id, index) => {
+  const datasets = Object.keys(formattedData).map((id_user, index) => {
     return {
-      label: data.find(item => item.id == id).name,
-      data: formattedData[id],
+      label: data.find(item => item.id_user == id_user).name,
+      data: formattedData[id_user],
       backgroundColor: colors[index],
       borderColor: 'black',
       borderWidth: 2
