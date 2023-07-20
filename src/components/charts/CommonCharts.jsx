@@ -48,28 +48,56 @@ export function DateArrayLength (data) {
 //
 //   return sortedDatesArray;
 // }
+// export function getSortedDates(data) {
+//     // Извлекаем все значения date
+//     const dates = data.map(item => item.date_added);
+//     const dataObject = dates.map((dateString) => new Date(dateString))
+//     dataObject.sort((a, b) => a - b);
+//
+//     const sortedDatesArray = [];
+//     const currentDate = dataObject[0];
+//
+//     // Перебираем отсортированные даты и добавляем пропущенные даты в массив
+//     dataObject.forEach((date) => {
+//         while (currentDate < date) {
+//             sortedDatesArray.push(currentDate.toISOString().slice(0, 10));
+//             currentDate.setDate(currentDate.getDate() + 1);
+//         }
+//         sortedDatesArray.push(date.toISOString().slice(0, 10));
+//         currentDate.setDate(currentDate.getDate() + 1);
+//     });
+//
+//     return sortedDatesArray;
+// }
+
+
 export function getSortedDates(data) {
-    // Извлекаем все значения date
-    const dates = data.map(item => item.date_added);
-    const dataObject = dates.map((dateString) => new Date(dateString))
-    dataObject.sort((a, b) => a - b);
 
-    const sortedDatesArray = [];
-    const currentDate = new Date(dataObject[0]);
+  const dates = data.map(item => new Date(item.date_added));
 
-    // Перебираем отсортированные даты и добавляем пропущенные даты в массив
-    dataObject.forEach((date) => {
-        while (currentDate < date) {
-            sortedDatesArray.push(currentDate.toISOString().slice(0, 10));
-            currentDate.setDate(currentDate.getDate() + 1);
-        }
-        sortedDatesArray.push(date.toISOString().slice(0, 10));
-        currentDate.setDate(currentDate.getDate() + 1);
-    });
+  let minDate = dates[0];
+  let maxDate = dates[0];
 
-    return sortedDatesArray;
+  for (let i = 1; i < dates.length; i++) {
+    if (dates[i] < minDate) {
+      minDate = dates[i];
+    }
+    if (dates[i] > maxDate) {
+      maxDate = dates[i];
+    }
+  }
+
+  const result = [];
+  let currentDate = minDate;
+
+  while (currentDate <= maxDate) {
+    result.push(currentDate.toISOString().slice(0,10));
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  return result;
+
 }
-
 
 
 
