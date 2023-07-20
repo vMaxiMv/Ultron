@@ -5,7 +5,6 @@ import {UserData, useUserData} from "../../data/Data";
 
 ////////////////////////////
 function transformData(data) {
-    //console.log(data)
   const result = {};
 
   const uniqueSortedDates = getSortedDates(data)
@@ -26,17 +25,17 @@ function transformData(data) {
 
 }
 
+
 export function getSortedDates(data) {
-
   // Извлекаем все значения date
-  const dates = data.map(item => item.date_added);
+    const dates = data.map(item => item.date_added);
+    const dataObject = dates.map((dateString) => new Date(dateString))
+    dataObject.sort((a,b) => a-b)
+    const uniqueSortedDates = dataObject.filter((date, index, array)=> index=== array.findIndex((d)=>d.getTime()=== date.getTime()))
+    const sortedDatesArray = uniqueSortedDates.map(date => date.toISOString().slice(0,10))
 
-  // Удаляем дубликаты и сортируем
-  const uniqueSortedDates = [...new Set(dates)].sort((a, b) => a - b);
 
-
-  return uniqueSortedDates;
-
+  return sortedDatesArray;
 }
 
 
