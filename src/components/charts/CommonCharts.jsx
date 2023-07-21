@@ -7,7 +7,7 @@ import {UserData, useUserData} from "../../data/Data";
 function transformData(data) {
   const result = {};
 
-  const uniqueSortedDates = getSortedDates(data)
+  const uniqueSortedDates = getSortedDates(data, 0)
     const ArrayLength = DateArrayLength(data)
 
   data.forEach(item => {
@@ -71,7 +71,7 @@ export function DateArrayLength (data) {
 // }
 
 
-export function getSortedDates(data) {
+export function getSortedDates(data, number) {
 
   const dates = data.map(item => new Date(item.date_added));
 
@@ -91,7 +91,7 @@ export function getSortedDates(data) {
   let currentDate = minDate;
 
   while (currentDate <= maxDate) {
-    result.push(currentDate.toISOString().slice(0,10));
+    result.push(currentDate.toISOString().slice(number,10));
     currentDate.setDate(currentDate.getDate() + 1);
   }
 
