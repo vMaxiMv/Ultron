@@ -12,13 +12,13 @@ export function updateUserData(data) {
 
 export function useUserData() {
     const [userData, setUserData] = useState({
-        labels: getSortedDates(UserData),
+        labels: getSortedDates(UserData,5),
         datasets: getDatasets(UserData),
     });
 
     useEffect(() => {
         setUserData({
-            labels: getSortedDates(UserData),
+            labels: getSortedDates(UserData,5),
             datasets: getDatasets(UserData),
         });
     }, [UserData]);

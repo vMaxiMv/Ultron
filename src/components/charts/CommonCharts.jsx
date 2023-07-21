@@ -7,7 +7,7 @@ import {UserData, useUserData} from "../../data/Data";
 function transformData(data) {
   const result = {};
 
-  const uniqueSortedDates = getSortedDates(data)
+  const uniqueSortedDates = getSortedDates(data, 0)
     const ArrayLength = DateArrayLength(data)
 
   data.forEach(item => {
@@ -26,7 +26,7 @@ function transformData(data) {
 
 }
 export function DateArrayLength (data) {
-    const dates = data.map(item => item.date_added);
+    const dates = getSortedDates(data)
     const dataObject = dates.map((dateString) => new Date(dateString))
 
     const maxDate = new Date(Math.max.apply(null, dataObject));
@@ -39,8 +39,7 @@ export function DateArrayLength (data) {
 
 
 
-
-export function getSortedDates(data) {
+export function getSortedDates(data, number) {
 
   const dates = data.map(item => new Date(item.date_added));
 
@@ -60,8 +59,13 @@ export function getSortedDates(data) {
   let currentDate = minDate;
 
   while (currentDate <= maxDate) {
-    result.push(currentDate.toISOString().slice(0,10));
+    result.push(currentDate.toISOString().slice(number,10));
     currentDate.setDate(currentDate.getDate() + 1);
+
+      // const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+      // const day = String(currentDate.getDate()).padStart(2, '0');
+      // result.push(`${month}-${day}`);
+      // currentDate.setDate(currentDate.getDate() + 1);
   }
 
   return result;
@@ -130,6 +134,13 @@ function CommonCharts(props) {
                 labels: {
                     render: 'value',
                     color: WhiteColor // Изменение цвета шрифта на черный
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+
+                    }
                 }
             }
         }
