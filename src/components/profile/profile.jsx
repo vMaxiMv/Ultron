@@ -42,6 +42,7 @@ function Profile(props) {
         try {
             setShowCharts(false);
             // const response = await axios.post('http://localhost:5000/data_for_chart', { id });
+
             const test_data =  [{'id_user': 56, 'id_entery': 1, 'name': 'Test User', 'amount': 82, 'date_added': '2023-07-20'},
                 {'id_user': 56, 'id_entery': 2, 'name': 'Test User', 'amount': 65, 'date_added': '2023-07-19'},
                 {'id_user': 56, 'id_entery': 3, 'name': 'Test User', 'amount': 59, 'date_added': '2023-07-18'},
