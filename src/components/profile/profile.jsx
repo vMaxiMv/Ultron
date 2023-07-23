@@ -16,9 +16,9 @@ function Profile(props) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // const response = await axios.get('http://localhost:5000/data_for_chart');
+                const response = await axios.get('http://localhost:5000/data_for_chart');
                 const  test_data = {73: 'подтягивания', 74: 'отжимания от пола', 75: 'брусья', 76: 'жим лежа'}
-                setDataObject(test_data);
+                setDataObject(response.data);
             } catch (error) {
                 console.log(error);
             }
@@ -41,7 +41,7 @@ function Profile(props) {
     const PostId = async (id) => {
         try {
             setShowCharts(false);
-            // const response = await axios.post('http://localhost:5000/data_for_chart', { id });
+            const response = await axios.post('http://localhost:5000/data_for_chart', { id });
 
             const test_data =  [{'id_user': 56, 'id_entery': 1, 'name': 'Test User', 'amount': 82, 'date_added': '2023-07-20'},
                 {'id_user': 56, 'id_entery': 2, 'name': 'Test User', 'amount': 65, 'date_added': '2023-07-19'},
@@ -56,7 +56,7 @@ function Profile(props) {
                 {'id_user': 56, 'id_entery': 11, 'name': 'Test User', 'amount': 67, 'date_added': '2023-07-10'},
                 {'id_user': 56, 'id_entery': 12, 'name': 'Test User', 'amount': 71, 'date_added': '2023-07-09'}
             ]
-            updateUserData(test_data);
+            updateUserData(response.data);
             setShowCharts(true); // Show the CommonCharts component after getting the response
         } catch (error) {
             console.log(error);
