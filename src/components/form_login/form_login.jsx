@@ -1,28 +1,39 @@
 // todo rsf для быстрого создания функциональной компоненты
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import { NavLink } from 'react-router-dom';
 import f from "./form_login.module.css"
 import {useForm} from "react-hook-form";
+import {useDispatch, useSelector} from "react-redux";
+import {LoginThunk} from "../../redux/AuthReducer";
 
 
 function Form_login(props) {
+    const dispatch = useDispatch()
     const navigate = useNavigate()
+    const redirectUrl = useSelector(state=>state.Auth.redirectUrl)
     const {register, handleSubmit, formState:{errors}} = useForm()
 
     const onSubmit = async (data)=>{
         const {username, password} = data;
         console.log(data)
-        try{
-            const response = await axios.post('http://localhost:5000/api/login', {username, password})
-            const redirectUrl = response.data['redirect_url']
-            navigate(redirectUrl)
-        } catch(error){
-            console.log(error)
-        }
+        // try{
+        //     const response = await axios.post('http://localhost:5000/api/login', {username, password})
+        //     const redirectUrl = response.data['redirect_url']
+        //     dispatch(LoginThunk(username,password))
+        //     navigate(redirectUrl)
+        // } catch(error){
+        //     console.log(error)
+        // }
+        dispatch(LoginThunk(username,password))
     }
+    useEffect(()=>{
+        if(redirectUrl){
+            navigate((redirectUrl))
+        }
+    },[redirectUrl, navigate])
 
     return (
         <div className="wrapper">
