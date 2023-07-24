@@ -1,31 +1,48 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import p from './profile.module.css';
-import CommonCharts from '../charts/CommonCharts';
-import { updateUserData } from '../../data/Data';
+import CommonCharts, {getDatasets, getSortedDates} from '../charts/CommonCharts';
+import {updateUserData, UserData} from '../../data/Data';
 import Loading from "../loading/loading";
+import {useDispatch, useSelector} from "react-redux";
+import {ActivityButtonsThunk, FillActivityThunk} from "../../redux/ProfileReducer";
 
 axios.defaults.withCredentials = true;
+ export function useUserData(){
+    const UserData = useSelector(state=>state.Profile.UserData)
+    const userData = useMemo(()=>({
+        labels: getSortedDates(UserData, 5),
+        datasets: getDatasets(UserData),
+    }), [UserData])
+    return userData;
+}
 
 function Profile(props) {
+    const dispatch = useDispatch()
     const navigate = useNavigate();
-    const [dataObject, setDataObject] = useState({});
-    const [showCharts, setShowCharts] = useState(false); // Add state to control the visibility of CommonCharts
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get('http://localhost:5000/data_for_chart');
-                setDataObject(response.data);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        fetchData();
-    }, []);
+    const ActivityButtons = useSelector(state=>state.Profile.ActivityButtons)
+    const LoadingStatus = useSelector(state=>state.Profile.LoadingStatus)
+    //const [dataObject, setDataObject] = useState({});
+   // const [showCharts, setShowCharts] = useState(false); // Add state to control the visibility of CommonCharts
 
 
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             //const response = await axios.get('http://localhost:5000/data_for_chart');
+    //             const  test_data = {73: 'подтягивания', 74: 'отжимания от пола', 75: 'брусья', 76: 'жим лежа'}
+    //             setDataObject(test_data);
+    //         } catch (error) {
+    //             console.log(error);
+    //         }
+    //     };
+    //     fetchData();
+    // }, []);
+
+    useEffect(()=>{
+        dispatch(ActivityButtonsThunk())
+    },[])
 
     const handleLogout = async () => {
         try {
@@ -38,16 +55,17 @@ function Profile(props) {
         }
     };
 
-    const PostId = async (id) => {
-        try {
-            setShowCharts(false);
-            const response = await axios.post('http://localhost:5000/data_for_chart', { id });
-            updateUserData(response.data);
-            setShowCharts(true); // Show the CommonCharts component after getting the response
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    // const PostId = async (id) => {
+    //     try {
+    //         setShowCharts(false);
+    //         const response = await axios.post('http://localhost:5000/data_for_chart', { id });
+    //         updateUserData(response.data);
+    //         setShowCharts(true); // Show the CommonCharts component after getting the response
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
+
 
     return (
         <div className={p.wrapper}>
@@ -57,15 +75,16 @@ function Profile(props) {
             <h2>Активности</h2>
             <div className={p.container}>
                 <div className={p.list}>
-                    {Object.entries(dataObject).map(([key, value]) => (
-                        <button onClick={() => PostId(key)} key={key}>
+                    {Object.entries(ActivityButtons).map(([key, value]) => (
+                        <button onClick={() => dispatch(FillActivityThunk())} key={key}>
                             {`${value}`}
                         </button>
                     ))}
                 </div>
                 <div className={p.graphics}>
                     {/*{showCharts && <CommonCharts />} */}
-                    {showCharts ? <CommonCharts /> : <Loading />}
+                    {/*{showCharts ? <CommonCharts /> : <Loading />}*/}
+                    {LoadingStatus ?  <CommonCharts/> : <Loading/>}
                 </div>
             </div>
         </div>

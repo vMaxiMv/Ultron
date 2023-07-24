@@ -6,6 +6,7 @@ import Profile from "./components/profile/profile";
 import Test from "./components/test/test";
 import FormRegistration from "./components/form_registration/form_registration";
 import CommonCharts from "./components/charts/CommonCharts";
+import ProfilePrivate from "./components/profile/ProfilePrivate";
 
 
 function App() {

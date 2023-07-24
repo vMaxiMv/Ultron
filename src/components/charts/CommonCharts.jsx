@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 import BarCharts from "./barCharts/BarCharts";
-import {UserData, useUserData} from "../../data/Data";
+import {useUserData} from "../profile/profile";
+
 
 
 ////////////////////////////
@@ -21,7 +22,7 @@ function transformData(data) {
           result[item.id_user][index] = item.amount;
       }
   });
-
+console.log(result)
   return result;
 
 }
@@ -36,40 +37,6 @@ export function DateArrayLength (data) {
     const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
     return differenceInDays
 }
-
-// export function getSortedDates(data) {
-//   // Извлекаем все значения date
-//     const dates = data.map(item => item.date_added);
-//     const dataObject = dates.map((dateString) => new Date(dateString))
-//     dataObject.sort((a,b) => a-b)
-//     const uniqueSortedDates = dataObject.filter((date, index, array)=> index=== array.findIndex((d)=>d.getTime()=== date.getTime()))
-//     const sortedDatesArray = uniqueSortedDates.map(date => date.toISOString().slice(0,10))
-//
-//
-//   return sortedDatesArray;
-// }
-// export function getSortedDates(data) {
-//     // Извлекаем все значения date
-//     const dates = data.map(item => item.date_added);
-//     const dataObject = dates.map((dateString) => new Date(dateString))
-//     dataObject.sort((a, b) => a - b);
-//
-//     const sortedDatesArray = [];
-//     const currentDate = dataObject[0];
-//
-//     // Перебираем отсортированные даты и добавляем пропущенные даты в массив
-//     dataObject.forEach((date) => {
-//         while (currentDate < date) {
-//             sortedDatesArray.push(currentDate.toISOString().slice(0, 10));
-//             currentDate.setDate(currentDate.getDate() + 1);
-//         }
-//         sortedDatesArray.push(date.toISOString().slice(0, 10));
-//         currentDate.setDate(currentDate.getDate() + 1);
-//     });
-//
-//     return sortedDatesArray;
-// }
-
 
 export function getSortedDates(data, number) {
 
@@ -90,11 +57,17 @@ export function getSortedDates(data, number) {
   const result = [];
   let currentDate = minDate;
 
-  while (currentDate <= maxDate) {
-    result.push(currentDate.toISOString().slice(number,10));
-    currentDate.setDate(currentDate.getDate() + 1);
+  if(minDate !== maxDate){
+      while (currentDate <= maxDate) {
+          result.push(currentDate.toISOString().slice(number,10));
+          currentDate.setDate(currentDate.getDate() + 1);
+      }
   }
-
+else{
+    if(currentDate){
+        result.push(currentDate.toISOString().slice(number,10));
+    }
+  }
   return result;
 
 }
