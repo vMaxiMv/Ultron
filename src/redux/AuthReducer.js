@@ -23,22 +23,33 @@ const AuthReducer = (state = initialState, action)=> {
     }
 }
 
-export const LoginAC = (username, password) => ({type:LOGIN, data:{username,password}})
+export const LoginRegisterAC = (username, password) => ({type:LOGIN, data:{username,password}})
 
 
 export const SetRedirectUrlAC = (redirectUrl)=>({type:SET_REDIRECT_URL, redirectUrl:redirectUrl})
 export const resetRedirectUrlAC = ()=>({ type: RESET_REDIRECT_URL})
 
 
-export const LoginThunk = (username, password)=>{
+// export const LoginThunk = (username, password)=>{
+//     return (dispatch)=>{
+//         axios.post('http://localhost:5000/api/login', {username, password})
+//             .then(response=> {
+//                 const redirectUrl = response.data['redirect_url']
+//                 dispatch(LoginAC(username, password))
+//                 dispatch(SetRedirectUrlAC(redirectUrl))
+//             }
+//     )
+//     }
+// }
+export const LoginRegisterThunk = (username, password,name)=>{
     return (dispatch)=>{
-        axios.post('http://localhost:5000/api/login', {username, password})
+        axios.post(`http://localhost:5000/api/${name}`, {username, password})
             .then(response=> {
-                const redirectUrl = response.data['redirect_url']
-                dispatch(LoginAC(username, password))
-                dispatch(SetRedirectUrlAC(redirectUrl))
-            }
-    )
+                    const redirectUrl = response.data['redirect_url']
+                    dispatch(LoginRegisterAC(username, password))
+                    dispatch(SetRedirectUrlAC(redirectUrl))
+                }
+            )
     }
 }
 export const LogoutThunk = ()=>{

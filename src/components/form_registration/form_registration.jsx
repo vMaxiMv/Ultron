@@ -1,24 +1,28 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import f from "../form_login/form_login.module.css";
 import {NavLink, useNavigate} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import axios from "axios";
+import {useDispatch, useSelector} from "react-redux";
+import {LoginRegisterThunk, resetRedirectUrlAC} from "../../redux/AuthReducer";
 
 function FormRegistration(props) {
+    const dispatch = useDispatch()
     const navigate = useNavigate()
+    const redirectUrl = useSelector(state=>state.Auth.redirectUrl)
     const {register, handleSubmit, formState:{errors}} = useForm()
 
     const onSubmit = async (data)=>{
         const {username, password} = data;
         console.log(data)
-        try{
-            const response = await axios.post('http://localhost:5000/api/login', {username, password})
-            const redirectUrl = response.data['redirect_url']
-            navigate(redirectUrl)
-        } catch(error){
-            console.log(error)
-        }
+        dispatch(LoginRegisterThunk(username,password,'register'))
     }
+    useEffect(()=>{
+        if(redirectUrl){
+            navigate(redirectUrl)
+            dispatch(resetRedirectUrlAC())
+        }
+    },[redirectUrl, navigate])
 
     return (
         <div className="wrapper">

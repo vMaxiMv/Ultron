@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom';
 import f from "./form_login.module.css"
 import {useForm} from "react-hook-form";
 import {useDispatch, useSelector} from "react-redux";
-import {LoginThunk, resetRedirectUrlAC} from "../../redux/AuthReducer";
+import {LoginRegisterThunk, resetRedirectUrlAC} from "../../redux/AuthReducer";
 
 
 function Form_login(props) {
@@ -19,7 +19,7 @@ function Form_login(props) {
         const {username, password} = data;
         console.log(data)
 
-        dispatch(LoginThunk(username,password))
+        dispatch(LoginRegisterThunk(username,password,'login'))
     }
     useEffect(()=>{
         if(redirectUrl){
