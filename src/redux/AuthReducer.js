@@ -1,4 +1,5 @@
 import axios from "axios";
+import {DeleteActivityAC} from "./ProfileReducer";
 
 const LOGIN = 'LOGIN'
 const SET_REDIRECT_URL = 'SET_REDIRECT_URL'
@@ -58,6 +59,7 @@ export const LogoutThunk = ()=>{
             .then(response=>{
                 const redirectUrl = response.data['redirect_url']
                 dispatch(SetRedirectUrlAC(redirectUrl))
+                dispatch(DeleteActivityAC())
             })
     }
 }
