@@ -37,7 +37,6 @@ export const LoginThunk = (username, password)=>{
                 const redirectUrl = response.data['redirect_url']
                 dispatch(LoginAC(username, password))
                 dispatch(SetRedirectUrlAC(redirectUrl))
-                dispatch(resetRedirectUrlAC())
             }
     )
     }
@@ -48,7 +47,6 @@ export const LogoutThunk = ()=>{
             .then(response=>{
                 const redirectUrl = response.data['redirect_url']
                 dispatch(SetRedirectUrlAC(redirectUrl))
-                dispatch(resetRedirectUrlAC())
             })
     }
 }

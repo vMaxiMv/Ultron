@@ -7,7 +7,7 @@ import {updateUserData, UserData} from '../../data/Data';
 import Loading from "../loading/loading";
 import {useDispatch, useSelector} from "react-redux";
 import {ActivityButtonsThunk, FillActivityThunk} from "../../redux/ProfileReducer";
-import {LogoutThunk} from "../../redux/AuthReducer";
+import {LogoutThunk, resetRedirectUrlAC} from "../../redux/AuthReducer";
 
 axios.defaults.withCredentials = true;
  export function useUserData(){
@@ -49,6 +49,7 @@ function Profile(props) {
     useEffect(()=>{
         if(redirectUrl){
             navigate(redirectUrl)
+            dispatch(resetRedirectUrlAC())
 
         }
     },[redirectUrl, navigate])
