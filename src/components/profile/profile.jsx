@@ -49,6 +49,7 @@ function Profile(props) {
     useEffect(()=>{
         if(redirectUrl){
             navigate(redirectUrl)
+
         }
     },[redirectUrl, navigate])
 

@@ -2,6 +2,7 @@ import axios from "axios";
 
 const LOGIN = 'LOGIN'
 const SET_REDIRECT_URL = 'SET_REDIRECT_URL'
+const RESET_REDIRECT_URL = 'RESET_REDIRECT_URL'
 
 const initialState = {
     username: null,
@@ -15,6 +16,8 @@ const AuthReducer = (state = initialState, action)=> {
             return {...state, ...action.data}
         case SET_REDIRECT_URL:
             return {...state,redirectUrl: action.redirectUrl}
+        case RESET_REDIRECT_URL:
+            return {...state, redirectUrl: null}
         default:
             return state
     }
@@ -24,6 +27,7 @@ export const LoginAC = (username, password) => ({type:LOGIN, data:{username,pass
 
 
 export const SetRedirectUrlAC = (redirectUrl)=>({type:SET_REDIRECT_URL, redirectUrl:redirectUrl})
+export const resetRedirectUrlAC = ()=>({ type: RESET_REDIRECT_URL})
 
 
 export const LoginThunk = (username, password)=>{
@@ -33,6 +37,7 @@ export const LoginThunk = (username, password)=>{
                 const redirectUrl = response.data['redirect_url']
                 dispatch(LoginAC(username, password))
                 dispatch(SetRedirectUrlAC(redirectUrl))
+                dispatch(resetRedirectUrlAC())
             }
     )
     }
@@ -43,6 +48,7 @@ export const LogoutThunk = ()=>{
             .then(response=>{
                 const redirectUrl = response.data['redirect_url']
                 dispatch(SetRedirectUrlAC(redirectUrl))
+                dispatch(resetRedirectUrlAC())
             })
     }
 }
