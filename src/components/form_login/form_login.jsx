@@ -1,7 +1,6 @@
 // todo rsf для быстрого создания функциональной компоненты
 
-import React, {useEffect, useState} from 'react';
-import axios from "axios";
+import React, {useEffect} from 'react';
 import {useNavigate} from "react-router-dom";
 import { NavLink } from 'react-router-dom';
 import f from "./form_login.module.css"
@@ -19,19 +18,12 @@ function Form_login(props) {
     const onSubmit = async (data)=>{
         const {username, password} = data;
         console.log(data)
-        // try{
-        //     const response = await axios.post('http://localhost:5000/api/login', {username, password})
-        //     const redirectUrl = response.data['redirect_url']
-        //     dispatch(LoginThunk(username,password))
-        //     navigate(redirectUrl)
-        // } catch(error){
-        //     console.log(error)
-        // }
+
         dispatch(LoginThunk(username,password))
     }
     useEffect(()=>{
         if(redirectUrl){
-            navigate((redirectUrl))
+            navigate(redirectUrl)
         }
     },[redirectUrl, navigate])
 

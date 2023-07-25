@@ -7,6 +7,7 @@ import {updateUserData, UserData} from '../../data/Data';
 import Loading from "../loading/loading";
 import {useDispatch, useSelector} from "react-redux";
 import {ActivityButtonsThunk, FillActivityThunk} from "../../redux/ProfileReducer";
+import {LogoutThunk} from "../../redux/AuthReducer";
 
 axios.defaults.withCredentials = true;
  export function useUserData(){
@@ -23,6 +24,7 @@ function Profile(props) {
     const navigate = useNavigate();
     const ActivityButtons = useSelector(state=>state.Profile.ActivityButtons)
     const LoadingStatus = useSelector(state=>state.Profile.LoadingStatus)
+    const redirectUrl = useSelector(state=>state.Auth.redirectUrl)
     //const [dataObject, setDataObject] = useState({});
    // const [showCharts, setShowCharts] = useState(false); // Add state to control the visibility of CommonCharts
 
@@ -44,16 +46,22 @@ function Profile(props) {
         dispatch(ActivityButtonsThunk())
     },[])
 
-    const handleLogout = async () => {
-        try {
-            const response = await axios.post('http://localhost:5000/api/logout');
-            const redirectUrl = response.data['redirect_url'];
-            console.log(response.headers['set-cookie']);
-            navigate(redirectUrl);
-        } catch (error) {
-            console.error(error);
+    useEffect(()=>{
+        if(redirectUrl){
+            navigate(redirectUrl)
         }
-    };
+    },[redirectUrl, navigate])
+
+    // const handleLogout = async () => {
+    //     try {
+    //         const response = await axios.post('http://localhost:5000/api/logout');
+    //         const redirectUrl = response.data['redirect_url'];
+    //         console.log(response.headers['set-cookie']);
+    //         navigate(redirectUrl);
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // };
 
     // const PostId = async (id) => {
     //     try {
@@ -70,13 +78,13 @@ function Profile(props) {
     return (
         <div className={p.wrapper}>
             <div className={p.main_block}>
-                <button onClick={handleLogout}>Выйти</button>
+                <button onClick={()=>dispatch(LogoutThunk())}>Выйти</button>
             </div>
             <h2>Активности</h2>
             <div className={p.container}>
                 <div className={p.list}>
                     {Object.entries(ActivityButtons).map(([key, value]) => (
-                        <button onClick={() => dispatch(FillActivityThunk())} key={key}>
+                        <button onClick={() => dispatch(FillActivityThunk(key))} key={key}>
                             {`${value}`}
                         </button>
                     ))}

@@ -1,5 +1,4 @@
 import axios from "axios";
-import {redirect} from "react-router-dom";
 
 const LOGIN = 'LOGIN'
 const SET_REDIRECT_URL = 'SET_REDIRECT_URL'
@@ -15,13 +14,15 @@ const AuthReducer = (state = initialState, action)=> {
         case LOGIN:
             return {...state, ...action.data}
         case SET_REDIRECT_URL:
-            return {state, ...action.redirectUrl}
+            return {...state,redirectUrl: action.redirectUrl}
         default:
             return state
     }
 }
 
 export const LoginAC = (username, password) => ({type:LOGIN, data:{username,password}})
+
+
 export const SetRedirectUrlAC = (redirectUrl)=>({type:SET_REDIRECT_URL, redirectUrl:redirectUrl})
 
 
@@ -36,5 +37,16 @@ export const LoginThunk = (username, password)=>{
     )
     }
 }
+export const LogoutThunk = ()=>{
+    return (dispatch)=>{
+        axios.post('http://localhost:5000/api/logout')
+            .then(response=>{
+                const redirectUrl = response.data['redirect_url']
+                dispatch(SetRedirectUrlAC(redirectUrl))
+            })
+    }
+}
+
+
 
 export default AuthReducer
