@@ -29,8 +29,8 @@ function Form_login(props) {
     },[redirectUrl, navigate])
 
     return (
-        <div className="wrapper">
-            <section className="container">
+        <div className={f.wrapper}>
+            <section className={f.container}>
             <div className={f.form_box}>
                 <div className={f.form_value}>
                     <form onSubmit={handleSubmit(onSubmit)}>
@@ -50,7 +50,7 @@ function Form_login(props) {
                 <div className={f.forget}>
                     <label htmlFor=""> <input type="checkbox"/>Remember Me <a href="">Forgot Password</a></label>
                 </div>
-                <button type="submit" disabled={Object.keys(errors).length > 0}>Войти</button>
+                <button className={f.btn} type="submit" disabled={Object.keys(errors).length > 0}>Войти</button>
                 <div className={f.register}>
                     <p>Нет аккаунта? <NavLink to="/registration">Зарегистрироваться</NavLink></p>
                 </div>

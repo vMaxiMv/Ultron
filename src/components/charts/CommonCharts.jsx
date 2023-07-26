@@ -5,6 +5,7 @@ import {useUserData} from "../profile/profile";
 
 
 ////////////////////////////
+
 function transformData(data) {
   const result = {};
 
@@ -22,7 +23,7 @@ function transformData(data) {
           result[item.id_user][index] = item.amount;
       }
   });
-console.log(result)
+
   return result;
 
 }
@@ -102,8 +103,10 @@ export function getDatasets(data) {
 function CommonCharts(props) {
     const WhiteColor = 'white'
     const userData = useUserData()
-
+        // console.log(props.data)
     const options = {
+        responsive: true,
+        maintainAspectRatio: false,
         scales: {
             x: {
                 grid:{
@@ -135,9 +138,24 @@ function CommonCharts(props) {
                     render: 'value',
                     color: WhiteColor // Изменение цвета шрифта на черный
                 }
-            }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function (context) {
+
+                        // Форматирование информации во всплывающем окне
+                        const label = context.dataset.label || '';
+                        const value = context.parsed.y || '';
+                        const description = props.data[context.dataIndex].description;
+                        return[
+                            label + ': ' + value, description
+                        ]
+                    },
+                },
+                bodyMaxWidth:20
+            },
+        },
         }
-    }
     return (
         <div>
         <BarCharts chartData={userData} options={options} />

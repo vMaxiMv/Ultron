@@ -1,0 +1,19 @@
+.bar_diagram{
+    width: 80vw;
+    height: 50vh
+}
+.bar_diagramm_bar{
+    width: 80vw;
+    height: 50vh
+}
+
+@media screen and (max-width: 767px) {
+    .bar_diagram{
+        width: 85vw;
+        height: 40vh
+    }
+    .bar_diagramm_bar{
+        width: 85vw;
+        height: 40vh
+    }
+}

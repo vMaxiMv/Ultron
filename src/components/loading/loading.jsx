@@ -3,8 +3,8 @@ import React from 'react';
 
 function Loading(props) {
     return (
-        <div style={{width:' 700px'}}>
-            <img src={loading}/>
+        <div style={{width:' 300px'}}>
+            <img style={{ width: '100%', height: 'auto' }} src={loading}/>
         </div>
     );
 }

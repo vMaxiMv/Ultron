@@ -19,16 +19,15 @@ function Nav(props) {
             setCurrentIndex((currentIndex) => (currentIndex === texts.length - 1 ? 0 : currentIndex + 1));
         };
     return (
-        <div>
             <div className="wrapper">
-                <div className="container">
+                <div className={n.container}>
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/SVG_Logo.svg/2048px-SVG_Logo.svg.png" alt="logo" className={n.logo} />
                     <div className={n.main_block}>
                         <div className={n.text_block}>
                             <p>{texts[currentIndex]}</p>
                             <div className={n.slider_btns}>
-                                <div><button onClick={handlePrev}><ion-icon name="caret-back-outline"></ion-icon></button></div>
-                                <div><button onClick={handleNext}><ion-icon name="caret-forward-outline"></ion-icon></button></div>
+                                <div><ion-icon onClick={handlePrev} name="caret-back-outline"></ion-icon></div>
+                                <div><ion-icon onClick={handleNext} name="caret-forward-outline"></ion-icon></div>
                             </div>
 
                         </div>
@@ -50,7 +49,7 @@ function Nav(props) {
                     </div>
                 </div>
             </div>
-        </div>
+
     );
 }
 
