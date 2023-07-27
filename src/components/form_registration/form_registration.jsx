@@ -25,8 +25,8 @@ function FormRegistration(props) {
     },[redirectUrl, navigate])
 
     return (
-        <div className="wrapper">
-            <section className="container">
+        <div className={f.wrapper}>
+            <section className={f.container}>
                 <div className={f.form_box}>
                     <div className={f.form_value}>
                         <form onSubmit={handleSubmit(onSubmit)}>
@@ -46,7 +46,7 @@ function FormRegistration(props) {
                             <div className={f.forget}>
                                 <label htmlFor=""> <input type="checkbox"/>Remember Me</label>
                             </div>
-                            <button disabled={Object.keys(errors).length > 0} type="submit">Зарегистрироваться</button>
+                            <button className={f.btn} disabled={Object.keys(errors).length > 0} type="submit">Зарегистрироваться</button>
                         </form>
                     </div>
                 </div>
