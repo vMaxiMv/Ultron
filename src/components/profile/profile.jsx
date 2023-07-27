@@ -27,7 +27,12 @@ function Profile(props) {
     const LoadingStatus = useSelector(state=>state.Profile.LoadingStatus)
     const redirectUrl = useSelector(state=>state.Auth.redirectUrl)
     const StatusView = useSelector(state=>state.Profile.StatusView)
+    const LastId = useSelector(state=>state.Profile.LastId)
 
+
+    useEffect(()=>{
+        dispatch(FillActivityThunk(LastId, StatusView))
+    },[StatusView])
 
     useEffect(()=>{
         dispatch(ActivityButtonsThunk())
@@ -48,7 +53,7 @@ function Profile(props) {
         <div className={p.wrapper}>
             <div className={p.container}>
                 <h2>Активности</h2>
-                <button onClick={dispatch(ChangeStatusView(!StatusView))}>Флажок</button>
+                <button onClick={()=> dispatch(ChangeStatusView(!StatusView))}>Флажок</button>
             <div className={p.main_block}>
                 <button onClick={()=>dispatch(LogoutThunk())}>Выйти</button>
             </div>
