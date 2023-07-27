@@ -5,11 +5,13 @@ const FILL_ACTIVITY_ARRAY = 'FILL_ACTIVITY_ARRAY'
 const NAME_ACTIVITY_BTN = 'NAME_ACTIVITY_BTN'
 const SET_LOADING_STATUS = 'SET_LOADING_STATUS'
 const DELETE_ACTIVITY_ARRAY = 'DELETE_ACTIVITY_ARRAY'
+const CHANGE_STATUS_VIEW = 'CHANGE_STATUS_VIEW'
 
 let initialState = {
     UserData: [],
     ActivityButtons: {},
-    LoadingStatus: false
+    LoadingStatus: false,
+    StatusView: false
 }
 const ProfileReducer = (state = initialState, action) =>{
     switch (action.type){
@@ -23,6 +25,9 @@ const ProfileReducer = (state = initialState, action) =>{
         case SET_LOADING_STATUS:{
             return {...state, LoadingStatus: action.loadingStatus}
         }
+        case CHANGE_STATUS_VIEW:{
+            return {...state, StatusView: action.statusView}
+        }
         default:
             return state
     }
@@ -32,12 +37,13 @@ export const FillActivityAC = (usersData)=>({type: FILL_ACTIVITY_ARRAY, usersDat
 export const DeleteActivityAC = () =>({type: DELETE_ACTIVITY_ARRAY})
 export const ActivityButtonsAC = (activityButtons)=>({type:NAME_ACTIVITY_BTN, activityButtons:activityButtons})
 export const SetLoadingStatusAC = (loadingStatus)=>({type:SET_LOADING_STATUS, loadingStatus:loadingStatus})
+export const ChangeStatusView = (statusView) =>({type: CHANGE_STATUS_VIEW, statusView:statusView})
 
 
-export const FillActivityThunk = (id)=>{
+export const FillActivityThunk = (id, StatusView)=>{
     return (dispatch) => {
         dispatch(SetLoadingStatusAC(false))
-        // axios.post('http://localhost:5000/data_for_chart', { id })
+        // axios.post('http://localhost:5000/data_for_chart', { id,StatusView })
         //     .then(data=>{
                 dispatch(FillActivityAC( [{'id_user': 56, 'id_entery': 1, 'name': 'Test User', 'amount': 82, 'date_added': '2023-07-20','description':'Первый подход: 20 повторений, второй подход: 10 повторений, третией подход: 5 повторений'},
                     {'id_user': 56, 'id_entery': 2, 'name': 'Test User', 'amount': 65, 'date_added': '2023-07-19' ,'description':'Второй день'},

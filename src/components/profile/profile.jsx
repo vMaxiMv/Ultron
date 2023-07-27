@@ -6,7 +6,7 @@ import CommonCharts, {getDatasets, getDescription, getSortedDates} from '../char
 import {updateUserData, UserData} from '../../data/Data';
 import Loading from "../loading/loading";
 import {useDispatch, useSelector} from "react-redux";
-import {ActivityButtonsThunk, FillActivityThunk} from "../../redux/ProfileReducer";
+import {ActivityButtonsThunk, ChangeStatusView, FillActivityThunk} from "../../redux/ProfileReducer";
 import {LogoutThunk, resetRedirectUrlAC} from "../../redux/AuthReducer";
 
 axios.defaults.withCredentials = true;
@@ -26,6 +26,7 @@ function Profile(props) {
     const ActivityButtons = useSelector(state=>state.Profile.ActivityButtons)
     const LoadingStatus = useSelector(state=>state.Profile.LoadingStatus)
     const redirectUrl = useSelector(state=>state.Auth.redirectUrl)
+    const StatusView = useSelector(state=>state.Profile.StatusView)
 
 
     useEffect(()=>{
@@ -47,13 +48,14 @@ function Profile(props) {
         <div className={p.wrapper}>
             <div className={p.container}>
                 <h2>Активности</h2>
+                <button onClick={dispatch(ChangeStatusView(!StatusView))}>Флажок</button>
             <div className={p.main_block}>
                 <button onClick={()=>dispatch(LogoutThunk())}>Выйти</button>
             </div>
             <div className={p.mini_container}>
                 <div className={p.list}>
                     {Object.entries(ActivityButtons).map(([key, value]) => (
-                        <button onClick={() => dispatch(FillActivityThunk(key))} key={key}>
+                        <button onClick={() => dispatch(FillActivityThunk(key,StatusView))} key={key}>
                             {`${value}`}
                         </button>
                     ))}
