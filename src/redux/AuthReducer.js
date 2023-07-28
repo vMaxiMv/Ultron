@@ -1,5 +1,5 @@
 import axios from "axios";
-import {DeleteActivityAC, SetLoadingStatusAC} from "./ProfileReducer";
+import {ClearLastId, DeleteActivityAC, SetLoadingStatusAC} from "./ProfileReducer";
 
 const LOGIN = 'LOGIN'
 const SET_REDIRECT_URL = 'SET_REDIRECT_URL'
@@ -61,6 +61,7 @@ export const LogoutThunk = ()=>{
                 dispatch(SetRedirectUrlAC(redirectUrl))
                 dispatch(DeleteActivityAC())
                 dispatch(SetLoadingStatusAC(false))
+                dispatch(ClearLastId)
             })
     }
 }
