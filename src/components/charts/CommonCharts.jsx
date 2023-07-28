@@ -74,8 +74,61 @@ else{
 }
 
 
+/////Функции для формирования списков описания
+function getDateFromString(dateString) {
+  let date;
+  try {
+    date = new Date(dateString);
+  } catch {
+    date = null;
+  }
+  return date;
+}
+
+function convertDatesToObjects(data) {
+  const newData = data.map(item => {
+    const date = getDateFromString(item.date_added);
+    return { ...item, date_added: date };
+  });
+  return newData;
+}
+
+function findDateDifference(data) {
+  const dates = data.map(item => item.date_added);
+  const minDate = new Date(Math.min(...dates));
+  const maxDate = new Date(Math.max(...dates));
+  const differenceInMilliseconds = maxDate - minDate;
+  const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
+  console.log(`Разница между максимальной и минимальной датой: ${differenceInDays} дней`);
+  return differenceInDays;
+}
+
+function createEmptyDataObject(data, differenceInDays) {
+  const emptyData = {};
+
+  for (const item of data) {
+    emptyData[item.id_user] = Array.from({ length: differenceInDays + 1 }, () => "");
+  }
+
+  return emptyData;
+}
+
+function addDatesToEmptyData(emptyData, data) {
+  const minDate = new Date(Math.min(...data.map(item => item.date_added)));
+  for (const item of data) {
+    const date = new Date(item.date_added);
+    const differenceInDays = Math.floor((date - minDate) / (1000 * 60 * 60 * 24));
+    emptyData[item.id_user][differenceInDays] = item.description || "";
+  }
+}
+////конец Функции для формирования списков описания
+
 
 export function getDatasets(data) {
+   const newData = convertDatesToObjects(data);
+   const differenceInDays = findDateDifference(newData);
+   const emptyDataObject = createEmptyDataObject(data, differenceInDays);
+   addDatesToEmptyData(emptyDataObject, newData);
 
   const formattedData = transformData(data)
 
@@ -87,8 +140,10 @@ export function getDatasets(data) {
   const datasets = Object.keys(formattedData).map((id_user, index) => {
     return {
       label: data.find(item => item.id_user == id_user).name,
+      id_user:Array.from(new Set(data.map(item => item.id_user))),
       data: formattedData[id_user],
       backgroundColor: colors[index],
+      description:emptyDataObject,
       borderColor: 'black',
       borderWidth: 2
     };
@@ -98,7 +153,6 @@ export function getDatasets(data) {
 }
 
 /////////////////////////////
-
 
 function CommonCharts(props) {
     const WhiteColor = 'white'
@@ -146,7 +200,8 @@ function CommonCharts(props) {
                         // Форматирование информации во всплывающем окне
                         const label = context.dataset.label || '';
                         const value = context.parsed.y || '';
-                        const description = props.data[context.dataIndex].description;
+
+                        const description = context.dataset.description[context.dataset.id_user[context.datasetIndex]][context.dataIndex];
                         return[
                             label + ': ' + value, description
                         ]
