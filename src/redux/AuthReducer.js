@@ -59,9 +59,8 @@ export const LogoutThunk = ()=>{
             .then(response=>{
                 const redirectUrl = response.data['redirect_url']
                 dispatch(SetRedirectUrlAC(redirectUrl))
-                dispatch(DeleteActivityAC())
                 dispatch(SetLoadingStatusAC(false))
-                dispatch(ClearLastId)
+                window.location.href = redirectUrl;
             })
     }
 }

@@ -1,7 +1,13 @@
-import React from 'react';
+// import React from 'react';
 import BarCharts from "./barCharts/BarCharts";
 import {useUserData} from "../profile/profile";
 
+// import React, { useEffect, useRef } from 'react';
+// import b from './barCharts/BarCharts.module.css';
+// import { Chart } from 'chart.js/auto'; // Импортируем Chart из библиотеки Chart.js
+
+
+import Chart from 'chart.js/auto'; // Импортируем Chart.js
 
 
 ////////////////////////////
@@ -186,6 +192,9 @@ function CommonCharts(props) {
                 }
             }
         },
+            interaction: {
+      intersect: false,
+    },
         plugins: {
             legend: {
                 labels: {
@@ -200,8 +209,9 @@ function CommonCharts(props) {
                         // Форматирование информации во всплывающем окне
                         const label = context.dataset.label || '';
                         const value = context.parsed.y || '';
-
-                        const description = context.dataset.description[context.dataset.id_user[context.datasetIndex]][context.dataIndex];
+                        const id_user = context.dataset.id_user[context.datasetIndex]
+                        const number_slot = [context.dataIndex]
+                        const description = context.dataset.description[id_user][number_slot];
                         return[
                             label + ': ' + value, description
                         ]
@@ -218,4 +228,9 @@ function CommonCharts(props) {
     );
 }
 
+
+
+
 export default CommonCharts;
+
+
