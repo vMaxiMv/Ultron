@@ -10,7 +10,7 @@ function EditActivityBar(props) {
             <div className='activity_bar_menu'>
                 <ul>
                     <li><button>Изменить</button></li>
-                    <li><button onClick={()=>dispatch(DeletIdEnteryThunk(89))}>Удалить</button></li>
+                    <li><button onClick={()=>dispatch(DeletIdEnteryThunk(103))}>Удалить</button></li>
 
                 </ul>
             </div>
