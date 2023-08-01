@@ -96,11 +96,11 @@ export const ActivityButtonsThunk = ()=>{
     }
 }
 
-export const DeletIdEnteryThunk = (id_entery)=>{
+export const DeletIdEnteryThunk = (Id_entery)=>{
     return (dispatch) =>{
-         axios.delete('http://localhost:5000/delete_entry',{id_entery})
+         axios.delete(`http://localhost:5000/delete_entry/${Id_entery}`)
             .then(data=>{
-        dispatch(id_enteryAC(data.data))
+        dispatch(id_enteryAC(data.Id_entery))
          })
     }
 }

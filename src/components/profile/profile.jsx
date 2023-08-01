@@ -31,8 +31,12 @@ function Profile(props) {
     const redirectUrl = useSelector(state=>state.Auth.redirectUrl)
     const StatusView = useSelector(state=>state.Profile.StatusView)
     const LastId = useSelector(state=>state.Profile.LastId)
+    const Id_entery = useSelector(state=> state.Profle.Id_entery)
 
 
+    useEffect(()=>{
+        dispatch(FillActivityThunk(LastId, StatusView))
+    },[Id_entery])
     useEffect(()=>{
         dispatch(FillActivityThunk(LastId, StatusView))
     },[StatusView])

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import "./EditActivityBar.css"
-import {DeletIdEnteryThunk} from "../../../redux/ProfileReducer";
+import {DeletIdEnteryThunk, FillActivityThunk} from "../../../redux/ProfileReducer";
 import {useDispatch} from "react-redux";
 function EditActivityBar(props) {
     const dispatch = useDispatch()
