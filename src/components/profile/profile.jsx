@@ -32,10 +32,11 @@ function Profile(props) {
     const StatusView = useSelector(state=>state.Profile.StatusView)
     const LastId = useSelector(state=>state.Profile.LastId)
     const Id_entery = useSelector(state=> state.Profile.Id_entery)
+    const IsEditActivityBarVisible = useSelector(state => state.Profile.IsEditActivityBarVisible)
     useEffect(()=>{
-    dispatch(EditActivityBarAC(false))
+
     dispatch(FillActivityThunk(LastId, StatusView))
-    },[Id_entery])
+    },[Id_entery, IsEditActivityBarVisible])
     useEffect(()=>{
         dispatch(FillActivityThunk(LastId, StatusView))
     },[StatusView])

@@ -218,6 +218,10 @@ const externalTooltipHandler = (context) => {
     tooltipEl.style.padding = tooltip.options.padding + 'px ' + tooltip.options.padding + 'px';
 };
 
+
+let entry_id = "";
+
+
 const CommonCharts = () => {
     const IsEditActivityBarVisible = useSelector(state=>state.Profile.IsEditActivityBarVisible)
     const dispatch = useDispatch()
@@ -234,13 +238,12 @@ const CommonCharts = () => {
         const slot = elements[0]['index']
         const column = elements[0]['datasetIndex']
         const user_id = userData['datasets'][0]['id_user'][column]
-        const entry_id = userData['datasets'][0]['entry_id'][user_id][slot];
+        entry_id = userData['datasets'][0]['entry_id'][user_id][slot];
 
 
 
         // console.log('Clicked on:', elements);
         dispatch(EditActivityBarAC(true))
-        return entry_id;
     };
 
     const options = {
@@ -288,7 +291,7 @@ const CommonCharts = () => {
     return (
         <div>
         <BarCharts chartData={userData} options={options} />
-            {IsEditActivityBarVisible && <EditActivityBar entry_id={104}/>}
+            {IsEditActivityBarVisible && <EditActivityBar entry_id={entry_id}/>}
         </div>
     );
 }
