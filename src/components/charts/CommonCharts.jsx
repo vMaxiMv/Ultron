@@ -106,7 +106,6 @@ function findDateDifference(data) {
     const maxDate = new Date(Math.max(...dates));
     const differenceInMilliseconds = maxDate - minDate;
     const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
-    console.log(`Разница между максимальной и минимальной датой: ${differenceInDays} дней`);
     return differenceInDays;
 }
 

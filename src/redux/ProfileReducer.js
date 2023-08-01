@@ -8,6 +8,7 @@ const DELETE_ACTIVITY_ARRAY = 'DELETE_ACTIVITY_ARRAY'
 const CHANGE_STATUS_VIEW = 'CHANGE_STATUS_VIEW'
 const SET_LAST_ID = 'SET_LAST_ID'
 const EDIT_ACTIVITY_BAR = 'EDIT_ACTIVITY_BAR'
+const DELETE_ID_ENTERY = 'DELETE_ID_ENTERY'
 // const CLEAR_LAST_ID = 'CLEAR_LAST_ID'
 
 let initialState = {
@@ -16,7 +17,8 @@ let initialState = {
     LoadingStatus: false,
     StatusView: false,
     LastId: null,
-    IsEditActivityBarVisible: false
+    IsEditActivityBarVisible: false,
+    Id_entery: null
 }
 const ProfileReducer = (state = initialState, action) =>{
     switch (action.type){
@@ -39,6 +41,9 @@ const ProfileReducer = (state = initialState, action) =>{
         case EDIT_ACTIVITY_BAR:{
             return {...state, IsEditActivityBarVisible: action.isEditActivityBarVisible}
         }
+        case DELETE_ID_ENTERY:{
+            return {...state, Id_entery: action.id_entery}
+        }
         // case CLEAR_LAST_ID:{
         //     return {...state, LastId: null}
         // }
@@ -55,6 +60,8 @@ export const ChangeStatusView = (statusView) =>({type: CHANGE_STATUS_VIEW, statu
 export const SetLastId = (lastId)=>({type:SET_LAST_ID, lastId:lastId})
 // export const ClearLastId = ()=>({type: CLEAR_LAST_ID})
 export const EditActivityBarAC = (isEditActivityBarVisible)=>({type:EDIT_ACTIVITY_BAR, isEditActivityBarVisible:isEditActivityBarVisible})
+
+export const id_enteryAC = (id_entery)=>({type: DELETE_ID_ENTERY, id_entery:id_entery})
 
 export const FillActivityThunk = (id, StatusView)=>{
     return (dispatch) => {
@@ -89,4 +96,12 @@ export const ActivityButtonsThunk = ()=>{
     }
 }
 
+export const DeletIdEnteryThunk = (id_entery)=>{
+    return (dispatch) =>{
+         axios.delete('http://localhost:5000/delete_entry',{id_entery})
+            .then(data=>{
+        dispatch(id_enteryAC(data.data))
+         })
+    }
+}
 export default ProfileReducer

@@ -1,13 +1,16 @@
 import React from 'react';
 import "./EditActivityBar.css"
+import {DeletIdEnteryThunk} from "../../../redux/ProfileReducer";
+import {useDispatch} from "react-redux";
 function EditActivityBar(props) {
+    const dispatch = useDispatch()
     return (
         <div className='Main_activity_bar'>
             <div className='activity_bar_title'><h2>Редактирование активности</h2></div>
             <div className='activity_bar_menu'>
                 <ul>
                     <li><button>Изменить</button></li>
-                    <li><button>Удалить</button></li>
+                    <li><button onClick={()=>dispatch(DeletIdEnteryThunk(89))}>Удалить</button></li>
 
                 </ul>
             </div>
