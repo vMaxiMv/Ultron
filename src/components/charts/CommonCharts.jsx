@@ -1,6 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import BarCharts from "./barCharts/BarCharts";
 import {useUserData} from "../profile/profile";
+import {elements} from "chart.js";
+import EditActivityBar from "../profile/ProfileSideBar/EditActivityBar";
+import {set} from "react-hook-form";
+import {useDispatch, useSelector} from "react-redux";
+import {EditActivityBarAC} from "../../redux/ProfileReducer";
 
 
 
@@ -154,82 +159,6 @@ export function getDatasets(data) {
 
 }
 
-// ///////////////////////////
-//
-// function CommonCharts(props) {
-//     const WhiteColor = 'white'
-//     const userData = useUserData()
-//         // console.log(props.data)
-//     const options = {
-//         responsive: true,
-//         maintainAspectRatio: false,
-//         scales: {
-//             x: {
-//                 grid:{
-//                     color: WhiteColor
-//                 },
-//                 ticks:{
-//                     color: WhiteColor,
-//                     font:{
-//                         size:16
-//                     }
-//                 }
-//             },
-//             y: {
-//                 beginAtZero: true, // Начало оси Y с 0
-//                 grid:{
-//                     color: WhiteColor
-//                 },
-//                 ticks:{
-//                     color: WhiteColor,
-//                     font:{
-//                         size:16
-//                     }
-//                 }
-//             }
-//         },
-//             interaction: {
-//       intersect: false,
-//     },
-//         plugins: {
-//             legend: {
-//                 labels: {
-//                     render: 'value',
-//                     color: WhiteColor // Изменение цвета шрифта на черный
-//                 }
-//             },
-//             tooltip: {
-//                 callbacks: {
-//                     label: function (context) {
-//
-                        // Форматирование информации во всплывающем окне
-                        // const label = context.dataset.label || '';
-                        // const value = context.parsed.y || '';
-                        // const id_user = context.dataset.id_user[context.datasetIndex]
-                        // const number_slot = [context.dataIndex]
-                        // const description = context.dataset.description[id_user][number_slot];
-                        // return[
-                        //     label + ': ' + value, description
-                        // ]
-//                     },
-//                 },
-//                 bodyMaxWidth:20
-//             },
-//         },
-//         }
-//     return (
-//         <div>
-//         <BarCharts chartData={userData} options={options} />
-//         </div>
-//     );
-// }
-//
-//
-//
-//
-// export default CommonCharts;
-
-
 const getOrCreateTooltip = (chart) => {
     let tooltipEl = chart.canvas.parentNode.querySelector('div');
 
@@ -285,10 +214,23 @@ const externalTooltipHandler = (context) => {
 };
 
 const CommonCharts = () => {
+    const IsEditActivityBarVisible = useSelector(state=>state.Profile.IsEditActivityBarVisible)
+    const dispatch = useDispatch()
     const WhiteColor = 'white'
     const userData = useUserData()
-    const options = {
 
+    const handleChartClick = (elements) => {
+        if (!elements || elements.length === 0) {
+            dispatch(EditActivityBarAC(false))
+            return;
+        }
+        
+        console.log('Clicked on:', elements);
+        dispatch(EditActivityBarAC(true))
+    };
+
+    const options = {
+            onClick: (event, elements)=>handleChartClick(elements),
             responsive: true,
             maintainAspectRatio: false,
             scales: {
@@ -332,6 +274,7 @@ const CommonCharts = () => {
     return (
         <div>
         <BarCharts chartData={userData} options={options} />
+            {IsEditActivityBarVisible && <EditActivityBar />}
         </div>
     );
 }

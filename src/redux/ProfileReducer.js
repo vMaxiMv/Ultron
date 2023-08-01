@@ -7,7 +7,8 @@ const SET_LOADING_STATUS = 'SET_LOADING_STATUS'
 const DELETE_ACTIVITY_ARRAY = 'DELETE_ACTIVITY_ARRAY'
 const CHANGE_STATUS_VIEW = 'CHANGE_STATUS_VIEW'
 const SET_LAST_ID = 'SET_LAST_ID'
-const CLEAR_LAST_ID = 'CLEAR_LAST_ID'
+const EDIT_ACTIVITY_BAR = 'EDIT_ACTIVITY_BAR'
+// const CLEAR_LAST_ID = 'CLEAR_LAST_ID'
 
 let initialState = {
     UserData: [],
@@ -15,6 +16,7 @@ let initialState = {
     LoadingStatus: false,
     StatusView: false,
     LastId: null,
+    IsEditActivityBarVisible: false
 }
 const ProfileReducer = (state = initialState, action) =>{
     switch (action.type){
@@ -34,9 +36,12 @@ const ProfileReducer = (state = initialState, action) =>{
         case SET_LAST_ID:{
             return {...state,LastId: action.lastId }
         }
-        case CLEAR_LAST_ID:{
-            return {...state, LastId: null}
+        case EDIT_ACTIVITY_BAR:{
+            return {...state, IsEditActivityBarVisible: action.isEditActivityBarVisible}
         }
+        // case CLEAR_LAST_ID:{
+        //     return {...state, LastId: null}
+        // }
         default:
             return state
     }
@@ -48,7 +53,8 @@ export const ActivityButtonsAC = (activityButtons)=>({type:NAME_ACTIVITY_BTN, ac
 export const SetLoadingStatusAC = (loadingStatus)=>({type:SET_LOADING_STATUS, loadingStatus:loadingStatus})
 export const ChangeStatusView = (statusView) =>({type: CHANGE_STATUS_VIEW, statusView:statusView})
 export const SetLastId = (lastId)=>({type:SET_LAST_ID, lastId:lastId})
-export const ClearLastId = ()=>({type: CLEAR_LAST_ID})
+// export const ClearLastId = ()=>({type: CLEAR_LAST_ID})
+export const EditActivityBarAC = (isEditActivityBarVisible)=>({type:EDIT_ACTIVITY_BAR, isEditActivityBarVisible:isEditActivityBarVisible})
 
 export const FillActivityThunk = (id, StatusView)=>{
     return (dispatch) => {

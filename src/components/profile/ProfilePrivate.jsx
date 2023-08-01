@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import p from './profile.module.css';
+import p from './profile.css';
 import CommonCharts from '../charts/CommonCharts';
 import { updateUserData } from '../../data/Data';
 import Loading from "../loading/loading";

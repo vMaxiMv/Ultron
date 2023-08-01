@@ -1,13 +1,16 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import p from './profile.module.css';
+import  './profile.css';
 import CommonCharts, {getDatasets, getDescription, getSortedDates} from '../charts/CommonCharts';
 import {updateUserData, UserData} from '../../data/Data';
 import Loading from "../loading/loading";
 import {useDispatch, useSelector} from "react-redux";
-import {ActivityButtonsThunk, ChangeStatusView, FillActivityThunk} from "../../redux/ProfileReducer";
+import {ActivityButtonsThunk, ChangeStatusView, EditActivityBarAC, FillActivityThunk} from "../../redux/ProfileReducer";
 import {LogoutThunk, resetRedirectUrlAC} from "../../redux/AuthReducer";
+import ToolBar from "./ProfileSideBar/ToolBar";
+import MobileMenu from "./ProfileSideBar/ToolBarMobile";
+import EditActivityBar from "./ProfileSideBar/EditActivityBar";
 
 axios.defaults.withCredentials = true;
  export function useUserData(){
@@ -46,26 +49,36 @@ function Profile(props) {
         }
     },[redirectUrl, navigate])
 
-
+    const handleOutsideClick = () => {
+        dispatch(EditActivityBarAC(false));
+    };
 
 
     return (
-        <div className={p.wrapper}>
-            <div className={p.container}>
+        <div className='wrapper'>
+            <div className='container'>
+                <ToolBar/>
+                <div className='CommonMenu'>
+                    <MobileMenu/>
+                </div>
                 <h2>Активности</h2>
-                <button onClick={()=> dispatch(ChangeStatusView(!StatusView))}>Флажок</button>
-            <div className={p.main_block}>
+                {/*<div> <button onClick={() => dispatch(ChangeStatusView(!StatusView))}>Флажок</button></div>*/}
+
+            <div className='main_block'>
                 <button onClick={()=>dispatch(LogoutThunk())}>Выйти</button>
             </div>
-            <div className={p.mini_container}>
-                <div className={p.list}>
+            <div className='mini_container'>
+                <div className='list'>
+                    <div className='switch'>
+                        <input onClick={() => dispatch(ChangeStatusView(!StatusView))} type="checkbox"/>
+                    </div>
                     {Object.entries(ActivityButtons).map(([key, value]) => (
                         <button onClick={() => dispatch(FillActivityThunk(key,StatusView))} key={key}>
                             {`${value}`}
                         </button>
                     ))}
                 </div>
-                <div className={p.graphics}>
+                <div className='graphics'>
                     {LoadingStatus ?  <CommonCharts data={UserData}/> : <Loading/>}
                 </div>
             </div>
