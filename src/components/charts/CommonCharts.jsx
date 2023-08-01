@@ -6,6 +6,7 @@ import EditActivityBar from "../profile/ProfileSideBar/EditActivityBar";
 import {set} from "react-hook-form";
 import {useDispatch, useSelector} from "react-redux";
 import {EditActivityBarAC} from "../../redux/ProfileReducer";
+import * as events from "events";
 
 
 
@@ -119,12 +120,14 @@ function createEmptyDataObject(data, differenceInDays) {
     return emptyData;
 }
 
-function addDatesToEmptyData(emptyData, data) {
+function addDatesToEmptyData(emptyData, data, description=false, entry_id=false) {
     const minDate = new Date(Math.min(...data.map(item => item.date_added)));
     for (const item of data) {
         const date = new Date(item.date_added);
         const differenceInDays = Math.floor((date - minDate) / (1000 * 60 * 60 * 24));
-        emptyData[item.id_user][differenceInDays] = item.description || "";
+
+        if(description){emptyData[item.id_user][differenceInDays] = item.description || "";}
+        else if (entry_id){emptyData[item.id_user][differenceInDays] = item.id_entery || "";}
     }
 }
 ////конец Функции для формирования списков описания
@@ -133,8 +136,10 @@ function addDatesToEmptyData(emptyData, data) {
 export function getDatasets(data) {
     const newData = convertDatesToObjects(data);
     const differenceInDays = findDateDifference(newData);
-    const emptyDataObject = createEmptyDataObject(data, differenceInDays);
-    addDatesToEmptyData(emptyDataObject, newData);
+    const emptyDataObject_description = createEmptyDataObject(data, differenceInDays);
+    const emptyDataObject_entry_id = createEmptyDataObject(data, differenceInDays);
+    addDatesToEmptyData(emptyDataObject_description, newData, true, false );
+    addDatesToEmptyData(emptyDataObject_entry_id, newData, false, true );
 
     const formattedData = transformData(data)
 
@@ -149,7 +154,8 @@ export function getDatasets(data) {
             id_user:Array.from(new Set(data.map(item => item.id_user))),
             data: formattedData[id_user],
             backgroundColor: colors[index],
-            description:emptyDataObject,
+            description:emptyDataObject_description,
+            entry_id:emptyDataObject_entry_id,
             borderColor: 'black',
             borderWidth: 2
         };
@@ -219,13 +225,22 @@ const CommonCharts = () => {
     const userData = useUserData()
 
     const handleChartClick = (elements) => {
+
         if (!elements || elements.length === 0) {
             dispatch(EditActivityBarAC(false))
             return;
         }
-        
-        console.log('Clicked on:', elements);
+
+        const slot = elements[0]['index']
+        const column = elements[0]['datasetIndex']
+        const user_id = userData['datasets'][0]['id_user'][column]
+        const entry_id = userData['datasets'][0]['entry_id'][user_id][slot];
+
+
+
+        // console.log('Clicked on:', elements);
         dispatch(EditActivityBarAC(true))
+        return entry_id;
     };
 
     const options = {
@@ -273,7 +288,7 @@ const CommonCharts = () => {
     return (
         <div>
         <BarCharts chartData={userData} options={options} />
-            {IsEditActivityBarVisible && <EditActivityBar />}
+            {IsEditActivityBarVisible && <EditActivityBar entry_id={104}/>}
         </div>
     );
 }

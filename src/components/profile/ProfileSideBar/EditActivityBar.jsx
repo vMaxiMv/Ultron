@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import "./EditActivityBar.css"
 import {DeletIdEnteryThunk, FillActivityThunk} from "../../../redux/ProfileReducer";
 import {useDispatch} from "react-redux";
+
 function EditActivityBar(props) {
     const dispatch = useDispatch()
     return (
@@ -10,7 +11,7 @@ function EditActivityBar(props) {
             <div className='activity_bar_menu'>
                 <ul>
                     <li><button>Изменить</button></li>
-                    <li><button onClick={()=>dispatch(DeletIdEnteryThunk(103))}>Удалить</button></li>
+                    <li><button onClick={()=>dispatch(DeletIdEnteryThunk(props.entry_id))}>Удалить</button></li>
 
                 </ul>
             </div>
