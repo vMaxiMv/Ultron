@@ -101,14 +101,14 @@ function convertDatesToObjects(data) {
     return newData;
 }
 
-function findDateDifference(data) {
-    const dates = data.map(item => item.date_added);
-    const minDate = new Date(Math.min(...dates));
-    const maxDate = new Date(Math.max(...dates));
-    const differenceInMilliseconds = maxDate - minDate;
-    const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
-    return differenceInDays;
-}
+// function findDateDifference(data) {
+//     const dates = data.map(item => item.date_added);
+//     const minDate = new Date(Math.min(...dates));
+//     const maxDate = new Date(Math.max(...dates));
+//     const differenceInMilliseconds = maxDate - minDate;
+//     const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
+//     return differenceInDays;
+// }
 
 function createEmptyDataObject(data, differenceInDays) {
     const emptyData = {};
@@ -135,7 +135,7 @@ function addDatesToEmptyData(emptyData, data, description=false, entry_id=false)
 
 export function getDatasets(data) {
     const newData = convertDatesToObjects(data);
-    const differenceInDays = findDateDifference(newData);
+    const differenceInDays = DateArrayLength(newData);
     const emptyDataObject_description = createEmptyDataObject(data, differenceInDays);
     const emptyDataObject_entry_id = createEmptyDataObject(data, differenceInDays);
     addDatesToEmptyData(emptyDataObject_description, newData, true, false );
