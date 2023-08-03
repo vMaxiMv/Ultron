@@ -3,12 +3,12 @@ import "./EditActivityBar.css"
 import {changeNoteAC, DeletIdEnteryThunk} from "../../../redux/ProfileReducer";
 import {useDispatch} from "react-redux";
 
-import EditNote from "./EditNote";
+import CreateNote from "./CreateNote";
 
 
 
 
-function EditActivityBar(props) {
+function CreateActivityForm(props) {
     const dispatch = useDispatch()
 
     return (
@@ -16,14 +16,12 @@ function EditActivityBar(props) {
             <div className='activity_bar_title'><h2>Редактирование активности</h2></div>
             <div className='activity_bar_menu'>
                 <ul>
-                    <li><button onClick={()=>dispatch(changeNoteAC(true))}>Изменить</button></li>
-                    <li><button onClick={()=>dispatch(DeletIdEnteryThunk(props.entry_id))}>Удалить</button></li>
-
+                    <li><button onClick={()=>dispatch(changeNoteAC(true))}>Создать</button></li>
                 </ul>
             </div>
-           <EditNote entry_id={props.entry_id}/>
+            <CreateNote ActivityButtons={props.ActivityButtons}/>
         </div>
     );
 }
 
-export default EditActivityBar;
+export default CreateActivityForm;

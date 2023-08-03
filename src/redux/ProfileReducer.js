@@ -11,6 +11,7 @@ const EDIT_ACTIVITY_BAR = 'EDIT_ACTIVITY_BAR'
 const DELETE_ID_ENTERY = 'DELETE_ID_ENTERY'
 const CHANGE_NOTE = 'CHANGE_NOTE'
 const CHANGE_NOTE_OBJ = 'CHANGE_NOTE_OBJ'
+const ID_ACTIVITY = 'ID_ACTIVITY'
 // const CLEAR_LAST_ID = 'CLEAR_LAST_ID'
 
 let initialState = {
@@ -21,8 +22,9 @@ let initialState = {
     LastId: null,
     IsEditActivityBarVisible: false,
     Id_entery: null,
-    ChangeNote: false,
-    ChangesNoteObj: {}
+    ChangeNoteBool: false,
+    ChangesNoteObj: {},
+    Id_activity: null
 }
 const ProfileReducer = (state = initialState, action) =>{
     switch (action.type){
@@ -49,10 +51,13 @@ const ProfileReducer = (state = initialState, action) =>{
             return {...state, Id_entery: action.id_entery}
         }
         case CHANGE_NOTE:{
-            return {...state, ChangeNote: action.changeNote}
+            return {...state, ChangeNoteBool: action.changeNoteBool}
         }
         case CHANGE_NOTE_OBJ:{
             return {...state, ChangesNoteObj:{...action.changesNoteObj} }
+        }
+        case ID_ACTIVITY:{
+            return {...state, Id_activity:action.id_activity}
         }
         // case CLEAR_LAST_ID:{
         //     return {...state, LastId: null}
@@ -73,7 +78,9 @@ export const EditActivityBarAC = (isEditActivityBarVisible)=>({type:EDIT_ACTIVIT
 
 export const id_enteryAC = (id_entery)=>({type: DELETE_ID_ENTERY, id_entery:id_entery})
 
-export const changeNoteAC = (changeNote)=>({type:CHANGE_NOTE, changeNote:changeNote})
+export const changeNoteAC = (changeNoteBool)=>({type:CHANGE_NOTE, changeNoteBool:changeNoteBool})
+
+export const SetId_activityAC = (id_activity)=>({type:ID_ACTIVITY, id_activity:id_activity})
 
 export const ChangesNoteObjAC = (changesNoteObj)=>({type:CHANGE_NOTE_OBJ, changesNoteObj:changesNoteObj})
 export const FillActivityThunk = (id, StatusView)=>{
@@ -120,11 +127,21 @@ export const DeletIdEnteryThunk = (Id_entery)=>{
 }
 export const changeIdEnteryThunk = (Id_entery, ChangesNoteObj)=>{
     return (dispatch) =>{
-        axios.post(`http://localhost:5000/edit_entry/${Id_entery}`)
+        axios.post(`http://localhost:5000/edit_entry/${Id_entery}`,ChangesNoteObj)
             .then(data=>{
                 dispatch(id_enteryAC(data.Id_entery))
-                dispatch(ChangesNoteObjAC(data.ChangesNoteObj))
-                //dispatch(EditActivityBarAC(false))
+                //dispatch(ChangesNoteObjAC(data.ChangesNoteObj))
+                dispatch(EditActivityBarAC(false))
+            })
+    }
+}
+
+export const createIdActivityThunk = (Id_activity, ChangesNoteObj)=>{
+    return (dispatch) =>{
+        axios.post(`http://localhost:5000/create_entry/${Id_activity}`,ChangesNoteObj)
+            .then(data=>{
+                dispatch(SetId_activityAC(data.Id_activity))
+                dispatch(EditActivityBarAC(false))
             })
     }
 }

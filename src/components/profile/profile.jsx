@@ -6,11 +6,17 @@ import CommonCharts, {getDatasets, getDescription, getSortedDates} from '../char
 import {updateUserData, UserData} from '../../data/Data';
 import Loading from "../loading/loading";
 import {useDispatch, useSelector} from "react-redux";
-import {ActivityButtonsThunk, ChangeStatusView, EditActivityBarAC, FillActivityThunk} from "../../redux/ProfileReducer";
+import {
+    ActivityButtonsThunk,
+    changeNoteAC,
+    ChangeStatusView,
+    FillActivityThunk
+} from "../../redux/ProfileReducer";
 import {LogoutThunk, resetRedirectUrlAC} from "../../redux/AuthReducer";
 import ToolBar from "./ProfileSideBar/ToolBar";
 import MobileMenu from "./ProfileSideBar/ToolBarMobile";
 import EditActivityBar from "./ProfileSideBar/EditActivityBar";
+import CreateActivityForm from "./ProfileSideBar/CreateActivityForm";
 
 axios.defaults.withCredentials = true;
  export function useUserData(){
@@ -33,6 +39,10 @@ function Profile(props) {
     const LastId = useSelector(state=>state.Profile.LastId)
     const Id_entery = useSelector(state=> state.Profile.Id_entery)
     const IsEditActivityBarVisible = useSelector(state => state.Profile.IsEditActivityBarVisible)
+
+    const [FlagCreateNote, SetFlagCreateNote] = useState(false)
+
+
     useEffect(()=>{
 
     dispatch(FillActivityThunk(LastId, StatusView))
@@ -53,9 +63,13 @@ function Profile(props) {
         }
     },[redirectUrl, navigate])
 
-    const handleOutsideClick = () => {
-        dispatch(EditActivityBarAC(false));
-    };
+    // const handleOutsideClick = () => {
+    //     dispatch(EditActivityBarAC(false));
+    // };
+    // const openModal = () => {
+    //     dispatch(changeNoteAC(true));
+    // };
+    //const activityButtonKeys = Object.keys(ActivityButtons);
 
 
     return (
@@ -81,6 +95,8 @@ function Profile(props) {
                             {`${value}`}
                         </button>
                     ))}
+                    <button onClick={()=>{SetFlagCreateNote(!FlagCreateNote)}}>Добавить запись</button>
+                    {FlagCreateNote&& <CreateActivityForm ActivityButtons={ActivityButtons}/>}
                 </div>
                 <div className='graphics'>
                     {LoadingStatus ?  <CommonCharts data={UserData}/> : <Loading/>}

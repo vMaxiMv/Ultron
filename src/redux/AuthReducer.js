@@ -31,17 +31,6 @@ export const SetRedirectUrlAC = (redirectUrl)=>({type:SET_REDIRECT_URL, redirect
 export const resetRedirectUrlAC = ()=>({ type: RESET_REDIRECT_URL})
 
 
-// export const LoginThunk = (username, password)=>{
-//     return (dispatch)=>{
-//         axios.post('http://localhost:5000/api/login', {username, password})
-//             .then(response=> {
-//                 const redirectUrl = response.data['redirect_url']
-//                 dispatch(LoginAC(username, password))
-//                 dispatch(SetRedirectUrlAC(redirectUrl))
-//             }
-//     )
-//     }
-// }
 export const LoginRegisterThunk = (username, password,name)=>{
     return (dispatch)=>{
         axios.post(`http://localhost:5000/api/${name}`, {username, password})
