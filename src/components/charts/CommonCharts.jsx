@@ -151,7 +151,7 @@ export function getDatasets(data) {
     const datasets = Object.keys(formattedData).map((id_user, index) => {
         return {
             label: data.find(item => item.id_user == id_user).name,
-            id_user:Array.from(new Set(data.map(item => item.id_user))),
+            id_user:Array.from(new Set(data.map(item => item.id_user))).sort((a, b) => a - b),
             data: formattedData[id_user],
             backgroundColor: colors[index],
             description:emptyDataObject_description,
