@@ -15,8 +15,7 @@ import {
 import {LogoutThunk, resetRedirectUrlAC} from "../../redux/AuthReducer";
 import ToolBar from "./ProfileSideBar/ToolBar";
 import MobileMenu from "./ProfileSideBar/ToolBarMobile";
-import EditActivityBar from "./ProfileSideBar/EditActivityBar";
-import CreateActivityForm from "./ProfileSideBar/CreateActivityForm";
+import NoteCreate from "./NoteinteractionFolder/NoteCreate";
 
 axios.defaults.withCredentials = true;
  export function useUserData(){
@@ -63,14 +62,6 @@ function Profile(props) {
         }
     },[redirectUrl, navigate])
 
-    // const handleOutsideClick = () => {
-    //     dispatch(EditActivityBarAC(false));
-    // };
-    // const openModal = () => {
-    //     dispatch(changeNoteAC(true));
-    // };
-    //const activityButtonKeys = Object.keys(ActivityButtons);
-
 
     return (
         <div className='wrapper'>
@@ -96,7 +87,7 @@ function Profile(props) {
                         </button>
                     ))}
                     <button onClick={()=>{SetFlagCreateNote(!FlagCreateNote)}}>Добавить запись</button>
-                    {FlagCreateNote&& <CreateActivityForm ActivityButtons={ActivityButtons}/>}
+                    {FlagCreateNote&& <NoteCreate ActivityButtons={ActivityButtons}/>}
                 </div>
                 <div className='graphics'>
                     {LoadingStatus ?  <CommonCharts data={UserData}/> : <Loading/>}

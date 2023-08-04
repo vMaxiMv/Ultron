@@ -82,7 +82,7 @@ export const changeNoteAC = (changeNoteBool)=>({type:CHANGE_NOTE, changeNoteBool
 
 export const SetId_activityAC = (id_activity)=>({type:ID_ACTIVITY, id_activity:id_activity})
 
-export const ChangesNoteObjAC = (changesNoteObj)=>({type:CHANGE_NOTE_OBJ, changesNoteObj:changesNoteObj})
+//export const ChangesNoteObjAC = (changesNoteObj)=>({type:CHANGE_NOTE_OBJ, changesNoteObj:changesNoteObj})
 export const FillActivityThunk = (id, StatusView)=>{
     return (dispatch) => {
         dispatch(SetLastId(id))
@@ -100,7 +100,7 @@ export const FillActivityThunk = (id, StatusView)=>{
             {'id_user': 57, 'id_entery': 9, 'name': 'Test User 2', 'amount': 57, 'date_added': '2023-07-12' ,'description':'Лупа'},
             {'id_user': 56, 'id_entery': 10, 'name': 'Test User', 'amount': 88, 'date_added': '2023-07-11' ,'description':'какое-то описание'},
             {'id_user': 56, 'id_entery': 11, 'name': 'Test User', 'amount': 67, 'date_added': '2023-07-10' ,'description':'какое-то описание'},
-            {'id_user': 56, 'id_entery': 12, 'name': 'Test User', 'amount': 71, 'date_added': '2023-07-09' ,'description':'Первый подход: 20 повторений, второй подход: 10 повторений, третией подход: 5 повторений'}
+            {'id_user': 56, 'id_entery': 12, 'name': 'Test User', 'amount': 71, 'date_added': '2023-07-09' ,'description':'Первый подход: 20 повторений, второй подход: 10 повторений, третией подход: 5 повторений'},
         ]))
         //  })
         dispatch(SetLoadingStatusAC(true))

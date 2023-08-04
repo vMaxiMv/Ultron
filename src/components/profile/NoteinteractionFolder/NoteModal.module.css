@@ -1,0 +1,104 @@
+.buttonBlockChangeStyles{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.buttonChangeStyles{
+    padding: 8px 12px;
+    margin: 10px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+form input{
+    margin-top: 10px;
+}
+h3{
+    font-size: 25px;
+}
+/*-----------------------Стили для первого всплывающего окошка------------------------------------------*/
+
+.Main_activity_bar {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    max-width: 90%;
+    padding: 20px;
+    background: rgba(20, 20, 20, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.activity_bar_title {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.activity_bar_title h2 {
+    color: white;
+    font-size: 24px;
+}
+
+.activity_bar_menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.activity_bar_menu ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.activity_bar_menu li {
+    margin: 5px 0;
+}
+
+.activity_bar_menu button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: opacity 0.3s;
+}
+
+.activity_bar_menu button:hover {
+    opacity: 0.7;
+}
+/*!*-----------------------Стили для модального окна------------------------------*!*/
+/* Define parent container styles */
+.content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(20, 20, 20, 0.9);
+
+}
+
+/* Define overlay styles */
+.overlay {
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    background: #499eb4;
+    border: none;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 30px;
+    color: white;
+
+}
+
+/* Add any other custom styles you want to apply to the modal here */

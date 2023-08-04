@@ -1,12 +1,10 @@
-import React, {useState} from 'react';
+import React from 'react';
 import BarCharts from "./barCharts/BarCharts";
 import {useUserData} from "../profile/profile";
-import {elements} from "chart.js";
-import EditActivityBar from "../profile/ProfileSideBar/EditActivityBar";
-import {set} from "react-hook-form";
 import {useDispatch, useSelector} from "react-redux";
-import {EditActivityBarAC} from "../../redux/ProfileReducer";
-import * as events from "events";
+import {EditActivityBarAC, id_enteryAC} from "../../redux/ProfileReducer";
+
+import NoteModify from "../profile/NoteinteractionFolder/NoteModify ";
 
 
 
@@ -151,7 +149,7 @@ export function getDatasets(data) {
     const datasets = Object.keys(formattedData).map((id_user, index) => {
         return {
             label: data.find(item => item.id_user == id_user).name,
-            id_user:Array.from(new Set(data.map(item => item.id_user))),
+            id_user:Array.from(new Set(data.map(item => item.id_user))).sort((a,b)=>a-b),
             data: formattedData[id_user],
             backgroundColor: colors[index],
             description:emptyDataObject_description,
@@ -219,10 +217,11 @@ const externalTooltipHandler = (context) => {
 };
 
 
-let entry_id = "";
+//let entry_id = "";
 
 
 const CommonCharts = () => {
+    const entry_id = useSelector(state => state.Profile.Id_entery)
     const IsEditActivityBarVisible = useSelector(state=>state.Profile.IsEditActivityBarVisible)
     const dispatch = useDispatch()
     const WhiteColor = 'white'
@@ -238,8 +237,7 @@ const CommonCharts = () => {
         const slot = elements[0]['index']
         const column = elements[0]['datasetIndex']
         const user_id = userData['datasets'][0]['id_user'][column]
-        entry_id = userData['datasets'][0]['entry_id'][user_id][slot];
-
+        dispatch(id_enteryAC(userData['datasets'][0]['entry_id'][user_id][slot]))
 
 
         // console.log('Clicked on:', elements);
@@ -291,7 +289,7 @@ const CommonCharts = () => {
     return (
         <div>
         <BarCharts chartData={userData} options={options} />
-            {IsEditActivityBarVisible && <EditActivityBar entry_id={entry_id}/>}
+            {IsEditActivityBarVisible && <NoteModify entry_id={entry_id}/>}
         </div>
     );
 }
