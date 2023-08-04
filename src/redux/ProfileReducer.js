@@ -87,7 +87,6 @@ export const FillActivityThunk = (id, StatusView)=>{
     return (dispatch) => {
         dispatch(SetLastId(id))
         dispatch(SetLoadingStatusAC(false))
-<<<<<<< HEAD
         // axios.post('http://localhost:5000/data_for_chart', { id,StatusView })
         //     .then(data=>{
         dispatch(FillActivityAC([{'id_user': 56, 'id_entery': 1, 'name': 'Test User', 'amount': 82, 'date_added': '2023-07-20','description':'Первый подход: 20 повторений, второй подход: 10 повторений, третией подход: 5 повторений'},
@@ -104,22 +103,15 @@ export const FillActivityThunk = (id, StatusView)=>{
             {'id_user': 56, 'id_entery': 12, 'name': 'Test User', 'amount': 71, 'date_added': '2023-07-09' ,'description':'Первый подход: 20 повторений, второй подход: 10 повторений, третией подход: 5 повторений'},
         ]))
         //  })
-=======
-        axios.post('http://localhost:5000/data_for_chart', { id,StatusView })
-            .then(data=>{
-        dispatch(FillActivityAC(data.data))
-         })
->>>>>>> c93fecdbded9fdd5725c6828800114e15c1902d1
         dispatch(SetLoadingStatusAC(true))
     }
 }
-export const ActivityButtonsThunk = ()=>{
-    return (dispatch)=>{
-        axios.get('http://localhost:5000/data_for_chart')
-            .then(data=>{
-        dispatch(ActivityButtonsAC(data.data))
-         })
-
+export const ActivityButtonsThunk = ()=> {
+    return (dispatch) => {
+        // axios.get('http://localhost:5000/data_for_chart')
+        //     .then(data=>{
+        dispatch(ActivityButtonsAC({73: 'подтягивания', 74: 'отжимания от пола', 75: 'брусья', 76: 'жим лежа'}))
+        //  })
     }
 }
 
