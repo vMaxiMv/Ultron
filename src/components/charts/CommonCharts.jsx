@@ -2,7 +2,7 @@ import React from 'react';
 import BarCharts from "./barCharts/BarCharts";
 import {useUserData} from "../profile/profile";
 import {useDispatch, useSelector} from "react-redux";
-import {EditActivityBarAC, id_enteryAC} from "../../redux/ProfileReducer";
+import {editActivityBar, modifyIdEntery} from "../../redux/ProfileReducer";
 
 import NoteModify from "../profile/NoteinteractionFolder/NoteModify ";
 
@@ -29,7 +29,7 @@ function transformData(data) {
             result[item.id_user][index] = item.amount;
         }
     });
-
+    console.log(result)
     return result;
 
 }
@@ -230,18 +230,18 @@ const CommonCharts = () => {
     const handleChartClick = (elements) => {
 
         if (!elements || elements.length === 0) {
-            dispatch(EditActivityBarAC(false))
+            dispatch(editActivityBar(false))
             return;
         }
 
         const slot = elements[0]['index']
         const column = elements[0]['datasetIndex']
         const user_id = userData['datasets'][0]['id_user'][column]
-        dispatch(id_enteryAC(userData['datasets'][0]['entry_id'][user_id][slot]))
+        dispatch(modifyIdEntery(userData['datasets'][0]['entry_id'][user_id][slot]))
 
 
         // console.log('Clicked on:', elements);
-        dispatch(EditActivityBarAC(true))
+        dispatch(editActivityBar(true))
     };
 
     const options = {

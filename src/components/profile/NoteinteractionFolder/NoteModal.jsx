@@ -18,7 +18,7 @@ function NoteModal(props) {
     const onSubmit = async (data) => {
 
         (props.onSubmitHandler(data));
-        console.log(data)
+        //console.log(data)
         closeModal();
     };
 

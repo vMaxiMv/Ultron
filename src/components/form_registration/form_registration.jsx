@@ -15,7 +15,8 @@ function FormRegistration(props) {
     const onSubmit = async (data)=>{
         const {username, password} = data;
         console.log(data)
-        dispatch(LoginRegisterThunk(username,password,'register'))
+        const name = 'reginster'
+        dispatch(LoginRegisterThunk({username, password, name}))
     }
     useEffect(()=>{
         if(redirectUrl){

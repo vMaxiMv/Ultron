@@ -2,15 +2,13 @@ import React, {useEffect, useMemo, useState} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import  './profile.css';
-import CommonCharts, {getDatasets, getDescription, getSortedDates} from '../charts/CommonCharts';
-import {updateUserData, UserData} from '../../data/Data';
+import CommonCharts, {getDatasets, getSortedDates} from '../charts/CommonCharts';
 import Loading from "../loading/loading";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    ActivityButtonsThunk,
-    changeNoteAC,
-    ChangeStatusView,
-    FillActivityThunk
+    activityButtonsThunk,
+    changeStatusView,
+    fillActivityThunk
 } from "../../redux/ProfileReducer";
 import {LogoutThunk, resetRedirectUrlAC} from "../../redux/AuthReducer";
 import ToolBar from "./ProfileSideBar/ToolBar";
@@ -41,17 +39,16 @@ function Profile(props) {
 
     const [FlagCreateNote, SetFlagCreateNote] = useState(false)
 
-
     useEffect(()=>{
 
-    dispatch(FillActivityThunk(LastId, StatusView))
+    dispatch(fillActivityThunk(LastId, StatusView))
     },[Id_entery, IsEditActivityBarVisible])
     useEffect(()=>{
-        dispatch(FillActivityThunk(LastId, StatusView))
+        dispatch(fillActivityThunk(LastId, StatusView))
     },[StatusView])
 
     useEffect(()=>{
-        dispatch(ActivityButtonsThunk())
+        dispatch(activityButtonsThunk())
     },[])
 
     useEffect(()=>{
@@ -79,10 +76,10 @@ function Profile(props) {
             <div className='mini_container'>
                 <div className='list'>
                     <div className='switch'>
-                        <input onClick={() => dispatch(ChangeStatusView(!StatusView))} type="checkbox"/>
+                        <input onClick={() => dispatch(changeStatusView(!StatusView))} type="checkbox"/>
                     </div>
                     {Object.entries(ActivityButtons).map(([key, value]) => (
-                        <button onClick={() => dispatch(FillActivityThunk(key,StatusView))} key={key}>
+                        <button onClick={() => dispatch(fillActivityThunk(key,StatusView))} key={key}>
                             {`${value}`}
                         </button>
                     ))}
@@ -90,7 +87,7 @@ function Profile(props) {
                     {FlagCreateNote&& <NoteCreate ActivityButtons={ActivityButtons}/>}
                 </div>
                 <div className='graphics'>
-                    {LoadingStatus ?  <CommonCharts data={UserData}/> : <Loading/>}
+                    {  <CommonCharts data={UserData}/> }
                 </div>
             </div>
             </div>

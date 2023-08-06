@@ -1,5 +1,5 @@
 import React from 'react';
-import { createIdActivityThunk, SetId_activityAC, changeNoteAC } from '../../../redux/ProfileReducer';
+import { createIdActivityThunk, setIdActivity, changeNote } from '../../../redux/ProfileReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import NoteModal from './NoteModal';
 import Modify from './NoteModal.module.css'
@@ -9,7 +9,7 @@ function NoteCreate(props) {
     //const activityButtons = Object.entries(props.ActivityButtons);
 
     const handleSelectChange = (event) => {
-        dispatch(SetId_activityAC(event.target.value));
+        dispatch(setIdActivity(event.target.value));
     };
 
     return (
@@ -17,17 +17,17 @@ function NoteCreate(props) {
             <div className={Modify.activity_bar_title}><h2>Редактирование активности</h2></div>
             <div className={Modify.activity_bar_menu}>
                 <ul>
-                    <li><button onClick={()=>dispatch(changeNoteAC(true))}>Создать</button></li>
+                    <li><button onClick={()=>dispatch(changeNote(true))}>Создать</button></li>
                 </ul>
             </div>
             <NoteModal
                 title="Создание активности"
                 onSubmitHandler={(data) => dispatch(createIdActivityThunk(idActivity, data))}
-                onCloseHandler={() => changeNoteAC(false)}
+                onCloseHandler={() => changeNote(false)}
                 selectOptions={props.ActivityButtons}
                 buttonText="Отправить"
                 handleSelectChange={handleSelectChange}
-                resetId_activity={()=> dispatch(SetId_activityAC(null))}
+                resetId_activity={()=> dispatch(setIdActivity(null))}
             />
         </div>
 
