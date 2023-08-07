@@ -6,6 +6,7 @@ import Modify from './NoteModal.module.css'
 function NoteCreate(props) {
     const dispatch = useDispatch();
     const idActivity = useSelector((state) => state.Profile.Id_activity);
+
     //const activityButtons = Object.entries(props.ActivityButtons);
 
     const handleSelectChange = (event) => {
@@ -22,7 +23,7 @@ function NoteCreate(props) {
             </div>
             <NoteModal
                 title="Создание активности"
-                onSubmitHandler={(data) => dispatch(createIdActivityThunk(idActivity, data))}
+                onSubmitHandler={(data) => dispatch(createIdActivityThunk({idActivity: idActivity, changesNoteObj: data}))}
                 onCloseHandler={() => changeNote(false)}
                 selectOptions={props.ActivityButtons}
                 buttonText="Отправить"

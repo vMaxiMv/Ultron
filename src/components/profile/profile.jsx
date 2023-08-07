@@ -36,15 +36,16 @@ function Profile(props) {
     const LastId = useSelector(state=>state.Profile.LastId)
     const Id_entery = useSelector(state=> state.Profile.Id_entery)
     const IsEditActivityBarVisible = useSelector(state => state.Profile.IsEditActivityBarVisible)
+    const Id_activity = useSelector(state => state.Profile.Id_activity)
 
     const [FlagCreateNote, SetFlagCreateNote] = useState(false)
 
     useEffect(()=>{
 
-    dispatch(fillActivityThunk(LastId, StatusView))
-    },[Id_entery, IsEditActivityBarVisible])
+    dispatch(fillActivityThunk({id:LastId, StatusView:StatusView}))
+    },[Id_entery, IsEditActivityBarVisible, Id_activity])
     useEffect(()=>{
-        dispatch(fillActivityThunk(LastId, StatusView))
+        dispatch(fillActivityThunk({id:LastId, StatusView:StatusView}))
     },[StatusView])
 
     useEffect(()=>{
@@ -58,7 +59,6 @@ function Profile(props) {
 
         }
     },[redirectUrl, navigate])
-
 
     return (
         <div className='wrapper'>
@@ -79,7 +79,7 @@ function Profile(props) {
                         <input onClick={() => dispatch(changeStatusView(!StatusView))} type="checkbox"/>
                     </div>
                     {Object.entries(ActivityButtons).map(([key, value]) => (
-                        <button onClick={() => dispatch(fillActivityThunk(key,StatusView))} key={key}>
+                        <button onClick={() => dispatch(fillActivityThunk({ id: key, StatusView: StatusView }))} key={key}>
                             {`${value}`}
                         </button>
                     ))}

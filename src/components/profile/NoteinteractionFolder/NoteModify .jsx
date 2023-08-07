@@ -19,7 +19,7 @@ function NoteModify(props) {
             </div>
             <NoteModal
                 title="Изменение активности"
-                onSubmitHandler={(data) => dispatch(changeIdEntryThunk(props.entry_id, data))}
+                onSubmitHandler={(data) => dispatch(changeIdEntryThunk({idEntry: props.entry_id, changesNoteObj: data}))}
                 onCloseHandler={() => changeNote(false)}
                 selectOptions={null} // Здесь передаем значение null, так как в EditNote компоненте нет блока select с option
                 buttonText="Отправить"
