@@ -1,0 +1,634 @@
+---------начало файла "src\data\Data.js"---------
+// import {useMemo} from 'react';
+// import {getDatasets, getSortedDates} from "../components/charts/CommonCharts";
+//
+// export const UserData = [];
+//
+// export function updateUserData(data) {
+//     UserData.length = 0; // Clear the array
+//     UserData.push(...data); // Add new data to the array
+// }
+// export function useUserData(){
+// const userData = useMemo(()=>({
+//     labels: getSortedDates(UserData, 5),
+//     datasets: getDatasets(UserData),
+// }), [UserData])
+//     return userData;
+// }
+
+
+
+---------конец файла "src\data\Data.js"---------
+
+
+
+---------начало файла "src\redux\AuthReducer.js"---------
+// import axios from "axios";
+// import {setLoadingStatus} from "./ProfileReducer";
+//
+// const LOGIN = 'LOGIN'
+// const SET_REDIRECT_URL = 'SET_REDIRECT_URL'
+// const RESET_REDIRECT_URL = 'RESET_REDIRECT_URL'
+//
+// const initialState = {
+//     username: null,
+//     password: null,
+//     redirectUrl: null
+// }
+//
+// const AuthReducer = (state = initialState, action)=> {
+//     switch (action.type) {
+//         case LOGIN:
+//             return {...state, ...action.data}
+//         case SET_REDIRECT_URL:
+//             return {...state,redirectUrl: action.redirectUrl}
+//         case RESET_REDIRECT_URL:
+//             return {...state, redirectUrl: null}
+//         default:
+//             return state
+//     }
+// }
+//
+// export const LoginRegisterAC = (username, password) => ({type:LOGIN, data:{username,password}})
+//
+//
+// export const SetRedirectUrlAC = (redirectUrl)=>({type:SET_REDIRECT_URL, redirectUrl:redirectUrl})
+// export const resetRedirectUrlAC = ()=>({ type: RESET_REDIRECT_URL})
+//
+//
+// export const LoginRegisterThunk = (username, password,name)=>{
+//     return (dispatch)=>{
+//         axios.post(`http://localhost:5000/api/${name}`, {username, password})
+//             .then(response=> {
+//                     const redirectUrl = response.data['redirect_url']
+//                     dispatch(LoginRegisterAC(username, password))
+//                     dispatch(SetRedirectUrlAC(redirectUrl))
+//                 }
+//             )
+//     }
+// }
+// export const LogoutThunk = ()=>{
+//     return (dispatch)=>{
+//         axios.post('http://localhost:5000/api/logout')
+//             .then(response=>{
+//                 const redirectUrl = response.data['redirect_url']
+//                 dispatch(SetRedirectUrlAC(redirectUrl))
+//                 dispatch(setLoadingStatus(false))
+//                 window.location.href = redirectUrl;
+//             })
+//     }
+// }
+// export default AuthReducer
+
+
+
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import axios from "axios";
+ const baseUrl = 'http://87.239.108.223:8000/'
+
+export const LoginRegisterThunk = createAsyncThunk(
+    'auth/loginRegister',
+    async ({username, password, name},{dispatch}) =>{
+        const response = await axios.post(`${baseUrl}/api/${name}`, {username, password})
+        const redirectUrl = response.data['redirect_url'];
+        dispatch(setRedirectUrl(redirectUrl))
+        return {username, password}
+    }
+)
+export const LogoutThunk = createAsyncThunk(
+    'auth/logout',
+    async (_,{dispatch}) =>{
+        const response = await axios.post(`http://localhost:5000/api/logout`)
+        const redirectUrl = response.data['redirect_url'];
+        dispatch(setRedirectUrl(redirectUrl));
+        window.location.href = redirectUrl;
+    }
+)
+
+const initialState = {
+    username: null,
+    password: null,
+    redirectUrl: null
+}
+
+const authSlice = createSlice({
+    name: 'auth',
+    initialState,
+    reducers:{
+        setRedirectUrl:(state,action)=>{
+            state.redirectUrl= action.payload
+        },
+        resetRedirectUrlAC: (state)=>{
+            state.redirectUrl = null
+        }
+    },
+    extraReducers:(builder)=>{
+        builder
+            .addCase(LoginRegisterThunk.fulfilled, (state, action)=>{
+                const {username, password} = action.payload
+                state.username = username
+                state.password = password
+            })
+    }
+})
+export const { setRedirectUrl, resetRedirectUrlAC } = authSlice.actions;
+export default authSlice.reducer
+---------конец файла "src\redux\AuthReducer.js"---------
+
+
+
+---------начало файла "src\redux\ProfileReducer.js"---------
+// import axios from "axios";
+//
+// const FILL_ACTIVITY_ARRAY = 'FILL_ACTIVITY_ARRAY'
+// const NAME_ACTIVITY_BTN = 'NAME_ACTIVITY_BTN'
+// const SET_LOADING_STATUS = 'SET_LOADING_STATUS'
+// const CHANGE_STATUS_VIEW = 'CHANGE_STATUS_VIEW'
+// const SET_LAST_ID = 'SET_LAST_ID'
+// const EDIT_ACTIVITY_BAR = 'EDIT_ACTIVITY_BAR'
+// const DELETE_ID_ENTERY = 'DELETE_ID_ENTERY'
+// const CHANGE_NOTE = 'CHANGE_NOTE'
+// const ID_ACTIVITY = 'ID_ACTIVITY'
+//
+//
+// let initialState = {
+//     UserData: [],
+//     ActivityButtons: {},
+//     LoadingStatus: false,
+//     StatusView: false,
+//     LastId: null,
+//     IsEditActivityBarVisible: false,
+//     Id_entery: null,
+//     ChangeNoteBool: false,
+//     Id_activity: null
+// }
+// const ProfileReducer = (state = initialState, action) =>{
+//     switch (action.type){
+//         case FILL_ACTIVITY_ARRAY:
+//             return{...state, UserData: [...action.usersData]} //Если что тут необязательно одинкаковые названия
+//         case NAME_ACTIVITY_BTN:{
+//             return {...state, ActivityButtons: {...action.activityButtons} }
+//         }
+//         case SET_LOADING_STATUS:{
+//             return {...state, LoadingStatus: action.loadingStatus}
+//         }
+//         case CHANGE_STATUS_VIEW:{
+//             return {...state, StatusView: action.statusView}
+//         }
+//         case SET_LAST_ID:{
+//             return {...state,LastId: action.lastId }
+//         }
+//         case EDIT_ACTIVITY_BAR:{
+//             return {...state, IsEditActivityBarVisible: action.isEditActivityBarVisible}
+//         }
+//         case DELETE_ID_ENTERY:{
+//             return {...state, Id_entery: action.id_entery}
+//         }
+//         case CHANGE_NOTE:{
+//             return {...state, ChangeNoteBool: action.changeNoteBool}
+//         }
+//         case ID_ACTIVITY:{
+//             return {...state, Id_activity:action.id_activity}
+//         }
+//
+//         default:
+//             return state
+//     }
+// }
+//
+// export const FillActivityAC = (usersData)=>({type: FILL_ACTIVITY_ARRAY, usersData: usersData})
+// export const ActivityButtonsAC = (activityButtons)=>({type:NAME_ACTIVITY_BTN, activityButtons:activityButtons})
+// export const SetLoadingStatusAC = (loadingStatus)=>({type:SET_LOADING_STATUS, loadingStatus:loadingStatus})
+ //export const ChangeStatusView = (statusView) =>({type: CHANGE_STATUS_VIEW, statusView:statusView})
+// export const SetLastId = (lastId)=>({type:SET_LAST_ID, lastId:lastId})
+// // export const ClearLastId = ()=>({type: CLEAR_LAST_ID})
+// export const EditActivityBarAC = (isEditActivityBarVisible)=>({type:EDIT_ACTIVITY_BAR, isEditActivityBarVisible:isEditActivityBarVisible})
+//
+// export const id_enteryAC = (id_entery)=>({type: DELETE_ID_ENTERY, id_entery:id_entery})
+//
+// export const changeNoteAC = (changeNoteBool)=>({type:CHANGE_NOTE, changeNoteBool:changeNoteBool})
+//
+// export const SetId_activityAC = (id_activity)=>({type:ID_ACTIVITY, id_activity:id_activity})
+
+// export const FillActivityThunk = (id, StatusView)=>{
+//     return (dispatch) => {
+//         dispatch(SetLastId(id))
+//         dispatch(SetLoadingStatusAC(false))
+//         // axios.post('http://localhost:5000/data_for_chart', { id,StatusView })
+//         //     .then(data=>{
+//         dispatch(FillActivityAC([{'id_user': 56, 'id_entery': 1, 'name': 'Test User', 'amount': 82, 'date_added': '2023-07-20','description':'Первый подход: 20 повторений, второй подход: 10 повторений, третией подход: 5 повторений'},
+//             {'id_user': 56, 'id_entery': 2, 'name': 'Test User', 'amount': 65, 'date_added': '2023-07-19' ,'description':'Второй день'},
+//             {'id_user': 56, 'id_entery': 3, 'name': 'Test User', 'amount': 59, 'date_added': '2023-07-18' ,'description':'Третий день'},
+//             {'id_user': 57, 'id_entery': 4, 'name': 'Test User 2', 'amount': 57, 'date_added': '2023-07-17' ,'description':'какое-то описание'},
+//             {'id_user': 56, 'id_entery': 5, 'name': 'Test User', 'amount': 52, 'date_added': '2023-07-16' ,'description':'какое-то описание'},
+//             {'id_user': 56, 'id_entery': 6, 'name': 'Test User', 'amount': 64, 'date_added': '2023-07-15' ,'description':'какое-то описание'},
+//             {'id_user': 56, 'id_entery': 7, 'name': 'Test User', 'amount': 60, 'date_added': '2023-07-14' ,'description':'какое-то описание'},
+//             {'id_user': 56, 'id_entery': 9, 'name': 'Test User', 'amount': 87, 'date_added': '2023-07-12' ,'description':'Пупа'},
+//             {'id_user': 57, 'id_entery': 9, 'name': 'Test User 2', 'amount': 57, 'date_added': '2023-07-12' ,'description':'Лупа'},
+//             {'id_user': 56, 'id_entery': 10, 'name': 'Test User', 'amount': 88, 'date_added': '2023-07-11' ,'description':'какое-то описание'},
+//             {'id_user': 56, 'id_entery': 11, 'name': 'Test User', 'amount': 67, 'date_added': '2023-07-10' ,'description':'какое-то описание'},
+//             {'id_user': 56, 'id_entery': 12, 'name': 'Test User', 'amount': 71, 'date_added': '2023-07-09' ,'description':'Первый подход: 20 повторений, второй подход: 10 повторений, третией подход: 5 повторений'},
+//         ]))
+//         //  })
+//         dispatch(SetLoadingStatusAC(true))
+//     }
+// }
+// export const ActivityButtonsThunk = ()=> {
+//     return (dispatch) => {
+//         // axios.get('http://localhost:5000/data_for_chart')
+//         //     .then(data=>{
+//         dispatch(ActivityButtonsAC({73: 'подтягивания', 74: 'отжимания от пола', 75: 'брусья', 76: 'жим лежа'}))
+//         //  })
+//     }
+// }
+//
+// export const DeletIdEnteryThunk = (Id_entery)=>{
+//     return (dispatch) =>{
+//          axios.delete(`http://localhost:5000/delete_entry/${Id_entery}`)
+//             .then(data=>{
+//         dispatch(id_enteryAC(data.Id_entery))
+//         dispatch(EditActivityBarAC(false))
+//          })
+//     }
+// }
+// export const changeIdEnteryThunk = (Id_entery, ChangesNoteObj)=>{
+//     return (dispatch) =>{
+//         axios.post(`http://localhost:5000/edit_entry/${Id_entery}`,ChangesNoteObj)
+//             .then(data=>{
+//                 dispatch(id_enteryAC(data.Id_entery))
+//                 dispatch(EditActivityBarAC(false))
+//             })
+//     }
+// }
+
+// export const createIdActivityThunk = (Id_activity, ChangesNoteObj)=>{
+//     return (dispatch) =>{
+//         axios.post(`http://localhost:5000/create_entry/${Id_activity}`,ChangesNoteObj)
+//             .then(data=>{
+//                 dispatch(SetId_activityAC(data.Id_activity))
+//                 dispatch(EditActivityBarAC(false))
+//             })
+//     }
+// }
+
+//export default ProfileReducer
+
+
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import axios from "axios";
+
+export const fillActivityThunk = createAsyncThunk(
+    'profile/fillActivity',
+    async ({ id, StatusView }, { dispatch }) => {
+        dispatch(setLastId(id));
+        dispatch(setLoadingStatus(false));
+       const response = await axios.post('http://localhost:5000/data_for_chart', { id, StatusView });
+        return response.data
+
+    }
+ );
+// export const fillActivityThunk = createAsyncThunk(
+//     'profile/fillActivity',
+//     async (_, { dispatch }) => {
+//        // dispatch(setLastId(id));
+//        // dispatch(setLoadingStatus(false));
+//
+//        // const response = await axios.post('http://localhost:5000/data_for_chart', { id, statusView });
+// const response = [{'id_user': 56, 'id_entery': 1, 'name': 'Test User', 'amount': 82, 'date_added': '2023-07-20','description':'Первый подход: 20 повторений, второй подход: 10 повторений, третией подход: 5 повторений'},
+//     {'id_user': 56, 'id_entery': 2, 'name': 'Test User', 'amount': 65, 'date_added': '2023-07-19' ,'description':'Второй день'},
+//     {'id_user': 56, 'id_entery': 3, 'name': 'Test User', 'amount': 59, 'date_added': '2023-07-18' ,'description':'Третий день'},
+//     {'id_user': 57, 'id_entery': 4, 'name': 'Test User 2', 'amount': 57, 'date_added': '2023-07-17' ,'description':'какое-то описание'},
+//     {'id_user': 56, 'id_entery': 5, 'name': 'Test User', 'amount': 52, 'date_added': '2023-07-16' ,'description':'какое-то описание'},
+//     {'id_user': 56, 'id_entery': 6, 'name': 'Test User', 'amount': 64, 'date_added': '2023-07-15' ,'description':'какое-то описание'},
+//     {'id_user': 56, 'id_entery': 7, 'name': 'Test User', 'amount': 60, 'date_added': '2023-07-14' ,'description':'какое-то описание'},
+//     {'id_user': 56, 'id_entery': 9, 'name': 'Test User', 'amount': 87, 'date_added': '2023-07-12' ,'description':'Пупа'},
+//     {'id_user': 57, 'id_entery': 9, 'name': 'Test User 2', 'amount': 57, 'date_added': '2023-07-12' ,'description':'Лупа'},
+//     {'id_user': 56, 'id_entery': 10, 'name': 'Test User', 'amount': 88, 'date_added': '2023-07-11' ,'description':'какое-то описание'},
+//     {'id_user': 56, 'id_entery': 11, 'name': 'Test User', 'amount': 67, 'date_added': '2023-07-10' ,'description':'какое-то описание'},
+//     {'id_user': 56, 'id_entery': 12, 'name': 'Test User', 'amount': 71, 'date_added': '2023-07-09' ,'description':'Первый подход: 20 повторений, второй подход: 10 повторений, третией подход: 5 повторений'},
+// ]
+//         return response
+//
+//     }
+// );
+export const activityButtonsThunk = createAsyncThunk(
+    'profile/activityButtons',
+    async (_, { dispatch }) => {
+        const response = await axios.get('http://localhost:5000/data_for_chart');
+        return response.data;
+    }
+);
+// export const activityButtonsThunk = createAsyncThunk(
+//     'profile/activityButtons',
+//     async (_, { dispatch }) => {
+//        // const response = await axios.get('http://localhost:5000/data_for_chart');
+//         return {73: 'подтягивания', 74: 'отжимания от пола', 75: 'брусья', 76: 'жим лежа'};
+//     }
+// );
+export const deleteIdEntryThunk = createAsyncThunk(
+    'profile/deleteIdEntry',
+    async (idEntry) => {
+        const response = await axios.delete(`http://localhost:5000/delete_entry/${idEntry}`);
+        return response.data.Id_entery;
+    }
+);
+export const changeIdEntryThunk = createAsyncThunk(
+    'profile/changeIdEntry',
+    async ( {idEntry, changesNoteObj} ) => {
+        const response = await axios.post(`http://localhost:5000/edit_entry/${idEntry}`, changesNoteObj);
+        return response.data.Id_entery;
+    }
+);
+export const createIdActivityThunk = createAsyncThunk(
+    'profile/createIdActivity',
+    async ({idActivity, changesNoteObj} ) => {
+        const response = await axios.post(`http://localhost:5000/create_entry/${idActivity}`, changesNoteObj);
+        return response.data.Id_activity;
+    }
+);
+
+
+const initialState = {
+    UserData: [],
+    ActivityButtons: {},
+    LoadingStatus: false,
+    StatusView: false,
+    LastId: null,
+    IsEditActivityBarVisible: false,
+    Id_entery: null,
+    ChangeNoteBool: false,
+    Id_activity: null
+}
+
+
+const profileSlice = createSlice({
+    name: 'profile',
+    initialState,
+    reducers:{
+        fillActivityArray: (state, action) => {
+            state.UserData = action.payload;
+        },
+        nameActivityBtn: (state, action) => {
+            state.ActivityButtons = action.payload;
+        },
+        setLoadingStatus: (state, action) => {
+            state.LoadingStatus = action.payload;
+        },
+        changeStatusView: (state, action) => {
+            state.StatusView = action.payload;
+        },
+        setLastId: (state, action) => {
+            state.LastId = action.payload;
+        },
+        editActivityBar: (state, action) => {
+            state.IsEditActivityBarVisible = action.payload;
+        },
+        modifyIdEntery: (state, action) => {
+            state.Id_entery = action.payload;
+            state.IsEditActivityBarVisible = false;
+        },
+        changeNote: (state, action) => {
+            state.ChangeNoteBool = action.payload;
+        },
+        setIdActivity: (state, action) => {
+            state.Id_activity = action.payload;
+            state.IsEditActivityBarVisible = false;
+        },
+    },
+    extraReducers:(builder)=>{
+        builder
+            .addCase(fillActivityThunk.fulfilled, (state, action)=>{
+                state.UserData = action.payload
+                //state.LoadingStatus = true
+            })
+            .addCase(activityButtonsThunk.fulfilled, (state, action) => {
+                state.ActivityButtons = action.payload;
+            })
+            .addCase(deleteIdEntryThunk.fulfilled, (state, action) => {
+                state.Id_entery = action.payload;
+                state.IsEditActivityBarVisible = false;
+            })
+            .addCase(changeIdEntryThunk.fulfilled, (state, action) => {
+                state.Id_entery = action.payload;
+                state.IsEditActivityBarVisible = false;
+            })
+            .addCase(createIdActivityThunk.fulfilled, (state, action) => {
+                state.Id_activity = action.payload;
+                state.IsEditActivityBarVisible = false;
+            });
+    }
+})
+
+export const {
+    fillActivityArray,
+    nameActivityBtn,
+    setLoadingStatus,
+    changeStatusView,
+    setLastId,
+    editActivityBar,
+    modifyIdEntery,
+    changeNote,
+    setIdActivity,
+} = profileSlice.actions
+
+export default profileSlice.reducer
+---------конец файла "src\redux\ProfileReducer.js"---------
+
+
+
+---------начало файла "src\redux\redux-store.js"---------
+import {applyMiddleware, combineReducers, createStore} from "redux";
+import ProfileReducer from "./ProfileReducer";
+import thunkMiddleware from 'redux-thunk'
+import AuthReducer from "./AuthReducer";
+import {configureStore} from "@reduxjs/toolkit";
+import profileReducer from "./ProfileReducer";
+
+// let rootReducer = combineReducers({
+//     Profile: ProfileReducer,
+//     Auth: AuthReducer
+// })
+
+// let store = createStore(rootReducer, applyMiddleware(thunkMiddleware))
+
+const store = configureStore({
+    reducer:{
+        Profile: profileReducer,
+        Auth: AuthReducer
+    }
+})
+
+
+
+export default store;
+---------конец файла "src\redux\redux-store.js"---------
+
+
+
+---------начало файла "src\App.css"---------
+*{
+  font-family: 'Lora', serif;
+}
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+.wrapper{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #a2afae, #dfc28f);
+
+}
+.container{
+  position: relative;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 95vw;
+  height: 100vh;
+  border-radius: 100px;
+  background: linear-gradient(to bottom, #252d3d, #499eb4);
+}
+
+---------конец файла "src\App.css"---------
+
+
+
+---------начало файла "src\App.js"---------
+import "./App.css";
+import {BrowserRouter, Routes, Route} from "react-router-dom";
+import Form_login from "./components/form_login/form_login";
+import Nav from "./components/nav/nav";
+import Profile from "./components/profile/profile";
+import FormRegistration from "./components/form_registration/form_registration";
+import Test from "./components/test/test";
+
+
+function App() {
+  return(
+  <BrowserRouter>
+<div className="wrapper">
+  <div className="container">
+    <Routes>
+      <Route path={""} element={<Nav/>}/>
+      <Route path="/login" element={<Form_login />} />
+      <Route path="/registration" element={<FormRegistration />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/test" element={<Test />} />
+      {/*<Route path="/barChart" element={<CommonCharts />} />*/}
+    </Routes>
+  </div>
+</div>
+  </BrowserRouter>
+)
+}
+
+export default App;
+
+---------конец файла "src\App.js"---------
+
+
+
+---------начало файла "src\App.test.js"---------
+import { render, screen } from '@testing-library/react';
+import App from './App';
+
+test('renders learn react link', () => {
+  render(<App />);
+  const linkElement = screen.getByText(/learn react/i);
+  expect(linkElement).toBeInTheDocument();
+});
+
+---------конец файла "src\App.test.js"---------
+
+
+
+---------начало файла "src\index.css"---------
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+---------конец файла "src\index.css"---------
+
+
+
+---------начало файла "src\index.js"---------
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+import {Provider} from "react-redux";
+import store from "./redux/redux-store";
+import Modal from "react-modal";
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+Modal.setAppElement('#root');
+
+root.render(
+  <React.StrictMode>
+      <Provider store={store}>
+    <App />
+      </Provider>
+  </React.StrictMode>
+);
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
+
+---------конец файла "src\index.js"---------
+
+
+
+---------начало файла "src\logo.svg"---------
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 841.9 595.3"><g fill="#61DAFB"><path d="M666.3 296.5c0-32.5-40.7-63.3-103.1-82.4 14.4-63.6 8-114.2-20.2-130.4-6.5-3.8-14.1-5.6-22.4-5.6v22.3c4.6 0 8.3.9 11.4 2.6 13.6 7.8 19.5 37.5 14.9 75.7-1.1 9.4-2.9 19.3-5.1 29.4-19.6-4.8-41-8.5-63.5-10.9-13.5-18.5-27.5-35.3-41.6-50 32.6-30.3 63.2-46.9 84-46.9V78c-27.5 0-63.5 19.6-99.9 53.6-36.4-33.8-72.4-53.2-99.9-53.2v22.3c20.7 0 51.4 16.5 84 46.6-14 14.7-28 31.4-41.3 49.9-22.6 2.4-44 6.1-63.6 11-2.3-10-4-19.7-5.2-29-4.7-38.2 1.1-67.9 14.6-75.8 3-1.8 6.9-2.6 11.5-2.6V78.5c-8.4 0-16 1.8-22.6 5.6-28.1 16.2-34.4 66.7-19.9 130.1-62.2 19.2-102.7 49.9-102.7 82.3 0 32.5 40.7 63.3 103.1 82.4-14.4 63.6-8 114.2 20.2 130.4 6.5 3.8 14.1 5.6 22.5 5.6 27.5 0 63.5-19.6 99.9-53.6 36.4 33.8 72.4 53.2 99.9 53.2 8.4 0 16-1.8 22.6-5.6 28.1-16.2 34.4-66.7 19.9-130.1 62-19.1 102.5-49.9 102.5-82.3zm-130.2-66.7c-3.7 12.9-8.3 26.2-13.5 39.5-4.1-8-8.4-16-13.1-24-4.6-8-9.5-15.8-14.4-23.4 14.2 2.1 27.9 4.7 41 7.9zm-45.8 106.5c-7.8 13.5-15.8 26.3-24.1 38.2-14.9 1.3-30 2-45.2 2-15.1 0-30.2-.7-45-1.9-8.3-11.9-16.4-24.6-24.2-38-7.6-13.1-14.5-26.4-20.8-39.8 6.2-13.4 13.2-26.8 20.7-39.9 7.8-13.5 15.8-26.3 24.1-38.2 14.9-1.3 30-2 45.2-2 15.1 0 30.2.7 45 1.9 8.3 11.9 16.4 24.6 24.2 38 7.6 13.1 14.5 26.4 20.8 39.8-6.3 13.4-13.2 26.8-20.7 39.9zm32.3-13c5.4 13.4 10 26.8 13.8 39.8-13.1 3.2-26.9 5.9-41.2 8 4.9-7.7 9.8-15.6 14.4-23.7 4.6-8 8.9-16.1 13-24.1zM421.2 430c-9.3-9.6-18.6-20.3-27.8-32 9 .4 18.2.7 27.5.7 9.4 0 18.7-.2 27.8-.7-9 11.7-18.3 22.4-27.5 32zm-74.4-58.9c-14.2-2.1-27.9-4.7-41-7.9 3.7-12.9 8.3-26.2 13.5-39.5 4.1 8 8.4 16 13.1 24 4.7 8 9.5 15.8 14.4 23.4zM420.7 163c9.3 9.6 18.6 20.3 27.8 32-9-.4-18.2-.7-27.5-.7-9.4 0-18.7.2-27.8.7 9-11.7 18.3-22.4 27.5-32zm-74 58.9c-4.9 7.7-9.8 15.6-14.4 23.7-4.6 8-8.9 16-13 24-5.4-13.4-10-26.8-13.8-39.8 13.1-3.1 26.9-5.8 41.2-7.9zm-90.5 125.2c-35.4-15.1-58.3-34.9-58.3-50.6 0-15.7 22.9-35.6 58.3-50.6 8.6-3.7 18-7 27.7-10.1 5.7 19.6 13.2 40 22.5 60.9-9.2 20.8-16.6 41.1-22.2 60.6-9.9-3.1-19.3-6.5-28-10.2zM310 490c-13.6-7.8-19.5-37.5-14.9-75.7 1.1-9.4 2.9-19.3 5.1-29.4 19.6 4.8 41 8.5 63.5 10.9 13.5 18.5 27.5 35.3 41.6 50-32.6 30.3-63.2 46.9-84 46.9-4.5-.1-8.3-1-11.3-2.7zm237.2-76.2c4.7 38.2-1.1 67.9-14.6 75.8-3 1.8-6.9 2.6-11.5 2.6-20.7 0-51.4-16.5-84-46.6 14-14.7 28-31.4 41.3-49.9 22.6-2.4 44-6.1 63.6-11 2.3 10.1 4.1 19.8 5.2 29.1zm38.5-66.7c-8.6 3.7-18 7-27.7 10.1-5.7-19.6-13.2-40-22.5-60.9 9.2-20.8 16.6-41.1 22.2-60.6 9.9 3.1 19.3 6.5 28.1 10.2 35.4 15.1 58.3 34.9 58.3 50.6-.1 15.7-23 35.6-58.4 50.6zM320.8 78.4z"/><circle cx="420.9" cy="296.5" r="45.7"/><path d="M520.5 78.1z"/></g></svg>
+---------конец файла "src\logo.svg"---------
+
+
+
+---------начало файла "src\reportWebVitals.js"---------
+const reportWebVitals = onPerfEntry => {
+  if (onPerfEntry && onPerfEntry instanceof Function) {
+    import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+      getCLS(onPerfEntry);
+      getFID(onPerfEntry);
+      getFCP(onPerfEntry);
+      getLCP(onPerfEntry);
+      getTTFB(onPerfEntry);
+    });
+  }
+};
+
+export default reportWebVitals;
+
+---------конец файла "src\reportWebVitals.js"---------
+
+
+
+---------начало файла "src\setupTests.js"---------
+// jest-dom adds custom jest matchers for asserting on DOM nodes.
+// allows you to do things like:
+// expect(element).toHaveTextContent(/react/i)
+// learn more: https://github.com/testing-library/jest-dom
+import '@testing-library/jest-dom';
+
+---------конец файла "src\setupTests.js"---------
+
+
+

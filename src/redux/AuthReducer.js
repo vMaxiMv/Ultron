@@ -59,11 +59,12 @@
 
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
+ const baseUrl = 'http://87.239.108.223:8000/'
 
 export const LoginRegisterThunk = createAsyncThunk(
     'auth/loginRegister',
     async ({username, password, name},{dispatch}) =>{
-        const response = await axios.post(`http://localhost:5000/api/${name}`, {username, password})
+        const response = await axios.post(`${baseUrl}/api/${name}`, {username, password})
         const redirectUrl = response.data['redirect_url'];
         dispatch(setRedirectUrl(redirectUrl))
         return {username, password}

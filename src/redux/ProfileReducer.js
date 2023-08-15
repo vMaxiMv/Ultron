@@ -137,54 +137,52 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const fillActivityThunk = createAsyncThunk(
-    'profile/fillActivity',
-    async ({ id, StatusView }, { dispatch }) => {
-        dispatch(setLastId(id));
-        dispatch(setLoadingStatus(false));
-       const response = await axios.post('http://localhost:5000/data_for_chart', { id, StatusView });
-        return response.data
-
-    }
- );
 // export const fillActivityThunk = createAsyncThunk(
 //     'profile/fillActivity',
-//     async (_, { dispatch }) => {
-//        // dispatch(setLastId(id));
-//        // dispatch(setLoadingStatus(false));
-//
-//        // const response = await axios.post('http://localhost:5000/data_for_chart', { id, statusView });
-// const response = [{'id_user': 56, 'id_entery': 1, 'name': 'Test User', 'amount': 82, 'date_added': '2023-07-20','description':'Первый подход: 20 повторений, второй подход: 10 повторений, третией подход: 5 повторений'},
-//     {'id_user': 56, 'id_entery': 2, 'name': 'Test User', 'amount': 65, 'date_added': '2023-07-19' ,'description':'Второй день'},
-//     {'id_user': 56, 'id_entery': 3, 'name': 'Test User', 'amount': 59, 'date_added': '2023-07-18' ,'description':'Третий день'},
-//     {'id_user': 57, 'id_entery': 4, 'name': 'Test User 2', 'amount': 57, 'date_added': '2023-07-17' ,'description':'какое-то описание'},
-//     {'id_user': 56, 'id_entery': 5, 'name': 'Test User', 'amount': 52, 'date_added': '2023-07-16' ,'description':'какое-то описание'},
-//     {'id_user': 56, 'id_entery': 6, 'name': 'Test User', 'amount': 64, 'date_added': '2023-07-15' ,'description':'какое-то описание'},
-//     {'id_user': 56, 'id_entery': 7, 'name': 'Test User', 'amount': 60, 'date_added': '2023-07-14' ,'description':'какое-то описание'},
-//     {'id_user': 56, 'id_entery': 9, 'name': 'Test User', 'amount': 87, 'date_added': '2023-07-12' ,'description':'Пупа'},
-//     {'id_user': 57, 'id_entery': 9, 'name': 'Test User 2', 'amount': 57, 'date_added': '2023-07-12' ,'description':'Лупа'},
-//     {'id_user': 56, 'id_entery': 10, 'name': 'Test User', 'amount': 88, 'date_added': '2023-07-11' ,'description':'какое-то описание'},
-//     {'id_user': 56, 'id_entery': 11, 'name': 'Test User', 'amount': 67, 'date_added': '2023-07-10' ,'description':'какое-то описание'},
-//     {'id_user': 56, 'id_entery': 12, 'name': 'Test User', 'amount': 71, 'date_added': '2023-07-09' ,'description':'Первый подход: 20 повторений, второй подход: 10 повторений, третией подход: 5 повторений'},
-// ]
-//         return response
+//     async ({ id, StatusView }, { dispatch }) => {
+//         dispatch(setLastId(id));
+//        const response = await axios.post('http://localhost:5000/data_for_chart', { id, StatusView });
+//         return response.data
 //
 //     }
-// );
-export const activityButtonsThunk = createAsyncThunk(
-    'profile/activityButtons',
+//  );
+export const fillActivityThunk = createAsyncThunk(
+    'profile/fillActivity',
     async (_, { dispatch }) => {
-        const response = await axios.get('http://localhost:5000/data_for_chart');
-        return response.data;
+       // dispatch(setLastId(id));
+
+       // const response = await axios.post('http://localhost:5000/data_for_chart', { id, statusView });
+const response = [{'id_user': 56, 'id_entery': 1, 'name': 'Test User', 'amount': 82, 'date_added': '2023-07-20','description':'Первый подход: 20 повторений, второй подход: 10 повторений, третией подход: 5 повторений'},
+    {'id_user': 56, 'id_entery': 2, 'name': 'Test User', 'amount': 65, 'date_added': '2023-07-19' ,'description':'Второй день'},
+    {'id_user': 56, 'id_entery': 3, 'name': 'Test User', 'amount': 59, 'date_added': '2023-07-18' ,'description':'Третий день'},
+    {'id_user': 57, 'id_entery': 4, 'name': 'Test User 2', 'amount': 57, 'date_added': '2023-07-17' ,'description':'какое-то описание'},
+    {'id_user': 56, 'id_entery': 5, 'name': 'Test User', 'amount': 52, 'date_added': '2023-07-16' ,'description':'какое-то описание'},
+    {'id_user': 56, 'id_entery': 6, 'name': 'Test User', 'amount': 64, 'date_added': '2023-07-15' ,'description':'какое-то описание'},
+    {'id_user': 56, 'id_entery': 7, 'name': 'Test User', 'amount': 60, 'date_added': '2023-07-14' ,'description':'какое-то описание'},
+    {'id_user': 56, 'id_entery': 9, 'name': 'Test User', 'amount': 87, 'date_added': '2023-07-12' ,'description':'Пупа'},
+    {'id_user': 57, 'id_entery': 9, 'name': 'Test User 2', 'amount': 57, 'date_added': '2023-07-12' ,'description':'Лупа'},
+    {'id_user': 56, 'id_entery': 10, 'name': 'Test User', 'amount': 88, 'date_added': '2023-07-11' ,'description':'какое-то описание'},
+    {'id_user': 56, 'id_entery': 11, 'name': 'Test User', 'amount': 67, 'date_added': '2023-07-10' ,'description':'какое-то описание'},
+    {'id_user': 56, 'id_entery': 12, 'name': 'Test User', 'amount': 71, 'date_added': '2023-07-09' ,'description':'Первый подход: 20 повторений, второй подход: 10 повторений, третией подход: 5 повторений'},
+]
+        return response
+
     }
 );
 // export const activityButtonsThunk = createAsyncThunk(
 //     'profile/activityButtons',
 //     async (_, { dispatch }) => {
-//        // const response = await axios.get('http://localhost:5000/data_for_chart');
-//         return {73: 'подтягивания', 74: 'отжимания от пола', 75: 'брусья', 76: 'жим лежа'};
+//         const response = await axios.get('http://localhost:5000/data_for_chart');
+//         return response.data;
 //     }
 // );
+export const activityButtonsThunk = createAsyncThunk(
+    'profile/activityButtons',
+    async (_, { dispatch }) => {
+       // const response = await axios.get('http://localhost:5000/data_for_chart');
+        return {73: 'подтягивания', 74: 'отжимания от пола', 75: 'брусья', 76: 'жим лежа'};
+    }
+);
 export const deleteIdEntryThunk = createAsyncThunk(
     'profile/deleteIdEntry',
     async (idEntry) => {
@@ -206,18 +204,24 @@ export const createIdActivityThunk = createAsyncThunk(
         return response.data.Id_activity;
     }
 );
-
+export const createActivityThunk = createAsyncThunk(
+    'profile/createActivity',
+    async ({addActivityObj})=>{
+        const response = await axios.post(`http://localhost:5000/create_activity`, addActivityObj);
+        return response.data
+    }
+)
 
 const initialState = {
     UserData: [],
     ActivityButtons: {},
-    LoadingStatus: false,
     StatusView: false,
     LastId: null,
     IsEditActivityBarVisible: false,
     Id_entery: null,
     ChangeNoteBool: false,
-    Id_activity: null
+    Id_activity: null,
+    ActivityModalVisible:false
 }
 
 
@@ -230,9 +234,6 @@ const profileSlice = createSlice({
         },
         nameActivityBtn: (state, action) => {
             state.ActivityButtons = action.payload;
-        },
-        setLoadingStatus: (state, action) => {
-            state.LoadingStatus = action.payload;
         },
         changeStatusView: (state, action) => {
             state.StatusView = action.payload;
@@ -254,12 +255,14 @@ const profileSlice = createSlice({
             state.Id_activity = action.payload;
             state.IsEditActivityBarVisible = false;
         },
+        ActivityModalVisibleAC:(state, action)=>{
+            state.ActivityModalVisible = action.payload
+        }
     },
     extraReducers:(builder)=>{
         builder
             .addCase(fillActivityThunk.fulfilled, (state, action)=>{
                 state.UserData = action.payload
-                //state.LoadingStatus = true
             })
             .addCase(activityButtonsThunk.fulfilled, (state, action) => {
                 state.ActivityButtons = action.payload;
@@ -275,6 +278,12 @@ const profileSlice = createSlice({
             .addCase(createIdActivityThunk.fulfilled, (state, action) => {
                 state.Id_activity = action.payload;
                 state.IsEditActivityBarVisible = false;
+            })
+            .addCase(createActivityThunk.fulfilled, (state, action) => {
+                state.ActivityModalVisible = false;
+            })
+            .addCase(createActivityThunk.rejected, (state, action) => {
+                state.ActivityModalVisible = false;
             });
     }
 })
@@ -282,13 +291,13 @@ const profileSlice = createSlice({
 export const {
     fillActivityArray,
     nameActivityBtn,
-    setLoadingStatus,
     changeStatusView,
     setLastId,
     editActivityBar,
     modifyIdEntery,
     changeNote,
     setIdActivity,
+    ActivityModalVisibleAC,
 } = profileSlice.actions
 
 export default profileSlice.reducer

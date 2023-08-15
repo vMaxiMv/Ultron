@@ -1,12 +1,11 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import  './profile.css';
-import CommonCharts, {getDatasets, getSortedDates} from '../charts/CommonCharts';
-import Loading from "../loading/loading";
+import CommonCharts from '../charts/CommonCharts';
 import {useDispatch, useSelector} from "react-redux";
 import {
-    activityButtonsThunk,
+    activityButtonsThunk, ActivityModalVisibleAC,
     changeStatusView,
     fillActivityThunk
 } from "../../redux/ProfileReducer";
@@ -14,29 +13,25 @@ import {LogoutThunk, resetRedirectUrlAC} from "../../redux/AuthReducer";
 import ToolBar from "./ProfileSideBar/ToolBar";
 import MobileMenu from "./ProfileSideBar/ToolBarMobile";
 import NoteCreate from "./NoteinteractionFolder/NoteCreate";
+import AddActivityModal from "./Modals/AddActivityModal";
 
 axios.defaults.withCredentials = true;
- export function useUserData(){
-    const UserData = useSelector(state=>state.Profile.UserData)
-    const userData = useMemo(()=>({
-        labels: getSortedDates(UserData, 5),
-        datasets: getDatasets(UserData),
-    }), [UserData])
-    return userData;
-}
+
 
 function Profile(props) {
     const UserData = useSelector(state=>state.Profile.UserData)
     const dispatch = useDispatch()
     const navigate = useNavigate();
-    const ActivityButtons = useSelector(state=>state.Profile.ActivityButtons)
-    const LoadingStatus = useSelector(state=>state.Profile.LoadingStatus)
-    const redirectUrl = useSelector(state=>state.Auth.redirectUrl)
-    const StatusView = useSelector(state=>state.Profile.StatusView)
-    const LastId = useSelector(state=>state.Profile.LastId)
-    const Id_entery = useSelector(state=> state.Profile.Id_entery)
-    const IsEditActivityBarVisible = useSelector(state => state.Profile.IsEditActivityBarVisible)
-    const Id_activity = useSelector(state => state.Profile.Id_activity)
+    const {
+        ActivityButtons,
+        redirectUrl,
+        StatusView,
+        LastId,
+        Id_entery,
+        IsEditActivityBarVisible,
+        Id_activity,
+        ActivityModalVisible
+    } = useSelector(state => state.Profile);
 
     const [FlagCreateNote, SetFlagCreateNote] = useState(false)
 
@@ -59,6 +54,9 @@ function Profile(props) {
 
         }
     },[redirectUrl, navigate])
+    const ModalActivityHanldeClick = ()=>{
+        dispatch(ActivityModalVisibleAC(true))
+    }
 
     return (
         <div className='wrapper'>
@@ -85,10 +83,12 @@ function Profile(props) {
                     ))}
                     <button onClick={()=>{SetFlagCreateNote(!FlagCreateNote)}}>Добавить запись</button>
                     {FlagCreateNote&& <NoteCreate ActivityButtons={ActivityButtons}/>}
+                    <button onClick={ModalActivityHanldeClick}>Добавить активность</button>
                 </div>
                 <div className='graphics'>
                     {  <CommonCharts data={UserData}/> }
                 </div>
+                {ActivityModalVisible &&  <AddActivityModal/>}
             </div>
             </div>
         </div>
