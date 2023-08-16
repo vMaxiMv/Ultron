@@ -37,6 +37,7 @@ h3{
 .activity_bar_title {
     text-align: center;
     margin-bottom: 15px;
+    margin-top: 15px;
 }
 
 .activity_bar_title h2 {
@@ -99,6 +100,16 @@ h3{
     padding: 30px;
     color: white;
 
+}
+.close_modify_img{
+    width: 30px;
+    height: 30px;
+}
+.CrossBlock{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
 }
 
 /* Add any other custom styles you want to apply to the modal here */

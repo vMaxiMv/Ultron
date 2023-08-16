@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import "./ToolBarMobile.css";
+import ToolBarCommonComponent from "./ToolBarCommonComponent";
 
 
 const MobileMenu = () => {
@@ -23,14 +24,7 @@ const MobileMenu = () => {
                         <div className="cross_angle line1" />
                         <div className="cross_angle line2" />
                     </div>
-                    <div className='menu-items'>
-                        <h2>Инструменты</h2>
-                        <ul>
-                            <li><button>Диаграмма</button></li>
-                            <li><button>Таблица</button></li>
-
-                        </ul>
-                    </div>
+                   <ToolBarCommonComponent/>
                 </div>
             )}
         </div>

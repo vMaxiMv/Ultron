@@ -22,10 +22,6 @@ function NoteModal(props) {
         closeModal();
     };
 
-    // const styles = {
-    //   overlay: Modify.overlay,
-    //     content:Modify.content
-    // }
     return (
         <div>
             <Modal

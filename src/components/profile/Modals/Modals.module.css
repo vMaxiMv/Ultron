@@ -8,6 +8,7 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
+    text-align: center;
 }
 
 .modalContainer {
@@ -24,3 +25,17 @@
 .buttonChangeStyles{
     width: 80%;
 }
+.centeredInputs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+/* Остальные стили */

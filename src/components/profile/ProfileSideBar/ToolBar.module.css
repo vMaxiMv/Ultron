@@ -1,0 +1,76 @@
+.menu{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 25vw; /* Set the desired width for the menu */
+    height: 100vh;
+    position: absolute; /* Add position absolute to .menu */
+    left: -27vw; /* Position the menu block at the left of .container */
+    z-index: 99; /* Set a higher z-index to make it appear on top */
+    background: rgba(20,20,20,0.5);
+    overflow: hidden;
+    backdrop-filter: blur(1em);
+    border-right: 10px solid #fcfffc;
+    transition: all 0.5s ease; /* Add transition for smooth slide and fade effect */
+    opacity: 1; /* Start fully transparent */
+}
+.menu:hover{
+    left:-3vw;
+    opacity: 1;
+}
+.list_menu li{
+    margin: 10px 0
+}
+.title h2{
+    font-size: 30px;
+    margin-bottom: 30px;
+}
+.Mobile_Menu{
+    display: none;
+}
+
+.activity_buttons {
+    display: block; /* Делаем кнопку блочным элементом, чтобы можно было применить выравнивание текста */
+    width: fit-content; /* Ширина кнопки будет автоматически подстраиваться под контент */
+    margin: 10px auto; /* Выравниваем кнопки по центру с отступами сверху и снизу */
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    font-size: 20px;
+    color: #ffffff;
+    cursor: pointer;
+    text-decoration: none;
+    position: relative;
+}
+
+.activity_buttons::before {
+    content: ''; /* Добавляем пустой контент для псевдоэлемента */
+    position: absolute;
+    bottom: -2px; /* Сдвигаем псевдоэлемент снизу на 2px (начальное положение) */
+    left: 0; /* Позиционируем слева */
+    width: 0; /* Начальная ширина псевдоэлемента */
+    height: 2px; /* Толщина подчеркивания */
+    background-color: #ffffff;
+    transition: width 0.3s; /* Добавляем анимацию появления подчеркивания */
+}
+
+.activity_buttons:hover::before {
+    width: 100%; /* Расширяем псевдоэлемент по ширине кнопки при наведении */
+}
+.add_activity{
+    display: block; /* Делаем кнопку блочным элементом, чтобы можно было применить выравнивание текста */
+    width: fit-content; /* Ширина кнопки будет автоматически подстраиваться под контент */
+    border: none;
+    background-color: transparent;
+    margin: 20px auto
+}
+.Add_activity_img{
+    width: 40px;
+    height: 40px;
+}
+@media screen and (max-width: 1000px) {
+    .menu{
+        display: none;
+    }
+}

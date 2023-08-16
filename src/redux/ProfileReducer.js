@@ -211,6 +211,14 @@ export const createActivityThunk = createAsyncThunk(
         return response.data
     }
 )
+export const deleteActivityThunk = createAsyncThunk(
+    'profile/deleteActivity',
+        async (activity_id)=>{
+        const response = await axios.delete(`http://localhost:5000/delete_activity/${activity_id}`)
+            return response.data.activity_id
+        }
+)
+
 
 const initialState = {
     UserData: [],
@@ -220,8 +228,10 @@ const initialState = {
     IsEditActivityBarVisible: false,
     Id_entery: null,
     ChangeNoteBool: false,
+    FlagCreateNote:false,
     Id_activity: null,
-    ActivityModalVisible:false
+    ActivityModalVisible:false,
+    SelectedActivity: {activity_id:null, value:"Активность не выбрана"}
 }
 
 
@@ -255,8 +265,14 @@ const profileSlice = createSlice({
             state.Id_activity = action.payload;
             state.IsEditActivityBarVisible = false;
         },
+        setFlagCreateNote: (state, action)=>{
+            state.FlagCreateNote = action.payload
+        },
         ActivityModalVisibleAC:(state, action)=>{
             state.ActivityModalVisible = action.payload
+        },
+        SelectedActivityAC:(state, action)=>{
+            state.SelectedActivity = action.payload
         }
     },
     extraReducers:(builder)=>{
@@ -284,7 +300,10 @@ const profileSlice = createSlice({
             })
             .addCase(createActivityThunk.rejected, (state, action) => {
                 state.ActivityModalVisible = false;
-            });
+            })
+            .addCase(deleteActivityThunk.fulfilled, (state, action) => {
+                state.SelectedActivity = {activity_id:null, value:"Активность не выбрана"};
+            })
     }
 })
 
@@ -298,6 +317,8 @@ export const {
     changeNote,
     setIdActivity,
     ActivityModalVisibleAC,
+    SelectedActivityAC,
+    setFlagCreateNote,
 } = profileSlice.actions
 
 export default profileSlice.reducer

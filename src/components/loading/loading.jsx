@@ -1,4 +1,4 @@
-import loading from './../../images/loading-4.gif'
+import loading from '../../../public/images/loading-4.gif'
 import React from 'react';
 
 function Loading(props) {

@@ -7,13 +7,15 @@ import {useDispatch, useSelector} from "react-redux";
 import {
     activityButtonsThunk, ActivityModalVisibleAC,
     changeStatusView,
-    fillActivityThunk
+    fillActivityThunk, setFlagCreateNote
 } from "../../redux/ProfileReducer";
 import {LogoutThunk, resetRedirectUrlAC} from "../../redux/AuthReducer";
 import ToolBar from "./ProfileSideBar/ToolBar";
 import MobileMenu from "./ProfileSideBar/ToolBarMobile";
 import NoteCreate from "./NoteinteractionFolder/NoteCreate";
 import AddActivityModal from "./Modals/AddActivityModal";
+import AcivityInteraction from "./ActivityInteraction/AcivityInteraction";
+import CheckBoxActivity from "./ActivityInteraction/CheckBoxActivity";
 
 axios.defaults.withCredentials = true;
 
@@ -30,10 +32,12 @@ function Profile(props) {
         Id_entery,
         IsEditActivityBarVisible,
         Id_activity,
-        ActivityModalVisible
+        ActivityModalVisible,
+        SelectedActivity,
+        FlagCreateNote
     } = useSelector(state => state.Profile);
 
-    const [FlagCreateNote, SetFlagCreateNote] = useState(false)
+
 
     useEffect(()=>{
 
@@ -45,7 +49,7 @@ function Profile(props) {
 
     useEffect(()=>{
         dispatch(activityButtonsThunk())
-    },[])
+    },[ActivityModalVisible])
 
     useEffect(()=>{
         if(redirectUrl){
@@ -54,9 +58,8 @@ function Profile(props) {
 
         }
     },[redirectUrl, navigate])
-    const ModalActivityHanldeClick = ()=>{
-        dispatch(ActivityModalVisibleAC(true))
-    }
+
+
 
     return (
         <div className='wrapper'>
@@ -65,30 +68,21 @@ function Profile(props) {
                 <div className='CommonMenu'>
                     <MobileMenu/>
                 </div>
-                <h2>Активности</h2>
-                {/*<div> <button onClick={() => dispatch(ChangeStatusView(!StatusView))}>Флажок</button></div>*/}
-
+                <h2>{SelectedActivity.value}</h2>
+                <AcivityInteraction/>
             <div className='main_block'>
                 <button onClick={()=>dispatch(LogoutThunk())}>Выйти</button>
             </div>
             <div className='mini_container'>
                 <div className='list'>
-                    <div className='switch'>
-                        <input onClick={() => dispatch(changeStatusView(!StatusView))} type="checkbox"/>
-                    </div>
-                    {Object.entries(ActivityButtons).map(([key, value]) => (
-                        <button onClick={() => dispatch(fillActivityThunk({ id: key, StatusView: StatusView }))} key={key}>
-                            {`${value}`}
-                        </button>
-                    ))}
-                    <button onClick={()=>{SetFlagCreateNote(!FlagCreateNote)}}>Добавить запись</button>
+                    <CheckBoxActivity/>
+                    <button onClick={()=>dispatch(setFlagCreateNote(true))}>Добавить запись</button>
                     {FlagCreateNote&& <NoteCreate ActivityButtons={ActivityButtons}/>}
-                    <button onClick={ModalActivityHanldeClick}>Добавить активность</button>
                 </div>
                 <div className='graphics'>
                     {  <CommonCharts data={UserData}/> }
                 </div>
-                {ActivityModalVisible &&  <AddActivityModal/>}
+                {ActivityModalVisible &&  <AddActivityModal />}
             </div>
             </div>
         </div>

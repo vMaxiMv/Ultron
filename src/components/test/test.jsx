@@ -1,16 +1,10 @@
 import React from 'react';
 import "./test.css"
+import AcivityInteraction from "../profile/ActivityInteraction/AcivityInteraction";
 function Test(props) {
     return (
-        <div className='test'>
-            <div className='test_title'><h2>Редактирование активности</h2></div>
-            <div className='test_menu'>
-                <ul>
-                    <li><button>Изменить</button></li>
-                    <li><button>Удалить</button></li>
-
-                </ul>
-            </div>
+        <div>
+                  <AcivityInteraction/>
         </div>
     );
 }
