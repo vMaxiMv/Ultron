@@ -16,6 +16,7 @@ function ToolBarCommonComponent(props) {
     const ModalActivityHanldeClick = ()=>{
         dispatch(ActivityModalVisibleAC(true))
     }
+
     return (
         <div className={tb.list_menu}>
             <div className={tb.title}><h2>Активности</h2></div>
