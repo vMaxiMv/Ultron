@@ -11,13 +11,14 @@ function AddActivityModal(props) {
 
     const onSubmit = async (data) => {
         try {
-            const addActivityObj = {
-                name: data.name,
-                notification_text: data.notification_text,
-                checkBoxValue: checkBoxActivityBoolean ? 1 : 0
-            };
+            // const addActivityObj = {
+            //     name: data.name,
+            //     notification_text: data.notification_text,
+            //     checkBoxValue: checkBoxActivityBoolean ? 1 : 0
+            // };
 
-            await dispatch(createActivityThunk({ addActivityObj }));
+          //  await dispatch(createActivityThunk({ addActivityObj }));
+            (props.onSubmitHandler(data))
 
 
         } catch (error) {
@@ -27,12 +28,13 @@ function AddActivityModal(props) {
     };
 
     const CloseModalActivityHanldeClick = ()=>{
-        dispatch(ActivityModalVisibleAC(false))
+        // dispatch(ActivityModalVisibleAC(false))
+        dispatch(props.CloseModalActivityHanldeClick)
     }
     return (
         <div className={M.modalBackground}>
             <div className={M.modalContainer}>
-                <h3>Добавление активности</h3>
+                <h3>{props.title}</h3>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className={M.centeredInputs}>
                         <input {...register('name')} type="text" placeholder="Название активности"/>

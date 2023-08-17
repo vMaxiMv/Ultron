@@ -5,9 +5,9 @@ import  './profile.css';
 import CommonCharts from '../charts/CommonCharts';
 import {useDispatch, useSelector} from "react-redux";
 import {
-    activityButtonsThunk, ActivityModalVisibleAC,
-    changeStatusView,
-    fillActivityThunk, setFlagCreateNote
+    activityButtonsThunk, ActivityModalVisible2AC2, ActivityModalVisibleAC, changeIdEntryThunk,
+    changeStatusView, createActivityThunk, editActivityThunk,
+    fillActivityThunk, setFlagCreateNote, setIdActivity
 } from "../../redux/ProfileReducer";
 import {LogoutThunk, resetRedirectUrlAC} from "../../redux/AuthReducer";
 import ToolBar from "./ProfileSideBar/ToolBar";
@@ -33,6 +33,7 @@ function Profile(props) {
         IsEditActivityBarVisible,
         Id_activity,
         ActivityModalVisible,
+        ActivityModalVisible2,
         SelectedActivity,
         FlagCreateNote
     } = useSelector(state => state.Profile);
@@ -82,7 +83,15 @@ function Profile(props) {
                 <div className='graphics'>
                     {  <CommonCharts data={UserData}/> }
                 </div>
-                {ActivityModalVisible &&  <AddActivityModal />}
+                {ActivityModalVisible &&  <AddActivityModal
+                    title='Добавление активности'
+                    onSubmitHandler={(data) => dispatch(createActivityThunk({ addActivityObj:data }))}
+                    CloseModalActivityHanldeClick={ ActivityModalVisibleAC(false)}/>}
+                {ActivityModalVisible2 &&  <AddActivityModal
+                    title='Редактирование активности'
+                    onSubmitHandler={(data) => dispatch(editActivityThunk({ addActivityObj:data, activity_id: SelectedActivity.activity_id}))}
+                    CloseModalActivityHanldeClick={ ActivityModalVisible2AC2(false)}
+                />}
             </div>
             </div>
         </div>
