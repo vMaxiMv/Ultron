@@ -59,7 +59,8 @@
 
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
- const baseUrl = 'http://87.239.108.223:8000/'
+// const baseUrl = 'http://87.239.108.223:8000/'
+ const baseUrl = 'http://localhost:5000/'
 
 export const LoginRegisterThunk = createAsyncThunk(
     'auth/loginRegister',
@@ -73,7 +74,7 @@ export const LoginRegisterThunk = createAsyncThunk(
 export const LogoutThunk = createAsyncThunk(
     'auth/logout',
     async (_,{dispatch}) =>{
-        const response = await axios.post(`http://localhost:5000/api/logout`)
+        const response = await axios.post(`${baseUrl}/api/logout`)
         const redirectUrl = response.data['redirect_url'];
         dispatch(setRedirectUrl(redirectUrl));
         window.location.href = redirectUrl;

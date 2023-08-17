@@ -206,22 +206,25 @@ export const createIdActivityThunk = createAsyncThunk(
 );
 export const createActivityThunk = createAsyncThunk(
     'profile/createActivity',
-    async ({addActivityObj})=>{
+    async ({addActivityObj},{dispatch})=>{
         const response = await axios.post(`http://localhost:5000/create_activity`, addActivityObj);
+        dispatch(activityButtonsThunk());
         return response.data
     }
 )
 export const deleteActivityThunk = createAsyncThunk(
     'profile/deleteActivity',
-        async (activity_id)=>{
+        async (activity_id,{dispatch})=>{
         const response = await axios.delete(`http://localhost:5000/delete_activity/${activity_id}`)
+            dispatch(activityButtonsThunk());
             return response.data.activity_id
         }
 )
 export const editActivityThunk = createAsyncThunk(
-    'profile/createActivity',
-    async ({addActivityObj,activity_id})=>{
+    'profile/editActivity',
+    async ({addActivityObj,activity_id}, { dispatch })=>{
         const response = await axios.post(`http://localhost:5000/edit_activity/${activity_id}`, addActivityObj);
+        dispatch(activityButtonsThunk());
         return response.data
     }
 )
@@ -283,7 +286,7 @@ const profileSlice = createSlice({
             state.SelectedActivity = action.payload
         },
         ActivityModalVisible2AC2:(state, action)=>{
-    state.ActivityModalVisible2 = action.payload
+            state.ActivityModalVisible2 = action.payload
 },
     },
     extraReducers:(builder)=>{
@@ -314,6 +317,13 @@ const profileSlice = createSlice({
             })
             .addCase(deleteActivityThunk.fulfilled, (state, action) => {
                 state.SelectedActivity = {activity_id:null, value:"Активность не выбрана"};
+                state.UserData = []
+            })
+            .addCase(editActivityThunk.fulfilled, (state, action) => {
+                state.ActivityModalVisible2 = false;
+            })
+            .addCase(editActivityThunk.rejected, (state, action) => {
+                state.ActivityModalVisible2 = false;
             })
     }
 })

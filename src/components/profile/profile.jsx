@@ -50,7 +50,7 @@ function Profile(props) {
 
     useEffect(()=>{
         dispatch(activityButtonsThunk())
-    },[ActivityModalVisible])
+    },[])
 
     useEffect(()=>{
         if(redirectUrl){
@@ -77,7 +77,7 @@ function Profile(props) {
             <div className='mini_container'>
                 <div className='list'>
                     <CheckBoxActivity/>
-                    <button onClick={()=>dispatch(setFlagCreateNote(true))}>Добавить запись</button>
+                    {SelectedActivity.activity_id !== null ? (<button onClick={()=>dispatch(setFlagCreateNote(true))}>Добавить запись</button>) :null}
                     {FlagCreateNote&& <NoteCreate ActivityButtons={ActivityButtons}/>}
                 </div>
                 <div className='graphics'>
