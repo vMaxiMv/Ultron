@@ -137,11 +137,14 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
 
+// const baseUrl = 'http://ultron.com/'
+ const baseUrl = 'http://localhost:5000/'
+
 export const fillActivityThunk = createAsyncThunk(
     'profile/fillActivity',
     async ({ id, StatusView }, { dispatch }) => {
         dispatch(setLastId(id));
-       const response = await axios.post('http://localhost:5000/data_for_chart', { id, StatusView });
+       const response = await axios.post(`${baseUrl}/data_for_chart`, { id, StatusView });
         return response.data
 
     }
@@ -172,7 +175,7 @@ export const fillActivityThunk = createAsyncThunk(
 export const activityButtonsThunk = createAsyncThunk(
     'profile/activityButtons',
     async (_, { dispatch }) => {
-        const response = await axios.get('http://localhost:5000/data_for_chart');
+        const response = await axios.get(`${baseUrl}/data_for_chart`);
         return response.data;
     }
 );
@@ -186,28 +189,28 @@ export const activityButtonsThunk = createAsyncThunk(
 export const deleteIdEntryThunk = createAsyncThunk(
     'profile/deleteIdEntry',
     async (idEntry) => {
-        const response = await axios.delete(`http://localhost:5000/delete_entry/${idEntry}`);
+        const response = await axios.delete(`${baseUrl}/delete_entry/${idEntry}`);
         return response.data.Id_entery;
     }
 );
 export const changeIdEntryThunk = createAsyncThunk(
     'profile/changeIdEntry',
     async ( {idEntry, changesNoteObj} ) => {
-        const response = await axios.post(`http://localhost:5000/edit_entry/${idEntry}`, changesNoteObj);
+        const response = await axios.post(`${baseUrl}/edit_entry/${idEntry}`, changesNoteObj);
         return response.data.Id_entery;
     }
 );
 export const createIdActivityThunk = createAsyncThunk(
     'profile/createIdActivity',
     async ({idActivity, changesNoteObj} ) => {
-        const response = await axios.post(`http://localhost:5000/create_entry/${idActivity}`, changesNoteObj);
+        const response = await axios.post(`${baseUrl}/create_entry/${idActivity}`, changesNoteObj);
         return response.data.Id_activity;
     }
 );
 export const createActivityThunk = createAsyncThunk(
     'profile/createActivity',
     async ({addActivityObj},{dispatch})=>{
-        const response = await axios.post(`http://localhost:5000/create_activity`, addActivityObj);
+        const response = await axios.post(`${baseUrl}/create_activity`, addActivityObj);
         dispatch(activityButtonsThunk());
         return response.data
     }
@@ -215,7 +218,7 @@ export const createActivityThunk = createAsyncThunk(
 export const deleteActivityThunk = createAsyncThunk(
     'profile/deleteActivity',
         async (activity_id,{dispatch})=>{
-        const response = await axios.delete(`http://localhost:5000/delete_activity/${activity_id}`)
+        const response = await axios.delete(`${baseUrl}/delete_activity/${activity_id}`)
             dispatch(activityButtonsThunk());
             return response.data.activity_id
         }
@@ -223,7 +226,7 @@ export const deleteActivityThunk = createAsyncThunk(
 export const editActivityThunk = createAsyncThunk(
     'profile/editActivity',
     async ({addActivityObj,activity_id}, { dispatch })=>{
-        const response = await axios.post(`http://localhost:5000/edit_activity/${activity_id}`, addActivityObj);
+        const response = await axios.post(`${baseUrl}/edit_activity/${activity_id}`, addActivityObj);
         dispatch(activityButtonsThunk());
         return response.data
     }
