@@ -73,11 +73,11 @@ ion-icon{
 .user_img {
     display: flex;
     justify-content: center;
-    margin-top: 2em;
+    margin-bottom: 3em;
 }
 .user_img img {
     width: 100%;
-    max-width: 300px;
+    max-width: 500px;
     height: auto;
 }
 
@@ -89,6 +89,9 @@ ion-icon{
     }
     .logo{
         width: 3em;
+    }
+    .user_img{
+        margin-bottom: 0;
     }
     .user_img img{
         width: 45%; /* Уменьшаем отступ снизу для изображения */

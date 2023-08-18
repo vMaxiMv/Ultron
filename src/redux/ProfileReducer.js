@@ -211,10 +211,10 @@ export const createActivityThunk = createAsyncThunk(
     'profile/createActivity',
     async ({addActivityObj},{dispatch})=>{
         const response = await axios.post(`${baseUrl}/create_activity`, addActivityObj);
-        const { key, value } = response.data
+        const  [[key, value]]  = Object.entries(response.data)
         dispatch(activityButtonsThunk());
         dispatch(SelectedActivityAC({ activity_id: key, value: value }));
-        return response.data
+        return response
     }
 )
 export const deleteActivityThunk = createAsyncThunk(
@@ -316,7 +316,6 @@ const profileSlice = createSlice({
                 state.IsEditActivityBarVisible = false;
             })
             .addCase(createActivityThunk.fulfilled, (state, action) => {
-                state.CreatedNewActivity = action.payload
                 state.ActivityModalVisible = false;
             })
             .addCase(createActivityThunk.rejected, (state, action) => {
