@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
-// const baseUrl = 'http://ultron.com/'
- const baseUrl = 'http://localhost:5000/'
+const baseUrl = 'https://Akwinchester.pythonanywhere.com'
+ // const baseUrl = 'http://localhost:5000/'
 
 export const LoginRegisterThunk = createAsyncThunk(
     'auth/loginRegister',
