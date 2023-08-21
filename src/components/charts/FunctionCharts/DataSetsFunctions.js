@@ -15,7 +15,7 @@ function transformData(data) {
             result[item.id_user][index] = item.amount;
         }
     });
-    console.log(result)
+    //console.log(result)
     return result;
 
 }

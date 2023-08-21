@@ -4,7 +4,7 @@
 }
 .form_box{
     position: relative;
-    max-width: 400px;
+    /*max-width: 400px;*/
     width: 100%;
     height: auto;
     background: #1e6073;
@@ -14,7 +14,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 3rem 2rem 3rem 2rem;
+    padding: 3rem 3rem 3rem 3rem;
 }
 h2{
     font-size: 2em;
@@ -45,7 +45,7 @@ input:valid ~ label{
 
 .inputbox input{
     width: 100%;
-    height: 50px;
+    height: 3em;
     background: transparent;
     border: none;
     outline: none;
@@ -109,12 +109,30 @@ input:valid ~ label{
 .register p a:hover{
     text-decoration: underline;
 }
+@media (max-width: 900px){
+    .form_box {
+        margin:0 auto;
+        width: 40vw;
+        height: auto;
+    }
+}
 @media (max-width: 600px) {
     .form_box {
         margin:0 auto;
-        width: 70%;
-        height: 21em;
+        width: 90%;
+        height: auto;
         padding: 1.5rem 1rem;
+    }
+    .btn{
+        width: 100%;
+        height: 40px;
+        border-radius: 40px;
+        background: #fff;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        font-size: 1em;
+        font-weight: 600;
     }
 .inputbox{
     margin: 1.8em 0;

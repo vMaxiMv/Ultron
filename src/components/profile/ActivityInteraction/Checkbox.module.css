@@ -5,11 +5,14 @@
     margin: 0 0.8em;
     transition: width 0.3s, height 0.3s;
 }
-
+.switchContainer{
+    height: 5em;
+}
 
 .switch{
     display: flex;
     align-items: center;
+    justify-content: center;
     /*position: absolute;*/
     /*top: 2.5em !important;*/
     /*left: 2.5em !important;*/

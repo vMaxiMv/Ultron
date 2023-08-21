@@ -35,7 +35,8 @@ function Profile(props) {
         ActivityModalVisible,
         ActivityModalVisible2,
         SelectedActivity,
-        FlagCreateNote
+        FlagCreateNote,
+        HideMobileToolBarFlag
     } = useSelector(state => state.Profile);
 
 
@@ -67,7 +68,7 @@ function Profile(props) {
             <div className='container'>
                 <ToolBar/>
                 <div className='CommonMenu'>
-                    <MobileMenu/>
+                    {HideMobileToolBarFlag && <MobileMenu/>}
                 </div>
                 <h2>{SelectedActivity.value}</h2>
                 <AcivityInteraction/>
