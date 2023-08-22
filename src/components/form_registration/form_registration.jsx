@@ -15,7 +15,7 @@ function FormRegistration(props) {
     const onSubmit = async (data)=>{
         const {username, password} = data;
         console.log(data)
-        const name = 'reginster'
+        const name = 'register'
         dispatch(LoginRegisterThunk({username, password, name}))
     }
     useEffect(()=>{

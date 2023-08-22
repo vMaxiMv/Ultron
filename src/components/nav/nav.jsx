@@ -21,7 +21,7 @@ function Nav(props) {
     return (
             <div className="wrapper">
                 <div className={n.container}>
-                    <img src="/images/friendly-sporty-face-robot-in-a-mug.svg" alt="logo" className={n.logo} />
+                    <img src="images/strong-robot-white.svg" alt="logo" className={n.logo} />
                     <div className={n.main_block}>
                         <div className={n.text_block}>
                             <p>{texts[currentIndex]}</p>
@@ -45,7 +45,7 @@ function Nav(props) {
                         </div>
                     </div>
                     <div className={n.user_img}>
-                        <img src="/images/little-robot-with-body--legs-and-head2.svg" alt="Image" />
+                        <img src="images/strong-robot-white.svg" alt="Image" />
                     </div>
                 </div>
             </div>
