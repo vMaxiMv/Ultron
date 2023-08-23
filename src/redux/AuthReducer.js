@@ -23,8 +23,6 @@ export const LogoutThunk = createAsyncThunk(
 )
 
 const initialState = {
-    username: null,
-    password: null,
     redirectUrl: null
 }
 
@@ -39,14 +37,14 @@ const authSlice = createSlice({
             state.redirectUrl = null
         }
     },
-    extraReducers:(builder)=>{
-        builder
-            .addCase(LoginRegisterThunk.fulfilled, (state, action)=>{
-                const {username, password} = action.payload
-                state.username = username
-                state.password = password
-            })
-    }
+    // extraReducers:(builder)=>{
+    //     builder
+    //         .addCase(LoginRegisterThunk.fulfilled, (state, action)=>{
+    //             const {username, password} = action.payload
+    //             state.username = username
+    //             state.password = password
+    //         })
+    //}
 })
 export const { setRedirectUrl, resetRedirectUrlAC } = authSlice.actions;
 export default authSlice.reducer

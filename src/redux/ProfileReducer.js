@@ -113,7 +113,8 @@ const initialState = {
     ActivityModalVisible:false,
     SelectedActivity: {activity_id:null, value:"Активность не выбрана"},
     ActivityModalVisible2:false,
-    HideMobileToolBarFlag: true
+    HideMobileToolBarFlag: true,
+    OutputWindowIsOpen:false
 
 }
 
@@ -162,6 +163,9 @@ const profileSlice = createSlice({
 },
         HideMobileToolBarFlagAC:(state, action)=>{
             state.HideMobileToolBarFlag = action.payload
+        },
+        OutputWindowIsOpenAC: (state, action)=>{
+            state.OutputWindowIsOpen = action.payload
         }
     },
     extraReducers:(builder)=>{
@@ -216,7 +220,8 @@ export const {
     SelectedActivityAC,
     setFlagCreateNote,
     ActivityModalVisible2AC2,
-    HideMobileToolBarFlagAC
+    HideMobileToolBarFlagAC,
+    OutputWindowIsOpenAC
 } = profileSlice.actions
 
 export default profileSlice.reducer

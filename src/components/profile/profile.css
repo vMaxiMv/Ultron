@@ -30,19 +30,30 @@
 /*-----------------------------------------------------*/
 .main_block {
     position: absolute;
-    top: 1em !important;
-    right: 1em !important;
+    top: .5em !important;
+    right: 1.5em !important;
 }
-.main_block button{
-    text-align: center;
+/*.main_block button{*/
+/*    text-align: center;*/
+/*    cursor: pointer;*/
+/*    width: 4em;*/
+/*    height: 4em;*/
+/*    border-radius: 50%;*/
+/*    background-color: red;*/
+/*    font-weight: 1000;*/
+/*}*/
+.main_block .profile-button {
     cursor: pointer;
-    width: 4em;
-    height: 4em;
-    border-radius: 50%;
-    background-color: red;
-    font-weight: 1000;
+    background: none;
+    border: none; /* Убираем границу кнопки */
+    padding: 0; /* Убираем внутренние отступы */
 }
 
+.main_block img {
+    width: 3.5em;
+    height: 3.5em;
+    border-radius: 50%;
+}
 
 .mini_container {
     display: flex;

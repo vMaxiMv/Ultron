@@ -3,7 +3,7 @@ import BarCharts from "./barCharts/BarCharts";
 import {useDispatch, useSelector} from "react-redux";
 import {editActivityBar, modifyIdEntery} from "../../redux/ProfileReducer";
 
-import NoteModify from "../profile/NoteinteractionFolder/NoteModify ";
+import NoteModify from "../profile/Modals/NoteModify";
 import {externalTooltipHandler} from "./FunctionCharts/TooltipFunctions";
 import {useUserData} from "./FunctionCharts/useUserDataHook";
 

@@ -7,15 +7,16 @@ import {useDispatch, useSelector} from "react-redux";
 import {
     activityButtonsThunk, ActivityModalVisible2AC2, ActivityModalVisibleAC, changeIdEntryThunk,
     changeStatusView, createActivityThunk, editActivityThunk,
-    fillActivityThunk, setFlagCreateNote, setIdActivity
+    fillActivityThunk, OutputWindowIsOpenAC, setFlagCreateNote, setIdActivity
 } from "../../redux/ProfileReducer";
 import {LogoutThunk, resetRedirectUrlAC} from "../../redux/AuthReducer";
 import ToolBar from "./ProfileSideBar/ToolBar";
 import MobileMenu from "./ProfileSideBar/ToolBarMobile";
-import NoteCreate from "./NoteinteractionFolder/NoteCreate";
+import NoteCreate from "./Modals/NoteCreate";
 import AddActivityModal from "./Modals/AddActivityModal";
 import AcivityInteraction from "./ActivityInteraction/AcivityInteraction";
 import CheckBoxActivity from "./ActivityInteraction/CheckBoxActivity";
+import YourProfileModal from "./Modals/YourProfileModal";
 
 axios.defaults.withCredentials = true;
 
@@ -40,7 +41,7 @@ function Profile(props) {
     } = useSelector(state => state.Profile);
 
 
-
+    // const [OutputModal, openOutputModal] = useState(false)
     useEffect(()=>{
 
     dispatch(fillActivityThunk({id:LastId, StatusView:StatusView}))
@@ -73,7 +74,10 @@ function Profile(props) {
                 <h2>{SelectedActivity.value}</h2>
                 <AcivityInteraction/>
             <div className='main_block'>
-                <button onClick={()=>dispatch(LogoutThunk())}>Выйти</button>
+                <button className="profile-button" onClick={()=>dispatch(OutputWindowIsOpenAC(true))}>
+                    <img src="/images/full-face-robot-.svg" alt="Your profile"/>
+                </button>
+                { <YourProfileModal/>}
             </div>
             <div className='mini_container'>
                 <div className='list'>
