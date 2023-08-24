@@ -7,8 +7,8 @@ import Modify from './NoteModal.module.css'
 function NoteModal(props) {
     const dispatch = useDispatch();
     const changeNoteBool = useSelector((state) => state.Profile.ChangeNoteBool);
+    const SelectedActivity = useSelector(state => state.Profile.SelectedActivity)
     const { register, handleSubmit, reset } = useForm();
-
     const closeModal = () => {
         reset();
         dispatch(props.onCloseHandler());
@@ -40,7 +40,7 @@ function NoteModal(props) {
                     <br />
                     {props.selectOptions && (
                         <select {...register('option')} onChange={props.handleSelectChange}>
-                            <option value="">Выберите активность...</option>
+                            <option value="">{SelectedActivity.value}</option>
                             {Object.entries(props.selectOptions).map(([key, value]) => (
                                 <option key={key} value={key}>
                                     {`${value}`}
