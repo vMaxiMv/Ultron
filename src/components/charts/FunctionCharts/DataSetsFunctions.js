@@ -92,7 +92,6 @@ function createEmptyDataObject(data, differenceInDays) {
     for (const item of data) {
         emptyData[item.id_user] = Array.from({ length: differenceInDays + 1 }, () => "");
     }
-
     return emptyData;
 }
 

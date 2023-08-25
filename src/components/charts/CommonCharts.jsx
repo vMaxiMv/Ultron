@@ -26,7 +26,7 @@ const CommonCharts = (props) => {
         const column = elements[0]['datasetIndex']
         const user_id = userData['datasets'][0]['id_user'][column]
         dispatch(modifyIdEntery(userData['datasets'][0]['entry_id'][user_id][slot]))
-
+        console.log(userData)
 
         // console.log('Clicked on:', elements);
         dispatch(editActivityBar(true))

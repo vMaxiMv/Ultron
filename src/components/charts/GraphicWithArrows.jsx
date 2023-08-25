@@ -25,6 +25,7 @@ function GraphicWithArrows(props) {
         dispatch(fillActivityThunk({id:LastId, StatusView:StatusView}))
     };
     const partialDateArray = getSortedDates(UserData, 5).slice(visibleDatesFirst,visibleDatesLast)
+
     console.log(partialDateArray)
     return (
         <div>

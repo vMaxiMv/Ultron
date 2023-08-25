@@ -8,6 +8,8 @@ export const LoginRegisterThunk = createAsyncThunk(
     async ({username, password, name},{dispatch}) =>{
         const response = await axios.post(`${baseUrl}/api/${name}`, {username, password})
         const redirectUrl = response.data['redirect_url'];
+        const YourName = response.data['user_name']
+        dispatch(setYourName(YourName))
         dispatch(setRedirectUrl(redirectUrl))
         return {username, password}
     }
@@ -23,7 +25,8 @@ export const LogoutThunk = createAsyncThunk(
 )
 
 const initialState = {
-    redirectUrl: null
+    redirectUrl: null,
+    YourName: ''
 }
 
 const authSlice = createSlice({
@@ -35,7 +38,10 @@ const authSlice = createSlice({
         },
         resetRedirectUrlAC: (state)=>{
             state.redirectUrl = null
-        }
+        },
+        setYourName:(state,action)=>{
+            state.YourName= action.payload
+        },
     },
     // extraReducers:(builder)=>{
     //     builder
@@ -46,5 +52,5 @@ const authSlice = createSlice({
     //         })
     //}
 })
-export const { setRedirectUrl, resetRedirectUrlAC } = authSlice.actions;
+export const { setRedirectUrl, resetRedirectUrlAC,setYourName } = authSlice.actions;
 export default authSlice.reducer

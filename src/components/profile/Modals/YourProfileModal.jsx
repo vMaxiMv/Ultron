@@ -8,6 +8,7 @@ import {OutputWindowIsOpenAC} from "../../../redux/ProfileReducer";
 function YourProfileModal(props) {
     const dispatch = useDispatch()
     const OutputWindowIsOpen = useSelector(state => state.Profile.OutputWindowIsOpen)
+    const YourName = useSelector(state => state.Auth.YourName)
     const CloseModal = ()=>{
         dispatch(OutputWindowIsOpenAC(false))
     }
@@ -21,7 +22,7 @@ function YourProfileModal(props) {
             overlayClassName={Output.content}
             >
         <div className={Output.modal}>
-            <h3>Ваше имя</h3>
+            <h3>{YourName}</h3>
             <div className={Output.btn}> <button onClick={() => dispatch(LogoutThunk())}>Выйти</button></div>
         </div>
             </Modal>
