@@ -8,12 +8,12 @@ import {externalTooltipHandler} from "./FunctionCharts/TooltipFunctions";
 import {useUserData} from "./FunctionCharts/useUserDataHook";
 
 
-const CommonCharts = () => {
+const CommonCharts = (props) => {
     const entry_id = useSelector(state => state.Profile.Id_entery)
     const IsEditActivityBarVisible = useSelector(state=>state.Profile.IsEditActivityBarVisible)
     const dispatch = useDispatch()
     const WhiteColor = 'white'
-    const userData = useUserData()
+    const userData = useUserData(props.flexGraphic)
 
     const handleChartClick = (elements) => {
 
