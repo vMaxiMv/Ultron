@@ -61,6 +61,7 @@ export function getSortedDates(data, number) {
             result.push(currentDate.toISOString().slice(number,10));
         }
     }
+   // console.log(result)
     return result;
 
 }

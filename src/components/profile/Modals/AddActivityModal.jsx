@@ -2,8 +2,7 @@ import React, {useState} from 'react';
 import M from './/Modals.module.css'
 import {useForm} from "react-hook-form";
 import {useDispatch} from "react-redux";
-import {ActivityModalVisibleAC, createActivityThunk} from "../../../redux/ProfileReducer";
-import Modify from "./NoteModal.module.css";
+
 function AddActivityModal(props) {
     const dispatch = useDispatch();
     const { register, handleSubmit, reset } = useForm();

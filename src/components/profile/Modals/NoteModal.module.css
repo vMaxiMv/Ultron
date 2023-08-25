@@ -4,7 +4,7 @@
     align-items: center;
 }
 .buttonChangeStyles{
-    padding: 8px 12px;
+
     margin: 10px;
     border-radius: 4px;
     background: rgba(255, 255, 255, 0.2);
@@ -16,9 +16,40 @@
 form input{
     margin-top: 10px;
 }
-h3{
-    font-size: 25px;
+form select{
+    margin-top: 10px;
 }
+h3{
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+.form_main_block{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.inputField{
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.selectField {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    background-color: #fff;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+}
+
 /*-----------------------Стили для первого всплывающего окошка------------------------------------------*/
 
 .Main_activity_bar {

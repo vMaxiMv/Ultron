@@ -6,7 +6,7 @@ import Modify from './NoteModal.module.css'
 function NoteCreate(props) {
     const dispatch = useDispatch();
     const idActivity = useSelector((state) => state.Profile.Id_activity);
-   // const FlagCreateNote = useSelector((state)=> state.Profile.FlagCreateNote)
+    const FlagCreateNote = useSelector((state)=> state.Profile.FlagCreateNote)
 
     //const activityButtons = Object.entries(props.ActivityButtons);
 
@@ -15,20 +15,15 @@ function NoteCreate(props) {
     };
 
     return (
-        <div className={Modify.Main_activity_bar}>
-            <div onClick={()=>dispatch(setFlagCreateNote(false))} className={Modify.CrossBlock}><img src="/images/cross.png" alt="Cross" className={Modify.close_modify_img}/></div>
-            <div className={Modify.activity_bar_title}><h2>Редактирование активности</h2></div>
-            <div className={Modify.activity_bar_menu}>
-                <ul>
-                    <li><button onClick={()=>dispatch(changeNote(true))}>Создать</button></li>
-                </ul>
-            </div>
+        <div>
+
             <NoteModal
-                title="Создание активности"
+                statusVisibleWindow={FlagCreateNote}
+                title="Создание записи"
                 onSubmitHandler={(data) => dispatch(createIdActivityThunk({idActivity: idActivity, changesNoteObj: data}))}
-                onCloseHandler={() => changeNote(false)}
+                onCloseHandler={() => setFlagCreateNote(false)}
                 selectOptions={props.ActivityButtons}
-                buttonText="Отправить"
+                buttonText="Создать"
                 handleSelectChange={handleSelectChange}
                 resetId_activity={()=> dispatch(setIdActivity(null))}
             />

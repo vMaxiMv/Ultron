@@ -17,6 +17,7 @@ import AddActivityModal from "./Modals/AddActivityModal";
 import AcivityInteraction from "./ActivityInteraction/AcivityInteraction";
 import CheckBoxActivity from "./ActivityInteraction/CheckBoxActivity";
 import YourProfileModal from "./Modals/YourProfileModal";
+import GraphicWithArrows from "../charts/GraphicWithArrows";
 
 axios.defaults.withCredentials = true;
 
@@ -85,9 +86,12 @@ function Profile(props) {
                     {SelectedActivity.activity_id !== null ? (<button onClick={()=>dispatch(setFlagCreateNote(true))}>Добавить запись</button>) :null}
                     {FlagCreateNote&& <NoteCreate ActivityButtons={ActivityButtons}/>}
                 </div>
-                <div className='graphics'>
-                    {  <CommonCharts data={UserData}/> }
-                </div>
+                {/*<div className='graphics'>*/}
+                {/*    <button><img src="/images/blue-left-arrow-inside-the-circle%20(2).svg" alt="left"/></button>*/}
+                {/*    {  <CommonCharts data={UserData}/> }*/}
+                {/*    <button><img src="/images/blue-right-arrow-inside-the-circle%20(1).svg" alt="right"/></button>*/}
+                {/*</div>*/}
+                <div className='GraphicContainer'> <GraphicWithArrows/></div>
                 {ActivityModalVisible &&  <AddActivityModal
                     title='Добавление активности'
                     onSubmitHandler={(data) => dispatch(createActivityThunk({ addActivityObj:data }))}

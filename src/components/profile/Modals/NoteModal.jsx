@@ -6,7 +6,6 @@ import Modify from './NoteModal.module.css'
 
 function NoteModal(props) {
     const dispatch = useDispatch();
-    const changeNoteBool = useSelector((state) => state.Profile.ChangeNoteBool);
     const SelectedActivity = useSelector(state => state.Profile.SelectedActivity)
     const { register, handleSubmit, reset } = useForm();
     const closeModal = () => {
@@ -18,6 +17,7 @@ function NoteModal(props) {
     const onSubmit = async (data) => {
 
         (props.onSubmitHandler(data));
+
         //console.log(data)
         closeModal();
     };
@@ -25,29 +25,31 @@ function NoteModal(props) {
     return (
         <div>
             <Modal
-                isOpen={changeNoteBool}
+                isOpen={props.statusVisibleWindow}
                 onRequestClose={closeModal}
                 className={Modify.overlay}
                 overlayClassName={Modify.content}
             >
                 <h3>{props.title}</h3>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <input {...register('amount')} type="number" placeholder="Введите число" />
-                    <br />
-                    <input {...register('description')} type="text" placeholder="Введите текст" />
-                    <br />
-                    <input {...register('date_added')} type="date" />
-                    <br />
-                    {props.selectOptions && (
-                        <select {...register('option')} onChange={props.handleSelectChange}>
-                            <option value="">{SelectedActivity.value}</option>
-                            {Object.entries(props.selectOptions).map(([key, value]) => (
-                                <option key={key} value={key}>
-                                    {`${value}`}
-                                </option>
-                            ))}
-                        </select>
-                    )}
+                    <div className={Modify.form_main_block}>
+                        <input {...register('amount')} type="number" placeholder="Введите число" className={Modify.inputField}/>
+
+                        <input {...register('description')} type="text" placeholder="Описание" className={Modify.inputField}/>
+
+                        <input {...register('date_added')} type="date" className={Modify.inputField}/>
+
+                        {props.selectOptions && (
+                            <select {...register('option')} onChange={props.handleSelectChange} className={Modify.selectField}>
+                                <option value="">Выберите активность...</option>
+                                {Object.entries(props.selectOptions).map(([key, value]) => (
+                                    <option key={key} value={key}>
+                                        {`${value}`}
+                                    </option>
+                                ))}
+                            </select>
+                        )}
+                    </div>
                     <div className={Modify.buttonBlockChangeStyles}>
                         <button className={Modify.buttonChangeStyles} type="submit">
                             {props.buttonText}
