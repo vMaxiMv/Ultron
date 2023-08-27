@@ -9,7 +9,7 @@ import {useUserData} from "./FunctionCharts/useUserDataHook";
 
 
 const CommonCharts = (props) => {
-    const entry_id = useSelector(state => state.Profile.Id_entery)
+    const entry_id = useSelector(state => state.Profile.Id_entry)
     const IsEditActivityBarVisible = useSelector(state=>state.Profile.IsEditActivityBarVisible)
     const dispatch = useDispatch()
     const WhiteColor = 'white'

@@ -31,7 +31,7 @@ function Profile(props) {
         redirectUrl,
         StatusView,
         LastId,
-        Id_entery,
+        Id_entry,
         IsEditActivityBarVisible,
         Id_activity,
         ActivityModalVisible,
@@ -46,7 +46,7 @@ function Profile(props) {
     useEffect(()=>{
 
     dispatch(fillActivityThunk({id:LastId, StatusView:StatusView}))
-    },[Id_entery, IsEditActivityBarVisible, Id_activity])
+    },[Id_entry, IsEditActivityBarVisible, Id_activity])
     useEffect(()=>{
         dispatch(fillActivityThunk({id:LastId, StatusView:StatusView}))
     },[StatusView])

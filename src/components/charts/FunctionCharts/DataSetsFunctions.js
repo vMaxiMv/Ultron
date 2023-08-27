@@ -102,7 +102,7 @@ function addDatesToEmptyData(emptyData, data, description=false, entry_id=false)
         const differenceInDays = Math.floor((date - minDate) / (1000 * 60 * 60 * 24));
 
         if(description){emptyData[item.id_user][differenceInDays] = item.description || "";}
-        else if (entry_id){emptyData[item.id_user][differenceInDays] = item.id_entery || "";}
+        else if (entry_id){emptyData[item.id_user][differenceInDays] = item.id_entry || "";}
     }
 }
 ////конец Функции для формирования списков описания

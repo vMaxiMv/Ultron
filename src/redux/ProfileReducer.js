@@ -1,8 +1,8 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
 
-const baseUrl = 'https://Akwinchester.pythonanywhere.com'
- // const baseUrl = 'http://localhost:5000/'
+// const baseUrl = 'https://Akwinchester.pythonanywhere.com'
+const baseUrl = 'http://localhost:5000/'
 
 export const fillActivityThunk = createAsyncThunk(
     'profile/fillActivity',
@@ -26,14 +26,14 @@ export const deleteIdEntryThunk = createAsyncThunk(
     'profile/deleteIdEntry',
     async (idEntry) => {
         const response = await axios.delete(`${baseUrl}/delete_entry/${idEntry}`);
-        return response.data.Id_entery;
+        return response.data.Id_entry;
     }
 );
 export const changeIdEntryThunk = createAsyncThunk(
     'profile/changeIdEntry',
     async ( {idEntry, changesNoteObj} ) => {
         const response = await axios.post(`${baseUrl}/edit_entry/${idEntry}`, changesNoteObj);
-        return response.data.Id_entery;
+        return response.data.Id_entry;
     }
 );
 export const createIdActivityThunk = createAsyncThunk(
@@ -78,7 +78,7 @@ const initialState = {
     StatusView: false,
     LastId: null,
     IsEditActivityBarVisible: false,
-    Id_entery: null,
+    Id_entry: null,
     ChangeNoteBool: false,
     FlagCreateNote:false,
     Id_activity: null,
@@ -111,7 +111,7 @@ const profileSlice = createSlice({
             state.IsEditActivityBarVisible = action.payload;
         },
         modifyIdEntery: (state, action) => {
-            state.Id_entery = action.payload;
+            state.Id_entry = action.payload;
             state.IsEditActivityBarVisible = false;
         },
         changeNote: (state, action) => {
@@ -149,11 +149,11 @@ const profileSlice = createSlice({
                 state.ActivityButtons = action.payload;
             })
             .addCase(deleteIdEntryThunk.fulfilled, (state, action) => {
-                state.Id_entery = action.payload;
+                state.Id_entry = action.payload;
                 state.IsEditActivityBarVisible = false;
             })
             .addCase(changeIdEntryThunk.fulfilled, (state, action) => {
-                state.Id_entery = action.payload;
+                state.Id_entry = action.payload;
                 state.IsEditActivityBarVisible = false;
             })
             .addCase(createIdActivityThunk.fulfilled, (state, action) => {
