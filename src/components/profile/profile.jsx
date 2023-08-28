@@ -9,7 +9,7 @@ import {
     changeStatusView, createActivityThunk, editActivityThunk,
     fillActivityThunk, OutputWindowIsOpenAC, setFlagCreateNote, setIdActivity
 } from "../../redux/ProfileReducer";
-import {LogoutThunk, resetRedirectUrlAC} from "../../redux/AuthReducer";
+import {GetYourNameThunk, LogoutThunk, resetRedirectUrlAC} from "../../redux/AuthReducer";
 import ToolBar from "./ProfileSideBar/ToolBar";
 import MobileMenu from "./ProfileSideBar/ToolBarMobile";
 import NoteCreate from "./Modals/NoteCreate";
@@ -63,7 +63,9 @@ function Profile(props) {
         }
     },[redirectUrl, navigate])
 
-
+    useEffect(()=>{
+        dispatch(GetYourNameThunk())
+    },[])
 
     return (
         <div className='wrapper'>

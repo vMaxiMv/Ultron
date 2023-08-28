@@ -1,6 +1,10 @@
+import {useEffect} from "react";
+import {activityButtonsThunk} from "../../../redux/ProfileReducer";
 
-export function getDatasets(data) {
-    const username = 'Arsen'
+export function getDatasets(data, YourName) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+
+    const username = YourName
 
     const colors = [
         '#ffc400', '#000bd4', '#21f344', '#673ab7',

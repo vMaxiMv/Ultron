@@ -23,7 +23,17 @@ export const LogoutThunk = createAsyncThunk(
         window.location.href = redirectUrl;
     }
 )
-
+export const GetYourNameThunk = createAsyncThunk(
+    'auth/yourName',
+    async () => {
+        try {
+            const response = await axios.get('/get_username'); // Replace with your actual API endpoint
+            return response.data.userName;
+        } catch (error) {
+            throw error;
+        }
+    }
+);
 const initialState = {
     redirectUrl: null,
     YourName: ''
@@ -39,18 +49,14 @@ const authSlice = createSlice({
         resetRedirectUrlAC: (state)=>{
             state.redirectUrl = null
         },
-        setYourName:(state,action)=>{
-            state.YourName= action.payload
-        },
+
     },
-    // extraReducers:(builder)=>{
-    //     builder
-    //         .addCase(LoginRegisterThunk.fulfilled, (state, action)=>{
-    //             const {username, password} = action.payload
-    //             state.username = username
-    //             state.password = password
-    //         })
-    //}
+    extraReducers:(builder)=>{
+        builder
+            .addCase(GetYourNameThunk.fulfilled, (state, action)=>{
+                    state.YourName= action.payload
+            })
+    }
 })
 export const { setRedirectUrl, resetRedirectUrlAC,setYourName } = authSlice.actions;
 export default authSlice.reducer
