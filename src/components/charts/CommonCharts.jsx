@@ -13,7 +13,7 @@ const CommonCharts = (props) => {
     const IsEditActivityBarVisible = useSelector(state=>state.Profile.IsEditActivityBarVisible)
     const dispatch = useDispatch()
     const WhiteColor = 'white'
-    const userData = useUserData()
+    const userData = useUserData(props.data)
 
     const handleChartClick = (elements) => {
 
