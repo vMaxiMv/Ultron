@@ -13,7 +13,7 @@ const CommonCharts = (props) => {
     const IsEditActivityBarVisible = useSelector(state=>state.Profile.IsEditActivityBarVisible)
     const dispatch = useDispatch()
     const WhiteColor = 'white'
-    const userData = useUserData(props.flexGraphic)
+    const userData = useUserData()
 
     const handleChartClick = (elements) => {
 
@@ -21,12 +21,13 @@ const CommonCharts = (props) => {
             dispatch(editActivityBar(false))
             return;
         }
-
+        console.log(userData)
+        console.log(elements)
         const slot = elements[0]['index']
         const column = elements[0]['datasetIndex']
-        const user_id = userData['datasets'][0]['id_user'][column]
-        dispatch(modifyIdEntery(userData['datasets'][0]['entry_id'][user_id][slot]))
-        console.log(userData)
+        //const user_id = userData['datasets'][0]['userId'][column]
+        dispatch(modifyIdEntery(userData['datasets'][0]['entry_id'][slot]))
+
 
         // console.log('Clicked on:', elements);
         dispatch(editActivityBar(true))

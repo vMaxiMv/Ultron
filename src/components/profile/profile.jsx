@@ -91,7 +91,8 @@ function Profile(props) {
                 {/*    {  <CommonCharts data={UserData}/> }*/}
                 {/*    <button><img src="/images/blue-right-arrow-inside-the-circle%20(1).svg" alt="right"/></button>*/}
                 {/*</div>*/}
-                <div className='GraphicContainer'> <GraphicWithArrows/></div>
+                <div className='GraphicContainer'> {Object.keys(UserData).length > 0 ? <GraphicWithArrows /> :
+                    <img src="/images/3fcf565ccc553afcfd89858c97304705.gif" alt=""/>}</div>
                 {ActivityModalVisible &&  <AddActivityModal
                     title='Добавление активности'
                     onSubmitHandler={(data) => dispatch(createActivityThunk({ addActivityObj:data }))}

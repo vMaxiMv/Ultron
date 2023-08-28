@@ -3,7 +3,7 @@ import CommonCharts from "./CommonCharts";
 import {useDispatch, useSelector} from "react-redux";
 import graphic from './GraphicWithArrows.module.css'
 import {isMobile} from "react-device-detect";
-import {getSortedDates} from "./FunctionCharts/DataSetsFunctions";
+//import {getSortedDates} from "./FunctionCharts/DataSetsFunctions";
 import {fillActivityThunk} from "../../redux/ProfileReducer";
 
 function GraphicWithArrows(props) {
@@ -24,9 +24,9 @@ function GraphicWithArrows(props) {
         setVisibleDatesLast(visibleDatesLast - 10)
         dispatch(fillActivityThunk({id:LastId, StatusView:StatusView}))
     };
-    const partialDateArray = getSortedDates(UserData, 5).slice(visibleDatesFirst,visibleDatesLast)
+   // const partialDateArray = getSortedDates(UserData, 5).slice(visibleDatesFirst,visibleDatesLast)
 
-    console.log(partialDateArray)
+
     return (
         <div>
             {
@@ -34,8 +34,8 @@ function GraphicWithArrows(props) {
                 <div className={graphic.graphics}>
                     {visibleDatesFirst >= 10 &&(
                     <button onClick={handleLessClick}><img src="/images/blue-left-arrow-inside-the-circle%20(2).svg" alt="left"/></button>)}
-                <CommonCharts data={UserData} flexGraphic={partialDateArray}/>
-                    { partialDateArray.slice(visibleDatesFirst, visibleDatesLast).length === 10  && (
+                     <CommonCharts data={UserData} />
+                    {(
                        <button onClick={handleMoreClick}><img src="/images/blue-right-arrow-inside-the-circle%20(1).svg" alt="right"/></button>)}
             </div>
             :

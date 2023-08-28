@@ -1,8 +1,8 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
 
-// const baseUrl = 'https://Akwinchester.pythonanywhere.com'
-const baseUrl = 'http://localhost:5000/'
+const baseUrl = 'https://Akwinchester.pythonanywhere.com'
+// const baseUrl = 'http://localhost:5000/'
 
 export const fillActivityThunk = createAsyncThunk(
     'profile/fillActivity',
@@ -73,7 +73,7 @@ export const editActivityThunk = createAsyncThunk(
 
 
 const initialState = {
-    UserData: [],
+    UserData: {},
     ActivityButtons: {},
     StatusView: false,
     LastId: null,
@@ -168,7 +168,7 @@ const profileSlice = createSlice({
             })
             .addCase(deleteActivityThunk.fulfilled, (state, action) => {
                 state.SelectedActivity = {activity_id:null, value:"Активность не выбрана"};
-                state.UserData = []
+                state.UserData = {}
             })
             .addCase(editActivityThunk.fulfilled, (state, action) => {
                 state.ActivityModalVisible2 = false;

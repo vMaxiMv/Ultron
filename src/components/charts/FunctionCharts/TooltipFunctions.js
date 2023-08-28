@@ -27,11 +27,12 @@ export const externalTooltipHandler = (context) => {
         return;
     }
 
-    const label = tooltip.dataPoints[0].label || '';
-    const value = tooltip.dataPoints[0].parsed.y || '';
-    const id_user = tooltip.dataPoints[0].dataset.id_user[tooltip.dataPoints[0].datasetIndex];
+    const label = tooltip.dataPoints[0].label  || '';
+    const value = tooltip.dataPoints[0].parsed.y  || '';
+    const id_user = tooltip.dataPoints[0].dataset.userId;
     const number_slot = tooltip.dataPoints[0].dataIndex;
-    const description = tooltip.dataPoints[0].dataset.description[id_user][number_slot];
+    const description = tooltip.dataPoints[0].dataset.description[number_slot];
+
 
     const html = `
     <div>
