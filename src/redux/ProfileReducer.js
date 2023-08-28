@@ -1,8 +1,8 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
 
-const baseUrl = 'https://Akwinchester.pythonanywhere.com'
-// const baseUrl = 'http://localhost:5000/'
+// const baseUrl = 'https://Akwinchester.pythonanywhere.com'
+const baseUrl = 'http://localhost:5000/'
 
 export const fillActivityThunk = createAsyncThunk(
     'profile/fillActivity',

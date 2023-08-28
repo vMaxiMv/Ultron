@@ -136,7 +136,7 @@ export function getDatasets(data) {
 
         return {
             label: data.name[userId],
-            userId: userId,
+            userId: data.user_id,
             data: data.amount[userId],
             backgroundColor: colors[index], // функция генерации случайного цвета
             borderColor: 'black',

@@ -21,12 +21,12 @@ const CommonCharts = (props) => {
             dispatch(editActivityBar(false))
             return;
         }
-        console.log(userData)
-        console.log(elements)
+
         const slot = elements[0]['index']
         const column = elements[0]['datasetIndex']
-        //const user_id = userData['datasets'][0]['userId'][column]
-        dispatch(modifyIdEntery(userData['datasets'][0]['entry_id'][slot]))
+        const user_id = userData['datasets'][0]['userId'][column]
+        console.log('Id_entry = ', userData['datasets'][column]['entry_id'][slot])
+        dispatch(modifyIdEntery(userData['datasets'][column]['entry_id'][slot]))
 
 
         // console.log('Clicked on:', elements);
@@ -75,6 +75,7 @@ const CommonCharts = (props) => {
                 },
             },
         }
+
     return (
         <div>
         <BarCharts chartData={userData} options={options} />

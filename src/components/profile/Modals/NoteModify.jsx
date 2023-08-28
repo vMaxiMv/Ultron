@@ -27,6 +27,7 @@ function NoteModify(props) {
                 statusVisibleWindow={ChangeNoteBool}
                 title="Изменение записи"
                 onSubmitHandler={(data) => dispatch(changeIdEntryThunk({idEntry: props.entry_id, changesNoteObj: data}))}
+
                 onCloseHandler={() => changeNote(false)}
                 selectOptions={null} // Здесь передаем значение null, так как в EditNote компоненте нет блока select с option
                 buttonText="Изменить"
