@@ -37,11 +37,11 @@ function NoteModal(props) {
 
                         <input {...register('description')} type="text" placeholder="Описание" className={Modify.inputField}/>
 
-                        <input {...register('date_added')} type="date" className={Modify.inputField}/>
+                        <input {...register('date_added')} type="date" className={Modify.inputField} defaultValue={new Date().toISOString().slice(0, 10)}/>
 
                         {props.selectOptions && (
                             <select {...register('option')} onChange={props.handleSelectChange} className={Modify.selectField}>
-                                <option value="">Выберите активность...</option>
+                                <option value="">{SelectedActivity.value} (Выбранная)</option>
                                 {Object.entries(props.selectOptions).map(([key, value]) => (
                                     <option key={key} value={key}>
                                         {`${value}`}

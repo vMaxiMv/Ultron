@@ -1,8 +1,8 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
 
-const baseUrl = 'https://Akwinchester.pythonanywhere.com'
-// const baseUrl = 'http://localhost:5000/'
+let baseUrl = 'http://localhost:5000/'
+baseUrl = 'https://Akwinchester.pythonanywhere.com'
 
 export const fillActivityThunk = createAsyncThunk(
     'profile/fillActivity',
@@ -86,7 +86,8 @@ const initialState = {
     SelectedActivity: {activity_id:null, value:"Активность не выбрана"},
     ActivityModalVisible2:false,
     HideMobileToolBarFlag: true,
-    OutputWindowIsOpen:false
+    OutputWindowIsOpen:false,
+    SelectedActivityValue: ''
 
 }
 
@@ -138,6 +139,9 @@ const profileSlice = createSlice({
         },
         OutputWindowIsOpenAC: (state, action)=>{
             state.OutputWindowIsOpen = action.payload
+        },
+        SelectedActivityValueAC: (state, action)=>{
+            state.SelectedActivityValue = action.payload
         }
     },
     extraReducers:(builder)=>{
@@ -193,7 +197,8 @@ export const {
     setFlagCreateNote,
     ActivityModalVisible2AC2,
     HideMobileToolBarFlagAC,
-    OutputWindowIsOpenAC
+    OutputWindowIsOpenAC,
+    SelectedActivityValueAC
 } = profileSlice.actions
 
 export default profileSlice.reducer

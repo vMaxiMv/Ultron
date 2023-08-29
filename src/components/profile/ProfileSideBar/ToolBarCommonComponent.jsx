@@ -4,7 +4,7 @@ import {
     ActivityModalVisibleAC,
     fillActivityThunk,
     HideMobileToolBarFlagAC,
-    SelectedActivityAC
+    SelectedActivityAC, setIdActivity
 } from "../../../redux/ProfileReducer";
 import {useDispatch, useSelector} from "react-redux";
 
@@ -15,6 +15,7 @@ function ToolBarCommonComponent(props) {
         StatusView,
         HideMobileToolBarFlag
     } = useSelector(state => state.Profile)
+
     const buttonActivityHandleClick = (key,value)=>{
         dispatch(fillActivityThunk({ id: key, StatusView: StatusView }))
         dispatch(SelectedActivityAC({ activity_id: key, value: value }))

@@ -44,10 +44,10 @@ function GraphicWithArrows(props) {
         dispatch(fillActivityThunk({id:LastId, StatusView:StatusView}))
     };
    // const partialDateArray = getSortedDates(UserData, 5).slice(visibleDatesFirst,visibleDatesLast)
-    console.log('visibleDatesLast',visibleDatesLast)
-console.log('UserData[date].length', UserData['date'].length)
-    console.log('NewSlicedData[date].length', NewSlicedData['date'].length)
-    console.log('\n')
+   //  console.log('visibleDatesLast',visibleDatesLast)
+   //  console.log('UserData[date].length', UserData['date'].length)
+   //  console.log('NewSlicedData[date].length', NewSlicedData['date'].length)
+   //  console.log('\n')
 
     return (
         <div>
@@ -58,7 +58,7 @@ console.log('UserData[date].length', UserData['date'].length)
                     <button onClick={handleLessClick}><img src="/images/blue-left-arrow-inside-the-circle%20(2).svg" alt="left"/></button>)}
                      <CommonCharts data={NewSlicedData} />
                     {(
-                        NewSlicedData['date'].length <= 10  && UserData['date'].length === visibleDatesLast ? '' :
+                        NewSlicedData['date'].length <= 10  && UserData['date'].length <= visibleDatesLast ? '' :
                        <button onClick={handleMoreClick}><img src="/images/blue-right-arrow-inside-the-circle%20(1).svg" alt="right"/></button>)}
             </div>
             :
