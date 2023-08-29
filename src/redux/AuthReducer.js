@@ -1,12 +1,12 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
-let baseUrl = 'http://localhost:5000/'
-baseUrl = 'https://Akwinchester.pythonanywhere.com'
+let baseUrl = 'http://localhost:5000/api'
+baseUrl = 'https://Akwinchester.pythonanywhere.com/api'
 
 export const LoginRegisterThunk = createAsyncThunk(
     'auth/loginRegister',
     async ({username, password, name},{dispatch}) =>{
-        const response = await axios.post(`${baseUrl}/api/${name}`, {username, password})
+        const response = await axios.post(`${baseUrl}/${name}`, {username, password})
         const redirectUrl = response.data['redirect_url'];
         dispatch(setRedirectUrl(redirectUrl))
         return {username, password}
@@ -15,7 +15,7 @@ export const LoginRegisterThunk = createAsyncThunk(
 export const LogoutThunk = createAsyncThunk(
     'auth/logout',
     async (_,{dispatch}) =>{
-        const response = await axios.post(`${baseUrl}/api/logout`)
+        const response = await axios.post(`${baseUrl}/logout`)
         const redirectUrl = response.data['redirect_url'];
         dispatch(setRedirectUrl(redirectUrl));
         window.location.href = redirectUrl;
