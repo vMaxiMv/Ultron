@@ -5,6 +5,7 @@ import Nav from "./components/nav/nav";
 import Profile from "./components/profile/profile";
 import FormRegistration from "./components/form_registration/form_registration";
 import Test from "./components/test/test";
+import HomeInfPage from "./components/nav/HomeInfPage";
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
   <div className="container">
     <Routes>
       <Route path={""} element={<Nav/>}/>
+      <Route path="/home" element={<HomeInfPage/>}/>
       <Route path="/login" element={<Form_login />} />
       <Route path="/registration" element={<FormRegistration />} />
       <Route path="/profile" element={<Profile />} />

@@ -12,7 +12,7 @@
 }
 .overlay{
     position: absolute;
-    height: 10em;
+    height: 27%;
     top: 6em;
     right: 3em;
     background-color: white;
@@ -28,7 +28,7 @@
 }
 
 .overlay button {
-    margin-top: 2em;
+    margin-top: 1em;
     padding: 0 1em;
     width: 100%; /* Пропорциональная ширина кнопки */
     max-width: 150px; /* Максимальная ширина кнопки */
@@ -38,6 +38,7 @@
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s;
+
 }
 .btn{
     display: flex;
@@ -45,9 +46,10 @@
 }
 @media (max-width: 768px) {
 .overlay{
-    height: 8em;
+    height: 22%;
     top: 5em;
     right: 1.5em;
+    padding: 1em 1.5em
 }
     /* Применять стили при ширине окна до 768px */
     .overlay h3 {
@@ -55,6 +57,6 @@
     }
     .overlay button {
         width: 100%;
-        font-size: 0.8em; /* Уменьшение размера текста */
+        font-size: 0.5em; /* Уменьшение размера текста */
     }
 }
