@@ -16,23 +16,23 @@ const CommonCharts = (props) => {
     const YourName = useSelector(state=>state.Auth.YourName)
     const userData = useUserData(props.data, YourName)
     const handleChartClick = (elements) => {
-
         if (!elements || elements.length === 0) {
-            dispatch(editActivityBar(false))
+          //  dispatch(editActivityBar(false))
             return;
         }
 
         const slot = elements[0]['index']
         const column = elements[0]['datasetIndex']
         const user_id = userData['datasets'][0]['userId'][column]
-        console.log('Id_entry = ', userData['datasets'][column]['entry_id'][slot])
         dispatch(modifyIdEntery(userData['datasets'][column]['entry_id'][slot]))
 
 
         // console.log('Clicked on:', elements);
         dispatch(editActivityBar(true))
     };
-
+    const handleTooltip = (context) => {
+        externalTooltipHandler(context, dispatch);
+    }
     const options = {
             onClick: (event, elements)=>handleChartClick(elements),
             responsive: true,
@@ -71,7 +71,7 @@ const CommonCharts = (props) => {
             },
                 tooltip: {
                     enabled: false,
-                    external: externalTooltipHandler,
+                    external: handleTooltip,
                 },
             },
         }

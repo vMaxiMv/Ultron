@@ -31,6 +31,7 @@ function NoteCreate(props) {
                 buttonText="Создать"
                 handleSelectChange={handleSelectChange}
                 resetId_activity={()=> dispatch(setIdActivity(null))}
+                defaultValue ={new Date().toISOString().slice(0, 10)}
             />
         </div>
 

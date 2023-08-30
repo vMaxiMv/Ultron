@@ -12,6 +12,7 @@ import Modify from "./NoteModal.module.css";
 function NoteModify(props) {
     const dispatch = useDispatch();
     const ChangeNoteBool = useSelector((state) => state.Profile.ChangeNoteBool);
+    const { valueOfEntryAmount, valueOfEntryDescription } = useSelector(state => state.Chart_Modals);
     return (
         <div className={Modify.Main_activity_bar}>
             <div onClick={()=>dispatch(editActivityBar(false))} className={Modify.CrossBlock}><img src="/images/cross.png" alt="Cross" className={Modify.close_modify_img}/></div>
@@ -27,10 +28,11 @@ function NoteModify(props) {
                 statusVisibleWindow={ChangeNoteBool}
                 title="Изменение записи"
                 onSubmitHandler={(data) => dispatch(changeIdEntryThunk({idEntry: props.entry_id, changesNoteObj: data}))}
-
                 onCloseHandler={() => changeNote(false)}
                 selectOptions={null} // Здесь передаем значение null, так как в EditNote компоненте нет блока select с option
                 buttonText="Изменить"
+                valueOfEntryDescription = {valueOfEntryDescription}
+                valueOfEntryAmount = {valueOfEntryAmount}
             />
         </div>
 

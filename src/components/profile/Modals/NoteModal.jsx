@@ -33,11 +33,11 @@ function NoteModal(props) {
                 <h3>{props.title}</h3>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className={Modify.form_main_block}>
-                        <input {...register('amount')} type="number" placeholder="Введите число" className={Modify.inputField}/>
+                        <input {...register('amount')} type="number" placeholder="Введите число" defaultValue={props.valueOfEntryAmount} className={Modify.inputField}/>
 
-                        <input {...register('description')} type="text" placeholder="Описание" className={Modify.inputField}/>
+                        <input {...register('description')} type="text" placeholder="Описание" defaultValue={props.valueOfEntryDescription}className={Modify.inputField}/>
 
-                        <input {...register('date_added')} type="date" className={Modify.inputField} defaultValue={new Date().toISOString().slice(0, 10)}/>
+                        <input {...register('date_added')} type="date" className={Modify.inputField} defaultValue={props.defaultValue}/>
 
                         {props.selectOptions && (
                             <select {...register('option')} onChange={props.handleSelectChange} className={Modify.selectField}>

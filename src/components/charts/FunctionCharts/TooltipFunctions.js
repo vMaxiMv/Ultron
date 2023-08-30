@@ -1,3 +1,5 @@
+import {valueOfEntryDescriptionAC, valueOfEntryAmountAC} from "../../../redux/Chart_Modals_Interaction_Reducer";
+
 const getOrCreateTooltip = (chart) => {
     let tooltipEl = chart.canvas.parentNode.querySelector('div');
 
@@ -18,7 +20,7 @@ const getOrCreateTooltip = (chart) => {
     return tooltipEl;
 };
 
-export const externalTooltipHandler = (context) => {
+export const externalTooltipHandler = (context, dispatch) => {
     const { chart, tooltip } = context;
     const tooltipEl = getOrCreateTooltip(chart);
 
@@ -33,6 +35,8 @@ export const externalTooltipHandler = (context) => {
     const number_slot = tooltip.dataPoints[0].dataIndex;
     const description = tooltip.dataPoints[0].dataset.description[number_slot];
 
+    dispatch(valueOfEntryAmountAC(value))
+    dispatch(valueOfEntryDescriptionAC(description))
 
     const html = `
     <div>
