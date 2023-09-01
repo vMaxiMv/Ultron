@@ -31,7 +31,7 @@ const CommonCharts = (props) => {
         dispatch(editActivityBar(true))
     };
     const handleTooltip = (context) => {
-        externalTooltipHandler(context, dispatch);
+        externalTooltipHandler(context, dispatch, IsEditActivityBarVisible);
     }
     const options = {
             onClick: (event, elements)=>handleChartClick(elements),
@@ -70,6 +70,7 @@ const CommonCharts = (props) => {
                 }
             },
                 tooltip: {
+
                     enabled: false,
                     external: handleTooltip,
                 },

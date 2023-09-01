@@ -7,7 +7,7 @@
     height: 100vh;
     position: absolute; /* Add position absolute to .menu */
     left: -27vw; /* Position the menu block at the left of .container */
-    z-index: 99; /* Set a higher z-index to make it appear on top */
+    z-index: 1; /* Set a higher z-index to make it appear on top */
     background: rgba(20,20,20,0.5);
     overflow: hidden;
     backdrop-filter: blur(1em);

@@ -67,8 +67,11 @@ function GraphicWithArrows(props) {
                             <CommonCharts data={NewSlicedData}/>
                         </div>
                         <div className={graphic.buttons}>
-                            <button ><img src="/images/blue-left-arrow-inside-the-circle%20(2).svg" alt="left"/></button>
-                            <button><img src="/images/blue-right-arrow-inside-the-circle%20(1).svg" alt="right"/></button>
+                            {visibleDatesFirst >= 10 &&(
+                            <button onClick={handleLessClick}><img src="/images/blue-left-arrow-inside-the-circle%20(2).svg" alt="left"/></button>)}
+                            {(
+                                NewSlicedData['date'].length <= 10  && UserData['date'].length <= visibleDatesLast ? '' :
+                            <button onClick={handleMoreClick}><img src="/images/blue-right-arrow-inside-the-circle%20(1).svg" alt="right"/></button>)}
                         </div>
                     </div>
             }

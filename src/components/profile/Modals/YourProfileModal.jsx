@@ -5,7 +5,6 @@ import Output from './/YourProfileModal.module.css'
 import Modal from "react-modal";
 import {OutputWindowIsOpenAC} from "../../../redux/ProfileReducer";
 import {NavLink} from "react-router-dom";
-import n from "../../nav/nav.module.css";
 
 function YourProfileModal(props) {
     const dispatch = useDispatch()
@@ -25,7 +24,7 @@ function YourProfileModal(props) {
             >
         <div className={Output.modal}>
             <h3>{YourName}</h3>
-            <div className={Output.btn}> <NavLink to="/home"> <button>Главная</button></NavLink></div>
+            <div className={Output.btn}>  <button><NavLink to="/home"><span>Главная</span></NavLink></button></div>
             <div className={Output.btn}> <button onClick={() => dispatch(LogoutThunk())}>Выйти</button></div>
         </div>
             </Modal>

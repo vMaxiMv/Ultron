@@ -30,14 +30,14 @@ function ToolBarCommonComponent(props) {
     },[HideMobileToolBarFlag])
 
     const [visibleButtonsFirst, setVisibleButtonsFirst] = useState(0); // По умолчанию показываем первые 13 кнопок
-    const [visibleButtonsLast, setVisibleButtonsLast] = useState(10)
+    const [visibleButtonsLast, setVisibleButtonsLast] = useState(5)
     const handleMoreClick = () => {
-        setVisibleButtonsFirst(visibleButtonsFirst + 10);
-        setVisibleButtonsLast(visibleButtonsLast + 10)
+        setVisibleButtonsFirst(visibleButtonsFirst + 5);
+        setVisibleButtonsLast(visibleButtonsLast + 5)
     };
     const handleLessClick = () => {
-        setVisibleButtonsFirst(visibleButtonsFirst - 10);
-        setVisibleButtonsLast(visibleButtonsLast - 10)
+        setVisibleButtonsFirst(visibleButtonsFirst - 5);
+        setVisibleButtonsLast(visibleButtonsLast - 5)
     };
 
 
@@ -45,7 +45,7 @@ function ToolBarCommonComponent(props) {
     return (
         <div className={tb.list_menu}>
             <div className={tb.title}><h2>Активности</h2></div>
-            {visibleButtonsFirst >= 10 &&(
+            {visibleButtonsFirst >= 5 &&(
             <button className={tb.add_activity} onClick={handleLessClick}>
                 <img className={tb.Add_activity_img} src="/images/blue-arrow-up-inside-the-circle.svg" alt="Less"/>
             </button>
@@ -55,7 +55,7 @@ function ToolBarCommonComponent(props) {
                     {`${value}`}
                 </button>
             ))}
-            {Object.entries(ActivityButtons).slice(visibleButtonsFirst, visibleButtonsLast).length === 10  && (
+            {Object.entries(ActivityButtons).slice(visibleButtonsFirst, visibleButtonsLast).length <= 5  && Object.entries(ActivityButtons).length <= visibleButtonsLast ? '' : (
                 <button className={tb.add_activity} onClick={handleMoreClick}>
                     <img className={tb.Add_activity_img} src="/images/blue-arrow-down-inside-the-circle4.svg" alt="More"/>
                 </button>
