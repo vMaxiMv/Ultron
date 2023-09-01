@@ -59,13 +59,13 @@ ion-icon{
 
 }
 .first_btn:hover {
-    background-color: #ff0000;
+    background-color: #ce9416;
 }
 .second_btn:hover {
     background-color: #1db28a;
 }
 .first_btn{
-    background-color: #f6073d;
+    background-color: #f9b321;
 }
 .second_btn{
     background-color: #24d7a6;
@@ -94,7 +94,7 @@ ion-icon{
         margin-bottom: 0;
     }
     .user_img img{
-        width: 45%; /* Уменьшаем отступ снизу для изображения */
+        width: 65%; /* Уменьшаем отступ снизу для изображения */
     }
     .text_block{
         margin: 0 auto;
@@ -108,5 +108,11 @@ ion-icon{
         margin: 0 ;
         font-size: 1em;
         text-align: center;
+    }
+    .buttons{
+        justify-content: center;
+    }
+    .buttons a{
+        padding: 10px 20px;
     }
 }

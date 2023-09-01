@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {changeStatusView} from "../../../redux/ProfileReducer";
 import {useDispatch, useSelector} from "react-redux";
 import checkbox from './/Checkbox.module.css'
+import {isMobile} from "react-device-detect";
 function CheckBoxActivity(props) {
     const dispatch = useDispatch()
     const SelectedActivity = useSelector(state => state.Profile.SelectedActivity)
@@ -11,8 +12,10 @@ function CheckBoxActivity(props) {
         setIsChecked(!isChecked);
         dispatch(changeStatusView(!StatusView));
     };
-    const leftIconSize = isChecked ? '3em' : '4em';
-    const rightIconSize = isChecked ? '4em' : '3em';
+    // const leftIconSize = isChecked ? '3em' : '4em';
+    // const rightIconSize = isChecked ? '4em' : '3em';
+    const leftIconSize = isChecked ? (isMobile ? '2em' : '3em') : (isMobile ? '3em' : '4em');
+    const rightIconSize = isChecked ? (isMobile ? '3em' : '4em') : (isMobile ? '2em' : '3em');
     return (
         <div className={checkbox.switchContainer}>
             <div className={checkbox.switch}>

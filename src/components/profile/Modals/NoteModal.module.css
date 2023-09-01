@@ -115,12 +115,14 @@ h3{
     justify-content: center;
     align-items: center;
     background: rgba(20, 20, 20, 0.9);
+    z-index: 1;
 }
 
 /* Define overlay styles */
 .overlay {
     top: 50%;
     left: 50%;
+    width: 25%;
     right: auto;
     bottom: auto;
     background: #499eb4;
@@ -143,3 +145,8 @@ h3{
 }
 
 /* Add any other custom styles you want to apply to the modal here */
+@media screen and (max-width: 767px) {
+    .overlay{
+        width: 80%;
+    }
+}

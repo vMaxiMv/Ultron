@@ -3,7 +3,7 @@
     box-sizing: border-box;
 }
 .CommonMenu{
-    z-index: 9999;
+    z-index: 1;
 }
 .wrapper {
     display: flex;
@@ -24,24 +24,15 @@
     border-radius: 100px;
     background: linear-gradient(to bottom, #252d3d, #499eb4);
 }
-/*-----Флажок--------и картинки слева и справа вначале-----------------------*/
-
-
-/*-----------------------------------------------------*/
+.Profile_title{
+    width: 85%;
+}
 .main_block {
     position: absolute;
     top: .5em !important;
     right: 1.5em !important;
 }
-/*.main_block button{*/
-/*    text-align: center;*/
-/*    cursor: pointer;*/
-/*    width: 4em;*/
-/*    height: 4em;*/
-/*    border-radius: 50%;*/
-/*    background-color: red;*/
-/*    font-weight: 1000;*/
-/*}*/
+
 .main_block .profile-button {
     cursor: pointer;
     background: none;
@@ -66,7 +57,7 @@
  button {
     font-size: 1em;
     margin: 17px 0;
-    width: 110%;
+    width: 100%;
     height: 30px;
     border-radius: 20px;
     cursor: pointer;

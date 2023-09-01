@@ -7,7 +7,7 @@
     height: 100vh;
     position: absolute; /* Add position absolute to .menu */
     left: -27vw; /* Position the menu block at the left of .container */
-    z-index: 1; /* Set a higher z-index to make it appear on top */
+    z-index: 0; /* Set a higher z-index to make it appear on top */
     background: rgba(20,20,20,0.5);
     overflow: hidden;
     backdrop-filter: blur(1em);
@@ -36,10 +36,11 @@
 .activity_buttons {
     display: block; /* Делаем кнопку блочным элементом, чтобы можно было применить выравнивание текста */
     width: fit-content; /* Ширина кнопки будет автоматически подстраиваться под контент */
+    height: fit-content;
     margin: 10px auto; /* Выравниваем кнопки по центру с отступами сверху и снизу */
     background-color: transparent;
     border: none;
-    padding: 0;
+    padding: 20px;
     font-size: 20px;
     color: #ffffff;
     cursor: pointer;

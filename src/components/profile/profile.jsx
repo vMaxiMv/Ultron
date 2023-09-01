@@ -74,7 +74,7 @@ function Profile(props) {
                 <div className='CommonMenu'>
                     {HideMobileToolBarFlag && <MobileMenu/>}
                 </div>
-                <h2>{SelectedActivity.value}</h2>
+                <div className="Profile_title"><h2>{SelectedActivity.value}</h2></div>
                 <AcivityInteraction/>
             <div className='main_block'>
                 <button className="profile-button" onClick={()=>dispatch(OutputWindowIsOpenAC(true))}>

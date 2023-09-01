@@ -14,3 +14,9 @@
     border: none;
     cursor: pointer;
 }
+@media screen and (max-width: 767px) {
+    .center_button{
+        width: 80px;
+        font-size: 12px;
+    }
+}
