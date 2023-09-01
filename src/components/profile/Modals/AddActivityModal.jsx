@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import M from './/Modals.module.css'
 import {useForm} from "react-hook-form";
 import {useDispatch} from "react-redux";
+import Modal from "react-modal";
+import Modify from "./NoteModal.module.css";
 
 function AddActivityModal(props) {
     const dispatch = useDispatch();
@@ -10,13 +11,7 @@ function AddActivityModal(props) {
 
     const onSubmit = async (data) => {
         try {
-            // const addActivityObj = {
-            //     name: data.name,
-            //     notification_text: data.notification_text,
-            //     checkBoxValue: checkBoxActivityBoolean ? 1 : 0
-            // };
 
-          //  await dispatch(createActivityThunk({ addActivityObj }));
             (props.onSubmitHandler(data))
 
 
@@ -26,34 +21,37 @@ function AddActivityModal(props) {
         }
     };
 
-    const CloseModalActivityHanldeClick = ()=>{
-        // dispatch(ActivityModalVisibleAC(false))
+    const closeModal = ()=>{
+
         dispatch(props.CloseModalActivityHanldeClick)
     }
     return (
-        <div className={M.modalBackground}>
-            <div className={M.modalContainer}>
+        <Modal
+            isOpen={props.OpenModalActivity}
+            onRequestClose={closeModal}
+            className={Modify.overlay}
+            overlayClassName={Modify.content}>
                 <h3>{props.title}</h3>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className={M.centeredInputs}>
-                        <input {...register('name')} type="text" placeholder="Название активности"/>
+                    <div className={Modify.form_main_block}>
+                        <input {...register('name')} type="text" placeholder="Название активности" className={Modify.inputField}/>
 
-                        <input {...register('notification_text')} type="text" placeholder="Уведомление"/>
+                        <input {...register('notification_text')} type="text" placeholder="Уведомление" className={Modify.inputField}/>
 
                         <input type="checkbox" onChange={() => setCheckBoxActivityBoolean(!checkBoxActivityBoolean)}/>
 
                     </div>
-                    <div className={M.buttonContainer}>
-                        <button className={M.buttonChangeStyles} type="submit">
+                    <div className={Modify.buttonBlockChangeStyles}>
+                        <button className={Modify.buttonChangeStyles} type="submit">
                             Отправить
                         </button>
-                        <button className={M.buttonChangeStyles} onClick={CloseModalActivityHanldeClick}>
+                        <button className={Modify.buttonChangeStyles} onClick={closeModal}>
                             Отмена
                         </button>
                     </div>
                 </form>
-            </div>
-        </div>
+
+        </Modal>
     );
 }
 
