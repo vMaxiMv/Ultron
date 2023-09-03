@@ -32,7 +32,6 @@ function Profile(props) {
         StatusView,
         LastId,
         Id_entry,
-        IsEditActivityBarVisible,
         Id_activity,
         ActivityModalVisible,
         ActivityModalVisible2,
@@ -46,13 +45,12 @@ function Profile(props) {
     useEffect(()=>{
 
     dispatch(fillActivityThunk({id:LastId, StatusView:StatusView}))
-    },[Id_entry, IsEditActivityBarVisible, Id_activity])
-    useEffect(()=>{
-        dispatch(fillActivityThunk({id:LastId, StatusView:StatusView}))
-    },[StatusView])
+    },[Id_entry, Id_activity,StatusView])
+
 
     useEffect(()=>{
         dispatch(activityButtonsThunk())
+        dispatch(GetYourNameThunk())
     },[])
 
     useEffect(()=>{
@@ -63,10 +61,11 @@ function Profile(props) {
         }
     },[redirectUrl, navigate])
 
-    useEffect(()=>{
-        dispatch(GetYourNameThunk())
-    },[])
 
+    const AddNoteFunction = ()=>{
+        dispatch(setFlagCreateNote(true))
+        dispatch(setIdActivity(LastId))
+    }
     return (
         <div className='wrapper'>
             <div className='container'>
@@ -85,14 +84,9 @@ function Profile(props) {
             <div className='mini_container'>
                 <div className='list'>
                     <CheckBoxActivity/>
-                    {SelectedActivity.activity_id !== null ? (<button onClick={()=>dispatch(setFlagCreateNote(true))}>Добавить запись</button>) :null}
-                    {FlagCreateNote&& <NoteCreate ActivityButtons={ActivityButtons}/>}
+                    {SelectedActivity.activity_id !== null ? (<button onClick={AddNoteFunction}>Добавить запись</button>) :null}
+                    {FlagCreateNote && <NoteCreate ActivityButtons={ActivityButtons}/>}
                 </div>
-                {/*<div className='graphics'>*/}
-                {/*    <button><img src="/images/blue-left-arrow-inside-the-circle%20(2).svg" alt="left"/></button>*/}
-                {/*    {  <CommonCharts data={UserData}/> }*/}
-                {/*    <button><img src="/images/blue-right-arrow-inside-the-circle%20(1).svg" alt="right"/></button>*/}
-                {/*</div>*/}
                 <div className='GraphicContainer'> {Object.keys(UserData).length > 0 && <GraphicWithArrows />}</div>
                 {ActivityModalVisible &&  <AddActivityModal
                     title='Добавление активности'

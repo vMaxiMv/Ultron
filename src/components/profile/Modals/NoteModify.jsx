@@ -3,7 +3,7 @@ import {
     changeIdEntryThunk,
     changeNote,
     deleteIdEntryThunk,
-    editActivityBar,
+    editActivityBar, fillActivityThunk,
 } from '../../../redux/ProfileReducer';
 import {useDispatch, useSelector} from 'react-redux';
 import NoteModal from './NoteModal';
@@ -11,8 +11,13 @@ import Modify from "./NoteModal.module.css";
 
 function NoteModify(props) {
     const dispatch = useDispatch();
-    const ChangeNoteBool = useSelector((state) => state.Profile.ChangeNoteBool);
     const { valueOfEntryAmount, valueOfEntryDescription } = useSelector(state => state.Chart_Modals);
+    const {FlagChangeNote} = useSelector(state => state.Profile)
+
+    const deleteNoteFunction = ()=>{
+        dispatch(deleteIdEntryThunk(props.entry_id))
+    }
+
     return (
         <div className={Modify.Main_activity_bar}>
             <div onClick={()=>dispatch(editActivityBar(false))} className={Modify.CrossBlock}><img src="/images/cross.png" alt="Cross" className={Modify.close_modify_img}/></div>
@@ -20,12 +25,12 @@ function NoteModify(props) {
             <div className={Modify.activity_bar_menu}>
                 <ul>
                     <li><button onClick={()=>dispatch(changeNote(true))}>Изменить</button></li>
-                    <li><button onClick={()=>dispatch(deleteIdEntryThunk(props.entry_id))}>Удалить</button></li>
+                    <li><button onClick={deleteNoteFunction}>Удалить</button></li>
 
                 </ul>
             </div>
             <NoteModal
-                statusVisibleWindow={ChangeNoteBool}
+                statusVisibleWindow={FlagChangeNote}
                 title="Изменение записи"
                 onSubmitHandler={(data) => dispatch(changeIdEntryThunk({idEntry: props.entry_id, changesNoteObj: data}))}
                 onCloseHandler={() => changeNote(false)}

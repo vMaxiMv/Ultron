@@ -9,6 +9,7 @@ export const fillActivityThunk = createAsyncThunk(
     async ({ id, StatusView }, { dispatch }) => {
         dispatch(setLastId(id));
        const response = await axios.post(`${baseUrl}/data_for_chart`, { id, StatusView });
+       console.log(response.data)
         return response.data
 
     }
@@ -36,7 +37,7 @@ export const changeIdEntryThunk = createAsyncThunk(
         return response.data.Id_entry;
     }
 );
-export const createIdActivityThunk = createAsyncThunk(
+export const createIdEntryThunk = createAsyncThunk(
     'profile/createIdActivity',
     async ({idActivity, changesNoteObj} ) => {
         const response = await axios.post(`${baseUrl}/create_entry/${idActivity}`, changesNoteObj);
@@ -50,7 +51,7 @@ export const createActivityThunk = createAsyncThunk(
         const  [[key, value]]  = Object.entries(response.data)
         dispatch(activityButtonsThunk());
         dispatch(SelectedActivityAC({ activity_id: key, value: value }));
-        return response
+        return response.data
     }
 )
 export const deleteActivityThunk = createAsyncThunk(
@@ -79,7 +80,7 @@ const initialState = {
     LastId: null,
     IsEditActivityBarVisible: false,
     Id_entry: null,
-    ChangeNoteBool: false,
+    FlagChangeNote: false,
     FlagCreateNote:false,
     Id_activity: null,
     ActivityModalVisible:false,
@@ -87,7 +88,7 @@ const initialState = {
     ActivityModalVisible2:false,
     HideMobileToolBarFlag: true,
     OutputWindowIsOpen:false,
-    SelectedActivityValue: ''
+
 
 }
 
@@ -113,14 +114,14 @@ const profileSlice = createSlice({
         },
         modifyIdEntery: (state, action) => {
             state.Id_entry = action.payload;
-            state.IsEditActivityBarVisible = false;
+           // state.IsEditActivityBarVisible = false;
         },
         changeNote: (state, action) => {
-            state.ChangeNoteBool = action.payload;
+            state.FlagChangeNote = action.payload;
         },
         setIdActivity: (state, action) => {
             state.Id_activity = action.payload;
-            state.IsEditActivityBarVisible = false;
+           // state.IsEditActivityBarVisible = false;
         },
         setFlagCreateNote: (state, action)=>{
             state.FlagCreateNote = action.payload
@@ -140,9 +141,7 @@ const profileSlice = createSlice({
         OutputWindowIsOpenAC: (state, action)=>{
             state.OutputWindowIsOpen = action.payload
         },
-        SelectedActivityValueAC: (state, action)=>{
-            state.SelectedActivityValue = action.payload
-        }
+
     },
     extraReducers:(builder)=>{
         builder
@@ -160,7 +159,7 @@ const profileSlice = createSlice({
                 state.Id_entry = action.payload;
                 state.IsEditActivityBarVisible = false;
             })
-            .addCase(createIdActivityThunk.fulfilled, (state, action) => {
+            .addCase(createIdEntryThunk.fulfilled, (state, action) => {
                 state.Id_activity = action.payload;
                 state.IsEditActivityBarVisible = false;
             })
@@ -198,7 +197,6 @@ export const {
     ActivityModalVisible2AC2,
     HideMobileToolBarFlagAC,
     OutputWindowIsOpenAC,
-    SelectedActivityValueAC
 } = profileSlice.actions
 
 export default profileSlice.reducer

@@ -11,9 +11,7 @@ function AddActivityModal(props) {
 
     const onSubmit = async (data) => {
         try {
-
             (props.onSubmitHandler(data))
-
 
         } catch (error) {
             console.error('Ошибка при создании активности:', error);

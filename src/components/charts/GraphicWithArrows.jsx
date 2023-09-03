@@ -6,7 +6,7 @@ import {isMobile} from "react-device-detect";
 //import {getSortedDates} from "./FunctionCharts/DataSetsFunctions";
 import {fillActivityThunk} from "../../redux/ProfileReducer";
 import {setLastDates, setNextDates} from "../../redux/Chart_Modals_Interaction_Reducer";
-
+import { useSwipeable } from 'react-swipeable'
 function GraphicWithArrows(props) {
     const UserData = useSelector(state=>state.Profile.UserData)
     const dispatch = useDispatch()
@@ -36,19 +36,22 @@ function GraphicWithArrows(props) {
     const NewSlicedData = sliceData(UserData,visibleDatesFirst, visibleDatesLast)
 
     const handleMoreClick = () => {
-        dispatch(setNextDates())
-        dispatch(fillActivityThunk({id:LastId, StatusView:StatusView}))
+        if (NewSlicedData['date'].length > 10 || UserData['date'].length > visibleDatesLast) {
+            dispatch(setNextDates());
+            dispatch(fillActivityThunk({ id: LastId, StatusView: StatusView }));
+        }
     };
     const handleLessClick = () => {
-        dispatch(setLastDates())
-        dispatch(fillActivityThunk({id:LastId, StatusView:StatusView}))
+        if (visibleDatesFirst >= 10) {
+            dispatch(setLastDates());
+            dispatch(fillActivityThunk({ id: LastId, StatusView: StatusView }));
+        }
     };
-   // const partialDateArray = getSortedDates(UserData, 5).slice(visibleDatesFirst,visibleDatesLast)
-   //  console.log('visibleDatesLast',visibleDatesLast)
-   //  console.log('UserData[date].length', UserData['date'].length)
-   //  console.log('NewSlicedData[date].length', NewSlicedData['date'].length)
-   //  console.log('\n')
 
+    const swipeHandlers = useSwipeable({
+        onSwipedLeft: handleMoreClick, // Переключаемся на следующий слайд при свайпе влево
+        onSwipedRight: handleLessClick, // Переключаемся на предыдущий слайд при свайпе вправо
+    });
     return (
         <div>
             {
@@ -63,16 +66,16 @@ function GraphicWithArrows(props) {
             </div>
             :
                     <div className={graphic.graphics_container}>
-                        <div className={graphic.graphics_mobile}>
+                        <div className={graphic.graphics_mobile}  {...swipeHandlers}>
                             <CommonCharts data={NewSlicedData}/>
                         </div>
-                        <div className={graphic.buttons}>
-                            {visibleDatesFirst >= 10 &&(
-                            <button onClick={handleLessClick}><img src="/images/blue-left-arrow-inside-the-circle%20(2).svg" alt="left"/></button>)}
-                            {(
-                                NewSlicedData['date'].length <= 10  && UserData['date'].length <= visibleDatesLast ? '' :
-                            <button onClick={handleMoreClick}><img src="/images/blue-right-arrow-inside-the-circle%20(1).svg" alt="right"/></button>)}
-                        </div>
+                        {/*<div className={graphic.buttons}>*/}
+                        {/*    {visibleDatesFirst >= 10 &&(*/}
+                        {/*    <button onClick={handleLessClick}><img src="/images/blue-left-arrow-inside-the-circle%20(2).svg" alt="left"/></button>)}*/}
+                        {/*    {(*/}
+                        {/*        NewSlicedData['date'].length <= 10  && UserData['date'].length <= visibleDatesLast ? '' :*/}
+                        {/*    <button onClick={handleMoreClick}><img src="/images/blue-right-arrow-inside-the-circle%20(1).svg" alt="right"/></button>)}*/}
+                        {/*</div>*/}
                     </div>
             }
         </div>

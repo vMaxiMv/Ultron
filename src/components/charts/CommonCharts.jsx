@@ -23,7 +23,7 @@ const CommonCharts = (props) => {
 
         const slot = elements[0]['index']
         const column = elements[0]['datasetIndex']
-        const user_id = userData['datasets'][0]['userId'][column]
+        //const user_id = userData['datasets'][0]['userId'][column]
         dispatch(modifyIdEntery(userData['datasets'][column]['entry_id'][slot]))
 
 

@@ -17,7 +17,6 @@ function Form_login(props) {
 
     const onSubmit = async (data)=>{
         const {username, password} = data;
-        console.log(data)
 const name = 'login'
         dispatch(LoginRegisterThunk({username, password, name}))
     }

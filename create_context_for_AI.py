@@ -38,7 +38,7 @@ def process_file(file_path, output):
 def create_txt(inputs, output='context.txt'):
     with open(output, 'w', encoding='utf-8', errors='ignore') as f:
         for input_path in inputs:
-            process_path(path=input_path, depth=2, output=f)
+            process_path(path=input_path, depth=3, output=f)
 
 
 inputs = [

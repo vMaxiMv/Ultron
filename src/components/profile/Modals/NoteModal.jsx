@@ -6,12 +6,12 @@ import Modify from './NoteModal.module.css'
 
 function NoteModal(props) {
     const dispatch = useDispatch();
-    const SelectedActivity = useSelector(state => state.Profile.SelectedActivity)
+    const {SelectedActivity} = useSelector(state => state.Profile)
     const { register, handleSubmit, reset } = useForm();
     const closeModal = () => {
         reset();
         dispatch(props.onCloseHandler());
-       // dispatch(props.resetId_activity())
+      // dispatch(props.resetId_activity())
     };
 
     const onSubmit = async (data) => {
