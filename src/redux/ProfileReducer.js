@@ -25,15 +25,17 @@ export const activityButtonsThunk = createAsyncThunk(
 
 export const deleteIdEntryThunk = createAsyncThunk(
     'profile/deleteIdEntry',
-    async (idEntry) => {
+    async ({idEntry, LastId, StatusView},{dispatch}) => {
         const response = await axios.delete(`${baseUrl}/delete_entry/${idEntry}`);
+        dispatch(fillActivityThunk({ id: LastId, StatusView: StatusView }))
         return response.data.Id_entry;
     }
 );
 export const changeIdEntryThunk = createAsyncThunk(
     'profile/changeIdEntry',
-    async ( {idEntry, changesNoteObj} ) => {
+    async ( { idEntry, changesNoteObj, LastId, StatusView }, { dispatch } ) => {
         const response = await axios.post(`${baseUrl}/edit_entry/${idEntry}`, changesNoteObj);
+        dispatch(fillActivityThunk({ id: LastId, StatusView: StatusView }))
         return response.data.Id_entry;
     }
 );

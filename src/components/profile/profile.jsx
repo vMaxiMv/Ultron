@@ -45,7 +45,7 @@ function Profile(props) {
     useEffect(()=>{
 
     dispatch(fillActivityThunk({id:LastId, StatusView:StatusView}))
-    },[Id_entry, Id_activity,StatusView])
+    },[Id_activity,StatusView])
 
 
     useEffect(()=>{
