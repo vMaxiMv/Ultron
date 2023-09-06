@@ -127,12 +127,15 @@ input:valid ~ label{
         width: 100%;
         height: 40px;
         border-radius: 40px;
-        background: #417786;
+        background: #499eb4;
         border: none;
         outline: none;
         cursor: pointer;
         font-size: 1em;
         font-weight: 600;
+    }
+    .inputbox label{
+        font-size: 14px;
     }
 .inputbox{
     margin: 1.8em 0;
