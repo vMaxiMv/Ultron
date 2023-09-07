@@ -24,32 +24,35 @@ function AddActivityModal(props) {
         dispatch(props.CloseModalActivityHanldeClick)
     }
     return (
-        <Modal
+        <div>
+            <Modal
             isOpen={props.OpenModalActivity}
             onRequestClose={closeModal}
             className={Modify.overlay}
             overlayClassName={Modify.content}>
-                <h3>{props.title}</h3>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className={Modify.form_main_block}>
-                        <input {...register('name')} type="text" placeholder="Название активности" className={Modify.inputField}/>
+                <div className={Modify.title}><h3>{props.title}</h3></div>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <div className={Modify.form_main_block}>
+                    <input {...register('name')} type="text" placeholder="Название активности"
+                           className={Modify.inputField}/>
 
-                        <input {...register('notification_text')} type="text" placeholder="Уведомление" className={Modify.inputField}/>
+                    <input {...register('notification_text')} type="text" placeholder="Уведомление"
+                           className={Modify.inputField}/>
 
-                        <input type="checkbox" onChange={() => setCheckBoxActivityBoolean(!checkBoxActivityBoolean)}/>
+                    <input type="checkbox" onChange={() => setCheckBoxActivityBoolean(!checkBoxActivityBoolean)}/>
 
-                    </div>
-                    <div className={Modify.buttonBlockChangeStyles}>
-                        <button className={Modify.buttonChangeStyles} type="submit">
-                            Отправить
-                        </button>
-                        <button className={Modify.buttonChangeStyles} onClick={closeModal}>
-                            Отмена
-                        </button>
-                    </div>
-                </form>
-
+                </div>
+                <div className={Modify.buttonBlockChangeStyles}>
+                    <button className={Modify.buttonChangeStyles} type="submit">
+                        Отправить
+                    </button>
+                    <button className={Modify.buttonChangeStyles} onClick={closeModal}>
+                        Отмена
+                    </button>
+                </div>
+            </form>
         </Modal>
+        </div>
     );
 }
 

@@ -30,7 +30,7 @@ function NoteModal(props) {
                 className={Modify.overlay}
                 overlayClassName={Modify.content}
             >
-                <h3>{props.title}</h3>
+                <div className={Modify.title}><h3>{props.title}</h3></div>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className={Modify.form_main_block}>
                         <input {...register('amount')} type="number" placeholder="Введите число" defaultValue={props.valueOfEntryAmount} className={Modify.inputField}/>

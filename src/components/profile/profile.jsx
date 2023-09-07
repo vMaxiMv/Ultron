@@ -1,23 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import  './profile.css';
-import CommonCharts from '../charts/CommonCharts';
 import {useDispatch, useSelector} from "react-redux";
-import {
-    activityButtonsThunk, ActivityModalVisible2AC2, ActivityModalVisibleAC, changeIdEntryThunk,
-    changeStatusView, createActivityThunk, editActivityThunk,
-    fillActivityThunk, OutputWindowIsOpenAC, setFlagCreateNote, setIdActivity
-} from "../../redux/ProfileReducer";
-import {GetYourNameThunk, LogoutThunk, resetRedirectUrlAC} from "../../redux/AuthReducer";
+import {activityButtonsThunk, fillActivityThunk, OutputWindowIsOpenAC, setFlagCreateNote, setIdActivity} from "../../redux/ProfileReducer";
+import {GetYourNameThunk, resetRedirectUrlAC} from "../../redux/AuthReducer";
 import ToolBar from "./ProfileSideBar/ToolBar";
 import MobileMenu from "./ProfileSideBar/ToolBarMobile";
 import NoteCreate from "./Modals/NoteCreate";
-import AddActivityModal from "./Modals/AddActivityModal";
 import AcivityInteraction from "./ActivityInteraction/AcivityInteraction";
 import CheckBoxActivity from "./ActivityInteraction/CheckBoxActivity";
 import YourProfileModal from "./Modals/YourProfileModal";
 import GraphicWithArrows from "../charts/GraphicWithArrows";
+import ActivityInteractionRoot from "./Modals/ActivityInteractionRoot";
 
 axios.defaults.withCredentials = true;
 
@@ -31,10 +26,7 @@ function Profile(props) {
         redirectUrl,
         StatusView,
         LastId,
-        Id_entry,
         Id_activity,
-        ActivityModalVisible,
-        ActivityModalVisible2,
         SelectedActivity,
         FlagCreateNote,
         HideMobileToolBarFlag
@@ -88,18 +80,9 @@ function Profile(props) {
                     {FlagCreateNote && <NoteCreate ActivityButtons={ActivityButtons}/>}
                 </div>
                 <div className='GraphicContainer'> {Object.keys(UserData).length > 0 && <GraphicWithArrows />}</div>
-                {ActivityModalVisible &&  <AddActivityModal
-                    title='Добавление активности'
-                    onSubmitHandler={(data) => dispatch(createActivityThunk({ addActivityObj:data }))}
-                    CloseModalActivityHanldeClick={ ActivityModalVisibleAC(false)}
-                    OpenModalActivity={ActivityModalVisible}/>}
-
-                {ActivityModalVisible2 &&  <AddActivityModal
-                    title='Редактирование активности'
-                    onSubmitHandler={(data) => dispatch(editActivityThunk({ addActivityObj:data, activity_id: SelectedActivity.activity_id}))}
-                    CloseModalActivityHanldeClick={ ActivityModalVisible2AC2(false)}
-                    OpenModalActivity={ActivityModalVisible2}
-                />}
+                <div>
+                        <ActivityInteractionRoot/>
+                </div>
             </div>
             </div>
         </div>

@@ -1,6 +1,6 @@
 .buttonBlockChangeStyles{
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     margin-top: 20px;
 }
 .buttonChangeStyles{
@@ -19,8 +19,12 @@ form input{
 form select{
     margin-top: 10px;
 }
+.title{
+    display: flex;
+    justify-content: center;
+}
 h3{
-    font-size: 30px;
+    font-size: 25px;
     margin-bottom: 10px;
     text-align: center;
 }
@@ -147,6 +151,11 @@ h3{
 }
 
 /* Add any other custom styles you want to apply to the modal here */
+@media screen and (max-width: 1030px) {
+    .overlay{
+        width: 30%;
+    }
+}
 @media screen and (max-width: 767px) {
     .overlay{
         width: 80%;

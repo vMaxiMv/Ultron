@@ -31,7 +31,7 @@ function Nav(props) {
                     <img src="images/strong-robot-white.svg" alt="logo" className={n.logo} />
                     <div className={n.main_block}>
                         <div className={n.text_block}>
-                            <p {...handlers}>{texts[currentIndex]}</p>
+                            <div className={n.slider_text}> <p {...handlers}>{texts[currentIndex]}</p></div>
                             <div className={n.slider_btns}>
                                 <div><ion-icon onClick={handlePrev} name="caret-back-outline"></ion-icon></div>
                                 <div><ion-icon onClick={handleNext} name="caret-forward-outline"></ion-icon></div>
@@ -52,7 +52,7 @@ function Nav(props) {
                         </div>
                     </div>
                     <div className={n.user_img}>
-                        <img src="images/strong-robot-white.svg" alt="Image" />
+                        <img src="images/strong-kind-robot.svg" alt="Image" />
                     </div>
                 </div>
             </div>

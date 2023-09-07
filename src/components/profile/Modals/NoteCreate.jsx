@@ -25,7 +25,6 @@ function NoteCreate(props) {
 
     return (
         <div>
-
             <NoteModal
                 statusVisibleWindow={FlagCreateNote}
                 title="Создание записи"
