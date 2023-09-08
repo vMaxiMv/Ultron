@@ -14,7 +14,7 @@
     position: absolute;
     top: 6em;
     right: 3em;
-    background-color: white;
+    background: linear-gradient(to bottom, #a2afae, #dfc28f);
     padding: 1em;
     border: 1px solid #ddd;
     border-radius: 7px;
@@ -23,6 +23,7 @@
 
 }
 .overlay h3 {
+    color: #fff;
     text-align: center;
 }
 
@@ -32,7 +33,7 @@
     width: 100%; /* Пропорциональная ширина кнопки */
     max-width: 100%; /* Максимальная ширина кнопки */
     border: none;
-    background-color: #163391;
+    background: linear-gradient(to bottom, #252d3d, #499eb4);
     color: white;
     border-radius: 4px;
     cursor: pointer;

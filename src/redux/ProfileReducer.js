@@ -167,6 +167,7 @@ const profileSlice = createSlice({
             })
             .addCase(createActivityThunk.fulfilled, (state, action) => {
                 state.ActivityModalVisible = false;
+                state.UserData = {}
             })
             .addCase(createActivityThunk.rejected, (state, action) => {
                 state.ActivityModalVisible = false;

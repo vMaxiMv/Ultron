@@ -48,7 +48,7 @@ function HomeInfPage(props) {
                     </div>
                 </div>
                 <div className={n.user_img}>
-                    <img src="images/strong-robot-white.svg" alt="Image" />
+                    <img src="images/strong-kind-robot.svg" alt="Image" />
                 </div>
             </div>
         </div>

@@ -75,9 +75,10 @@ function Profile(props) {
             </div>
             <div className='mini_container'>
                 <div className='list'>
-                    <CheckBoxActivity/>
+                    {Object.keys(UserData).length !== 0 ? <CheckBoxActivity/> : null}
                     {SelectedActivity.activity_id !== null ? (<button onClick={AddNoteFunction}>Добавить запись</button>) :null}
                     {FlagCreateNote && <NoteCreate ActivityButtons={ActivityButtons}/>}
+                    {Object.keys(UserData).length == 0 ? (<img className="sad_robot" src="/images/sad-strong-robot.svg" alt="Nothing here"/>): null}
                 </div>
                 <div className='GraphicContainer'> {Object.keys(UserData).length > 0 && <GraphicWithArrows />}</div>
                 <div>
