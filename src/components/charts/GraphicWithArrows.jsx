@@ -5,15 +5,15 @@ import graphic from './GraphicWithArrows.module.css'
 import {isMobile} from "react-device-detect";
 //import {getSortedDates} from "./FunctionCharts/DataSetsFunctions";
 import {fillActivityThunk} from "../../redux/ProfileReducer";
-import {setLastDates, setNextDates} from "../../redux/Chart_Modals_Interaction_Reducer";
+import {setLastDates, setNextDates} from "../../redux/Chart_Interaction_Reducer";
 import { useSwipeable } from 'react-swipeable'
 function GraphicWithArrows(props) {
     const UserData = useSelector(state=>state.Profile.UserData)
     const dispatch = useDispatch()
     const LastId = useSelector(state => state.Profile.LastId)
-    const StatusView = useSelector(state => state.Profile.StatusView)
+    const {StatusView} = useSelector(state=>state.Flags_Reducer)
     // console.log(getSortedDates(UserData, 5))
-    const { visibleDatesFirst, visibleDatesLast } = useSelector(state => state.Chart_Modals);
+    const { visibleDatesFirst, visibleDatesLast } = useSelector(state => state.Chart_Reducer);
 
     function sliceData(data, startPoint, endPoint) {
         const slicedData = {

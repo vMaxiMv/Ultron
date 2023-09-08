@@ -1,4 +1,4 @@
-import {valueOfEntryDescriptionAC, valueOfEntryAmountAC} from "../../../redux/Chart_Modals_Interaction_Reducer";
+import {valueOfEntryDescriptionAC, valueOfEntryAmountAC} from "../../../redux/Chart_Interaction_Reducer";
 
 const getOrCreateTooltip = (chart) => {
     let tooltipEl = chart.canvas.parentNode.querySelector('div');

@@ -1,8 +1,7 @@
 import React from 'react';
 import BarCharts from "./barCharts/BarCharts";
 import {useDispatch, useSelector} from "react-redux";
-import {editActivityBar, modifyIdEntery} from "../../redux/ProfileReducer";
-
+import {modifyIdEntery,editActivityBar} from "../../redux/ProfileReducer";
 import NoteModify from "../profile/Modals/NoteModify";
 import {externalTooltipHandler} from "./FunctionCharts/TooltipFunctions";
 import {useUserData} from "./FunctionCharts/useUserDataHook";
@@ -10,7 +9,7 @@ import {useUserData} from "./FunctionCharts/useUserDataHook";
 
 const CommonCharts = (props) => {
     const entry_id = useSelector(state => state.Profile.Id_entry)
-    const IsEditActivityBarVisible = useSelector(state=>state.Profile.IsEditActivityBarVisible)
+    const {IsEditActivityBarVisible} = useSelector(state=>state.Profile)
     const dispatch = useDispatch()
     const WhiteColor = 'white'
     const YourName = useSelector(state=>state.Auth.YourName)

@@ -3,7 +3,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import  './profile.css';
 import {useDispatch, useSelector} from "react-redux";
-import {activityButtonsThunk, fillActivityThunk, OutputWindowIsOpenAC, setFlagCreateNote, setIdActivity} from "../../redux/ProfileReducer";
+import {activityButtonsThunk, fillActivityThunk,  setIdActivity} from "../../redux/ProfileReducer";
+import {OutputWindowIsOpenAC, setFlagCreateNote} from '../../redux/FlagsBooleanReducer'
 import {GetYourNameThunk, resetRedirectUrlAC} from "../../redux/AuthReducer";
 import ToolBar from "./ProfileSideBar/ToolBar";
 import MobileMenu from "./ProfileSideBar/ToolBarMobile";
@@ -28,10 +29,8 @@ function Profile(props) {
         LastId,
         Id_activity,
         SelectedActivity,
-        FlagCreateNote,
-        HideMobileToolBarFlag
     } = useSelector(state => state.Profile);
-
+    const {HideMobileToolBarFlag,FlagCreateNote} = useSelector(state=>state.Flags_Reducer)
 
     // const [OutputModal, openOutputModal] = useState(false)
     useEffect(()=>{

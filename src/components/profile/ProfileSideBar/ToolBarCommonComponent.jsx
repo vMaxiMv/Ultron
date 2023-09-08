@@ -1,16 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import tb from "./ToolBar.module.css";
 import {
-    ActivityModalVisibleAC,
     fillActivityThunk,
-    HideMobileToolBarFlagAC,
     SelectedActivityAC,
 } from "../../../redux/ProfileReducer";
+import {
+    ActivityModalVisibleAC,
+    HideMobileToolBarFlagAC,
+} from '../../../redux/FlagsBooleanReducer'
 import {useDispatch, useSelector} from "react-redux";
 
 function ToolBarCommonComponent(props) {
     const dispatch = useDispatch()
-    const {ActivityButtons, StatusView, HideMobileToolBarFlag,} = useSelector(state => state.Profile)
+    const {ActivityButtons} = useSelector(state => state.Profile)
+    const { StatusView, HideMobileToolBarFlag} = useSelector(state=>state.Flags_Reducer)
 
     const buttonActivityHandleClick = (key,value)=>{
         dispatch(fillActivityThunk({ id: key, StatusView: StatusView }))

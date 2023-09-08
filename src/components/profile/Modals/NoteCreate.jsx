@@ -1,16 +1,18 @@
 import React, {useEffect} from 'react';
 import {
     setIdActivity,
-    setFlagCreateNote,
     createIdEntryThunk
 } from '../../../redux/ProfileReducer';
+import {
+    setFlagCreateNote
+} from '../../../redux/FlagsBooleanReducer'
 import { useDispatch, useSelector } from 'react-redux';
 import NoteModal from './NoteModal';
 import Modify from './NoteModal.module.css'
 function NoteCreate(props) {
     const dispatch = useDispatch();
     const idActivity = useSelector((state) => state.Profile.Id_activity);
-    const FlagCreateNote = useSelector((state)=> state.Profile.FlagCreateNote)
+    const {FlagCreateNote} = useSelector((state)=> state.Flags_Reducer)
     const SelectedActivity = useSelector(state => state.Profile.SelectedActivity)
 
     // useEffect(()=>{

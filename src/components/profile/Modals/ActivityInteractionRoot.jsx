@@ -1,15 +1,18 @@
 import React from 'react';
 import AddActivityModal from "./AddActivityModal";
 import {
-    ActivityModalVisible2AC2,
-    ActivityModalVisibleAC,
     createActivityThunk,
     editActivityThunk
 } from "../../../redux/ProfileReducer";
+import {
+    ActivityModalVisible2AC2,
+    ActivityModalVisibleAC,
+} from "../../../redux/FlagsBooleanReducer"
 import {useDispatch, useSelector} from "react-redux";
 
 function ActivityInteractionRoot(props) {
-    const {ActivityModalVisible, ActivityModalVisible2, SelectedActivity} = useSelector(state => state.Profile)
+    const {SelectedActivity} = useSelector(state => state.Profile)
+    const {ActivityModalVisible, ActivityModalVisible2} = useSelector(state=>state.Flags_Reducer)
     const dispatch = useDispatch()
     return (
         <div>

@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
-import {changeStatusView} from "../../../redux/ProfileReducer";
+import {changeStatusView} from "../../../redux/FlagsBooleanReducer";
 import {useDispatch, useSelector} from "react-redux";
 import checkbox from './/Checkbox.module.css'
 import {isMobile} from "react-device-detect";
 function CheckBoxActivity(props) {
     const dispatch = useDispatch()
     const SelectedActivity = useSelector(state => state.Profile.SelectedActivity)
-    const StatusView = useSelector(state => state.Profile.StatusView)
+    const {StatusView} = useSelector(state=>state.Flags_Reducer)
     const [isChecked, setIsChecked] = useState(false);
     const handleCheckboxChange = () => {
         setIsChecked(!isChecked);

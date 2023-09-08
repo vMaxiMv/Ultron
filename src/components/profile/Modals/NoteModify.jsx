@@ -1,19 +1,21 @@
 import React from 'react';
 import {
     changeIdEntryThunk,
-    changeNote,
     deleteIdEntryThunk,
-    editActivityBar, fillActivityThunk,
+    editActivityBar
 } from '../../../redux/ProfileReducer';
+import {
+    changeNote
+} from '../../../redux/FlagsBooleanReducer'
 import {useDispatch, useSelector} from 'react-redux';
 import NoteModal from './NoteModal';
 import Modify from "./NoteModal.module.css";
 
 function NoteModify(props) {
     const dispatch = useDispatch();
-    const { valueOfEntryAmount, valueOfEntryDescription } = useSelector(state => state.Chart_Modals);
-    const {FlagChangeNote, LastId, StatusView} = useSelector(state => state.Profile)
-
+    const { valueOfEntryAmount, valueOfEntryDescription } = useSelector(state => state.Chart_Reducer);
+    const { LastId } = useSelector(state => state.Profile)
+    const {FlagChangeNote,StatusView} = useSelector(state=>state.Flags_Reducer)
     const deleteNoteFunction = ()=>{
         dispatch(deleteIdEntryThunk({idEntry: props.entry_id, LastId, StatusView}))
     }

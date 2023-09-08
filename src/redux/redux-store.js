@@ -1,13 +1,15 @@
 import AuthReducer from "./AuthReducer";
 import {configureStore} from "@reduxjs/toolkit";
 import profileReducer from "./ProfileReducer";
-import Chart_Modals_Slice from "./Chart_Modals_Interaction_Reducer"
+import Chart_Interaction_Slice from "./Chart_Interaction_Reducer"
+import booleanReducer from "./FlagsBooleanReducer"
 
 const store = configureStore({
     reducer:{
         Profile: profileReducer,
         Auth: AuthReducer,
-        Chart_Modals: Chart_Modals_Slice
+        Chart_Reducer: Chart_Interaction_Slice,
+        Flags_Reducer: booleanReducer
     }
 })
 

@@ -12,7 +12,7 @@ function AddActivityModal(props) {
     const onSubmit = async (data) => {
         try {
             (props.onSubmitHandler(data))
-
+            closeModal();
         } catch (error) {
             console.error('Ошибка при создании активности:', error);
             // Обработка ошибок
@@ -20,7 +20,6 @@ function AddActivityModal(props) {
     };
 
     const closeModal = ()=>{
-
         dispatch(props.CloseModalActivityHanldeClick)
     }
     return (

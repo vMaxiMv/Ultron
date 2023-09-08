@@ -7,8 +7,8 @@ const initialState = {
     valueOfEntryDescription: ''
 }
 
-const Chart_Modals_Slice = createSlice({
-    name: 'Chart_Modals',
+const Chart_Interaction_Slice = createSlice({
+    name: 'Chart_Interaction',
     initialState,
     reducers: {
         setNextDates: (state, action)=>{
@@ -28,5 +28,5 @@ const Chart_Modals_Slice = createSlice({
     }
 })
 
-export const { setNextDates, setLastDates,valueOfEntryAmountAC,valueOfEntryDescriptionAC } = Chart_Modals_Slice.actions;
-export default Chart_Modals_Slice.reducer
+export const { setNextDates, setLastDates,valueOfEntryAmountAC,valueOfEntryDescriptionAC } = Chart_Interaction_Slice.actions;
+export default Chart_Interaction_Slice.reducer

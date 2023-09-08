@@ -3,12 +3,12 @@ import {LogoutThunk} from "../../../redux/AuthReducer";
 import {useDispatch, useSelector} from "react-redux";
 import Output from './/YourProfileModal.module.css'
 import Modal from "react-modal";
-import {OutputWindowIsOpenAC} from "../../../redux/ProfileReducer";
+import {OutputWindowIsOpenAC} from "../../../redux/FlagsBooleanReducer";
 import {NavLink} from "react-router-dom";
 
 function YourProfileModal(props) {
     const dispatch = useDispatch()
-    const OutputWindowIsOpen = useSelector(state => state.Profile.OutputWindowIsOpen)
+    const {OutputWindowIsOpen} = useSelector(state => state.Flags_Reducer)
     const YourName = useSelector(state => state.Auth.YourName)
     const CloseModal = ()=>{
         dispatch(OutputWindowIsOpenAC(false))

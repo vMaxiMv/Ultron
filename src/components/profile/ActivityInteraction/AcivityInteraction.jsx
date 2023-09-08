@@ -1,8 +1,8 @@
 import React from 'react';
 import AI from './/AcivityInteraction.module.css'
 import {useDispatch, useSelector} from "react-redux";
-import {ActivityModalVisible2AC2, deleteActivityThunk} from "../../../redux/ProfileReducer";
-
+import {deleteActivityThunk} from "../../../redux/ProfileReducer";
+import {ActivityModalVisible2AC2} from "../../../redux/FlagsBooleanReducer"
 function AcivityInteraction(props) {
     const dispatch = useDispatch()
     const SelectedActivity = useSelector(state => state.Profile.SelectedActivity)

@@ -1,4 +1,5 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import { StatusView, FlagChangeNote, FlagCreateNote, ActivityModalVisible, ActivityModalVisible2, HideMobileToolBarFlag, OutputWindowIsOpen} from "./FlagsBooleanReducer"
 import axios from "axios";
 
 let baseUrl = 'http://localhost:5000/api'
@@ -74,26 +75,23 @@ export const editActivityThunk = createAsyncThunk(
     }
 )
 
-
 const initialState = {
     UserData: {},
     ActivityButtons: {},
-    StatusView: false,
-    LastId: null,
     IsEditActivityBarVisible: false,
+    LastId: null,
     Id_entry: null,
-    FlagChangeNote: false,
-    FlagCreateNote:false,
     Id_activity: null,
-    ActivityModalVisible:false,
     SelectedActivity: {activity_id:null, value:"Активность не выбрана"},
-    ActivityModalVisible2:false,
-    HideMobileToolBarFlag: true,
-    OutputWindowIsOpen:false,
 
-
+    StatusView,
+    FlagChangeNote,
+    ActivityModalVisible,
+    ActivityModalVisible2,
+    HideMobileToolBarFlag,
+    OutputWindowIsOpen,
+    FlagCreateNote
 }
-
 
 const profileSlice = createSlice({
     name: 'profile',
@@ -105,43 +103,20 @@ const profileSlice = createSlice({
         nameActivityBtn: (state, action) => {
             state.ActivityButtons = action.payload;
         },
-        changeStatusView: (state, action) => {
-            state.StatusView = action.payload;
-        },
         setLastId: (state, action) => {
             state.LastId = action.payload;
         },
-        editActivityBar: (state, action) => {
-            state.IsEditActivityBarVisible = action.payload;
-        },
         modifyIdEntery: (state, action) => {
             state.Id_entry = action.payload;
-           // state.IsEditActivityBarVisible = false;
-        },
-        changeNote: (state, action) => {
-            state.FlagChangeNote = action.payload;
         },
         setIdActivity: (state, action) => {
             state.Id_activity = action.payload;
-           // state.IsEditActivityBarVisible = false;
-        },
-        setFlagCreateNote: (state, action)=>{
-            state.FlagCreateNote = action.payload
-        },
-        ActivityModalVisibleAC:(state, action)=>{
-            state.ActivityModalVisible = action.payload
         },
         SelectedActivityAC:(state, action)=>{
             state.SelectedActivity = action.payload
         },
-        ActivityModalVisible2AC2:(state, action)=>{
-            state.ActivityModalVisible2 = action.payload
-},
-        HideMobileToolBarFlagAC:(state, action)=>{
-            state.HideMobileToolBarFlag = action.payload
-        },
-        OutputWindowIsOpenAC: (state, action)=>{
-            state.OutputWindowIsOpen = action.payload
+        editActivityBar: (state, action) => {
+            state.IsEditActivityBarVisible = action.payload;
         },
 
     },
@@ -163,24 +138,13 @@ const profileSlice = createSlice({
             })
             .addCase(createIdEntryThunk.fulfilled, (state, action) => {
                 state.Id_activity = action.payload;
-                state.IsEditActivityBarVisible = false;
             })
             .addCase(createActivityThunk.fulfilled, (state, action) => {
-                state.ActivityModalVisible = false;
                 state.UserData = {}
-            })
-            .addCase(createActivityThunk.rejected, (state, action) => {
-                state.ActivityModalVisible = false;
             })
             .addCase(deleteActivityThunk.fulfilled, (state, action) => {
                 state.SelectedActivity = {activity_id:null, value:"Активность не выбрана"};
                 state.UserData = {}
-            })
-            .addCase(editActivityThunk.fulfilled, (state, action) => {
-                state.ActivityModalVisible2 = false;
-            })
-            .addCase(editActivityThunk.rejected, (state, action) => {
-                state.ActivityModalVisible2 = false;
             })
     }
 })
@@ -188,18 +152,11 @@ const profileSlice = createSlice({
 export const {
     fillActivityArray,
     nameActivityBtn,
-    changeStatusView,
     setLastId,
-    editActivityBar,
     modifyIdEntery,
-    changeNote,
     setIdActivity,
-    ActivityModalVisibleAC,
     SelectedActivityAC,
-    setFlagCreateNote,
-    ActivityModalVisible2AC2,
-    HideMobileToolBarFlagAC,
-    OutputWindowIsOpenAC,
+    editActivityBar
 } = profileSlice.actions
 
 export default profileSlice.reducer
