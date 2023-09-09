@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import { StatusView, FlagChangeNote, FlagCreateNote, ActivityModalVisible, ActivityModalVisible2, HideMobileToolBarFlag, OutputWindowIsOpen} from "./FlagsBooleanReducer"
+import { StatusView, FlagChangeNote, FlagCreateNote, ActivityModalVisible, ActivityModalVisible2, HideMobileToolBarFlag, OutputWindowIsOpen, LoadingStatus} from "./FlagsBooleanReducer"
 import axios from "axios";
+import {SetLoadingStatusAC} from "./FlagsBooleanReducer"
 
 let baseUrl = 'http://localhost:5000/api'
 baseUrl = 'https://Akwinchester.pythonanywhere.com/api'
@@ -9,8 +10,10 @@ export const fillActivityThunk = createAsyncThunk(
     'profile/fillActivity',
     async ({ id, StatusView }, { dispatch }) => {
         dispatch(setLastId(id));
+        dispatch(SetLoadingStatusAC(true))
        const response = await axios.post(`${baseUrl}/data_for_chart`, { id, StatusView });
        console.log(response.data)
+        dispatch(SetLoadingStatusAC(false))
         return response.data
 
     }

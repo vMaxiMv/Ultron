@@ -7,11 +7,12 @@ import {isMobile} from "react-device-detect";
 import {fillActivityThunk} from "../../redux/ProfileReducer";
 import {setLastDates, setNextDates} from "../../redux/Chart_Interaction_Reducer";
 import { useSwipeable } from 'react-swipeable'
+import Loading from "../Loading/Loading";
 function GraphicWithArrows(props) {
     const UserData = useSelector(state=>state.Profile.UserData)
     const dispatch = useDispatch()
     const LastId = useSelector(state => state.Profile.LastId)
-    const {StatusView} = useSelector(state=>state.Flags_Reducer)
+    const {StatusView,LoadingStatus} = useSelector(state=>state.Flags_Reducer)
     // console.log(getSortedDates(UserData, 5))
     const { visibleDatesFirst, visibleDatesLast } = useSelector(state => state.Chart_Reducer);
 
@@ -56,19 +57,19 @@ function GraphicWithArrows(props) {
         <div>
             {
                 !isMobile ?
-                <div className={graphic.graphics}>
+                    (LoadingStatus ?  <div className={graphic.loader}></div> : <div className={graphic.graphics}>
                     {visibleDatesFirst >= 10 &&(
                     <button onClick={handleLessClick}><img src="/images/blue-left-arrow-inside-the-circle%20(2).svg" alt="left"/></button>)}
-                     <CommonCharts data={NewSlicedData} />
+                    <CommonCharts data={NewSlicedData}/>
                     {(
                         NewSlicedData['date'].length <= 10  && UserData['date'].length <= visibleDatesLast ? '' :
                        <button onClick={handleMoreClick}><img src="/images/blue-right-arrow-inside-the-circle%20(1).svg" alt="right"/></button>)}
-            </div>
+            </div>)
             :
                     <div className={graphic.graphics_container}>
-                        <div className={graphic.graphics_mobile}  {...swipeHandlers}>
+                        {LoadingStatus ? <div className={graphic.loader}></div> :  <div className={graphic.graphics_mobile}  {...swipeHandlers}>
                             <CommonCharts data={NewSlicedData}/>
-                        </div>
+                        </div>}
                         {/*<div className={graphic.buttons}>*/}
                         {/*    {visibleDatesFirst >= 10 &&(*/}
                         {/*    <button onClick={handleLessClick}><img src="/images/blue-left-arrow-inside-the-circle%20(2).svg" alt="left"/></button>)}*/}

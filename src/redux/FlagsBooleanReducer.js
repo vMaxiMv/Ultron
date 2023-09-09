@@ -8,6 +8,7 @@ const initialState = {
     ActivityModalVisible2: false,
     HideMobileToolBarFlag: true,
     OutputWindowIsOpen: false,
+    LoadingStatus: false
 };
 
 const booleanSlice = createSlice({
@@ -35,6 +36,9 @@ const booleanSlice = createSlice({
         OutputWindowIsOpenAC: (state, action) => {
             state.OutputWindowIsOpen = action.payload;
         },
+        SetLoadingStatusAC: (state, action)=>{
+            state.LoadingStatus = action.payload
+        }
     },
 });
 export const {
@@ -45,6 +49,7 @@ export const {
     ActivityModalVisible2,
     HideMobileToolBarFlag,
     OutputWindowIsOpen,
+    LoadingStatus
 } = initialState
 export const {
     changeStatusView,
@@ -54,6 +59,7 @@ export const {
     ActivityModalVisible2AC2,
     HideMobileToolBarFlagAC,
     OutputWindowIsOpenAC,
+    SetLoadingStatusAC
 } = booleanSlice.actions;
 
 export default booleanSlice.reducer;

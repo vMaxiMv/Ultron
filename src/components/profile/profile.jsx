@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import  './profile.css';
 import {useDispatch, useSelector} from "react-redux";
-import {activityButtonsThunk, fillActivityThunk,  setIdActivity} from "../../redux/ProfileReducer";
+import {activityButtonsThunk, fillActivityThunk, setIdActivity, setLastId} from "../../redux/ProfileReducer";
 import {OutputWindowIsOpenAC, setFlagCreateNote} from '../../redux/FlagsBooleanReducer'
 import {GetYourNameThunk, resetRedirectUrlAC} from "../../redux/AuthReducer";
 import ToolBar from "./ProfileSideBar/ToolBar";
