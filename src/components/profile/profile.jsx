@@ -25,17 +25,16 @@ function Profile(props) {
     const {
         ActivityButtons,
         redirectUrl,
-        StatusView,
         LastId,
         Id_activity,
         SelectedActivity,
     } = useSelector(state => state.Profile);
-    const {HideMobileToolBarFlag,FlagCreateNote} = useSelector(state=>state.Flags_Reducer)
+    const {HideMobileToolBarFlag,FlagCreateNote,StatusView} = useSelector(state=>state.Flags_Reducer)
 
     // const [OutputModal, openOutputModal] = useState(false)
     useEffect(()=>{
 
-    dispatch(fillActivityThunk({id:LastId, StatusView:StatusView}))
+    dispatch(fillActivityThunk({id:SelectedActivity.activity_id, StatusView:StatusView}))
     },[Id_activity,StatusView])
 
 
@@ -55,7 +54,7 @@ function Profile(props) {
 
     const AddNoteFunction = ()=>{
         dispatch(setFlagCreateNote(true))
-        dispatch(setIdActivity(LastId))
+        dispatch(setIdActivity(SelectedActivity.activity_id))
     }
     return (
         <div className='wrapper'>

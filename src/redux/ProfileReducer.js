@@ -4,17 +4,17 @@ import axios from "axios";
 import {SetLoadingStatusAC} from "./FlagsBooleanReducer"
 
 let baseUrl = 'http://localhost:5000/api'
-baseUrl = 'https://ultronmotivaiton.ru/api'
+baseUrl = 'https://Akwinchester.pythonanywhere.com/api'
 
 
 export const fillActivityThunk = createAsyncThunk(
     'profile/fillActivity',
     async ({ id, StatusView }, { dispatch }) => {
-        dispatch(setLastId(id));
-        dispatch(SetLoadingStatusAC(true))
+        //dispatch(setLastId(id));
+        // dispatch(SetLoadingStatusAC(true))
        const response = await axios.post(`${baseUrl}/data_for_chart`, { id, StatusView });
        console.log(response.data)
-        dispatch(SetLoadingStatusAC(false))
+        // dispatch(SetLoadingStatusAC(false))
         return response.data
 
     }
@@ -30,17 +30,17 @@ export const activityButtonsThunk = createAsyncThunk(
 
 export const deleteIdEntryThunk = createAsyncThunk(
     'profile/deleteIdEntry',
-    async ({idEntry, LastId, StatusView},{dispatch}) => {
+    async ({idEntry, ActivitySendingId, StatusView},{dispatch}) => {
         const response = await axios.delete(`${baseUrl}/delete_entry/${idEntry}`);
-        dispatch(fillActivityThunk({ id: LastId, StatusView: StatusView }))
+        dispatch(fillActivityThunk({ id: ActivitySendingId, StatusView: StatusView }))
         return response.data.Id_entry;
     }
 );
 export const changeIdEntryThunk = createAsyncThunk(
     'profile/changeIdEntry',
-    async ( { idEntry, changesNoteObj, LastId, StatusView }, { dispatch } ) => {
+    async ( { idEntry, changesNoteObj, ActivitySendingId, StatusView }, { dispatch } ) => {
         const response = await axios.post(`${baseUrl}/edit_entry/${idEntry}`, changesNoteObj);
-        dispatch(fillActivityThunk({ id: LastId, StatusView: StatusView }))
+        dispatch(fillActivityThunk({ id: ActivitySendingId, StatusView: StatusView }))
         return response.data.Id_entry;
     }
 );
@@ -83,7 +83,7 @@ const initialState = {
     UserData: {},
     ActivityButtons: {},
     IsEditActivityBarVisible: false,
-    LastId: null,
+    // LastId: null,
     Id_entry: null,
     Id_activity: null,
     SelectedActivity: {activity_id:null, value:"Активность не выбрана"},
@@ -107,9 +107,9 @@ const profileSlice = createSlice({
         nameActivityBtn: (state, action) => {
             state.ActivityButtons = action.payload;
         },
-        setLastId: (state, action) => {
-            state.LastId = action.payload;
-        },
+        // setLastId: (state, action) => {
+        //     state.LastId = action.payload;
+        // },
         modifyIdEntery: (state, action) => {
             state.Id_entry = action.payload;
         },
@@ -156,7 +156,7 @@ const profileSlice = createSlice({
 export const {
     fillActivityArray,
     nameActivityBtn,
-    setLastId,
+    //setLastId,
     modifyIdEntery,
     setIdActivity,
     SelectedActivityAC,

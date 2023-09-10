@@ -6,7 +6,7 @@ import {
 } from "../../../redux/ProfileReducer";
 import {
     ActivityModalVisibleAC,
-    HideMobileToolBarFlagAC,
+    HideMobileToolBarFlagAC, SetLoadingStatusAC,
 } from '../../../redux/FlagsBooleanReducer'
 import {useDispatch, useSelector} from "react-redux";
 
@@ -15,8 +15,10 @@ function ToolBarCommonComponent(props) {
     const {ActivityButtons} = useSelector(state => state.Profile)
     const { StatusView, HideMobileToolBarFlag} = useSelector(state=>state.Flags_Reducer)
 
-    const buttonActivityHandleClick = (key,value)=>{
-        dispatch(fillActivityThunk({ id: key, StatusView: StatusView }))
+    const buttonActivityHandleClick = async (key,value)=>{
+        dispatch(SetLoadingStatusAC(true))
+        await dispatch(fillActivityThunk({ id: key, StatusView: StatusView }))
+        dispatch(SetLoadingStatusAC(false))
         dispatch(SelectedActivityAC({ activity_id: key, value: value }))
         dispatch(HideMobileToolBarFlagAC(false))
     }

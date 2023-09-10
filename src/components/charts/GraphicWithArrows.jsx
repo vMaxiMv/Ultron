@@ -9,9 +9,9 @@ import {setLastDates, setNextDates} from "../../redux/Chart_Interaction_Reducer"
 import { useSwipeable } from 'react-swipeable'
 import Loading from "../Loading/Loading";
 function GraphicWithArrows(props) {
-    const UserData = useSelector(state=>state.Profile.UserData)
+    const {UserData, SelectedActivity} = useSelector(state=>state.Profile)
     const dispatch = useDispatch()
-    const LastId = useSelector(state => state.Profile.LastId)
+    //const LastId = useSelector(state => state.Profile.LastId)
     const {StatusView,LoadingStatus} = useSelector(state=>state.Flags_Reducer)
     // console.log(getSortedDates(UserData, 5))
     const { visibleDatesFirst, visibleDatesLast } = useSelector(state => state.Chart_Reducer);
@@ -39,13 +39,13 @@ function GraphicWithArrows(props) {
     const handleMoreClick = () => {
         if (NewSlicedData['date'].length > 10 || UserData['date'].length > visibleDatesLast) {
             dispatch(setNextDates());
-            dispatch(fillActivityThunk({ id: LastId, StatusView: StatusView }));
+            dispatch(fillActivityThunk({ id: SelectedActivity.activity_id, StatusView: StatusView }));
         }
     };
     const handleLessClick = () => {
         if (visibleDatesFirst >= 10) {
             dispatch(setLastDates());
-            dispatch(fillActivityThunk({ id: LastId, StatusView: StatusView }));
+            dispatch(fillActivityThunk({ id: SelectedActivity.activity_id, StatusView: StatusView }));
         }
     };
 

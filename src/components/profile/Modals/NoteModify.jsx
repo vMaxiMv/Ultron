@@ -14,10 +14,10 @@ import Modify from "./NoteModal.module.css";
 function NoteModify(props) {
     const dispatch = useDispatch();
     const { valueOfEntryAmount, valueOfEntryDescription } = useSelector(state => state.Chart_Reducer);
-    const { LastId } = useSelector(state => state.Profile)
+    const { LastId, SelectedActivity } = useSelector(state => state.Profile)
     const {FlagChangeNote,StatusView} = useSelector(state=>state.Flags_Reducer)
     const deleteNoteFunction = ()=>{
-        dispatch(deleteIdEntryThunk({idEntry: props.entry_id, LastId, StatusView}))
+        dispatch(deleteIdEntryThunk({idEntry: props.entry_id, ActivitySendingId: SelectedActivity.activity_id , StatusView}))
     }
 
     return (
@@ -34,7 +34,7 @@ function NoteModify(props) {
             <NoteModal
                 statusVisibleWindow={FlagChangeNote}
                 title="Изменение записи"
-                onSubmitHandler={(data) => dispatch(changeIdEntryThunk({idEntry: props.entry_id, changesNoteObj: data,LastId, StatusView}))}
+                onSubmitHandler={(data) => dispatch(changeIdEntryThunk({idEntry: props.entry_id, changesNoteObj: data,ActivitySendingId: SelectedActivity.activity_id, StatusView}))}
                 onCloseHandler={() => changeNote(false)}
                 selectOptions={null} // Здесь передаем значение null, так как в EditNote компоненте нет блока select с option
                 buttonText="Изменить"
