@@ -14,6 +14,7 @@ import CheckBoxActivity from "./ActivityInteraction/CheckBoxActivity";
 import YourProfileModal from "./Modals/YourProfileModal";
 import GraphicWithArrows from "../charts/GraphicWithArrows";
 import ActivityInteractionRoot from "./Modals/ActivityInteractionRoot";
+import NoteAddButton from "./Modals/NoteAddButton";
 
 axios.defaults.withCredentials = true;
 
@@ -22,18 +23,10 @@ function Profile(props) {
     const UserData = useSelector(state=>state.Profile.UserData)
     const dispatch = useDispatch()
     const navigate = useNavigate();
-    const {
-        ActivityButtons,
-        redirectUrl,
-        LastId,
-        Id_activity,
-        SelectedActivity,
-    } = useSelector(state => state.Profile);
+    const {ActivityButtons, redirectUrl, Id_activity, SelectedActivity} = useSelector(state => state.Profile);
     const {HideMobileToolBarFlag,FlagCreateNote,StatusView} = useSelector(state=>state.Flags_Reducer)
 
-    // const [OutputModal, openOutputModal] = useState(false)
     useEffect(()=>{
-
     dispatch(fillActivityThunk({id:SelectedActivity.activity_id, StatusView:StatusView}))
     },[Id_activity,StatusView])
 
@@ -47,15 +40,9 @@ function Profile(props) {
         if(redirectUrl){
             navigate(redirectUrl)
             dispatch(resetRedirectUrlAC())
-
         }
     },[redirectUrl, navigate])
 
-
-    const AddNoteFunction = ()=>{
-        dispatch(setFlagCreateNote(true))
-        dispatch(setIdActivity(SelectedActivity.activity_id))
-    }
     return (
         <div className='wrapper'>
             <div className='container'>
@@ -74,7 +61,7 @@ function Profile(props) {
             <div className='mini_container'>
                 <div className='list'>
                     {Object.keys(UserData).length !== 0 ? <CheckBoxActivity/> : null}
-                    {SelectedActivity.activity_id !== null ? (<button onClick={AddNoteFunction}>Добавить запись</button>) :null}
+                    <NoteAddButton/>
                     {FlagCreateNote && <NoteCreate ActivityButtons={ActivityButtons}/>}
                     {Object.keys(UserData).length == 0 ? (<img className="sad_robot" src="/images/sad-strong-robot.svg" alt="Nothing here"/>): null}
                 </div>

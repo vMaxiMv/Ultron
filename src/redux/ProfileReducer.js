@@ -4,7 +4,8 @@ import axios from "axios";
 import {SetLoadingStatusAC} from "./FlagsBooleanReducer"
 
 let baseUrl = 'http://localhost:5000/api'
-baseUrl = 'https://Akwinchester.pythonanywhere.com/api'
+baseUrl = 'https://ultronmotivaiton.ru/api'
+
 
 
 export const fillActivityThunk = createAsyncThunk(

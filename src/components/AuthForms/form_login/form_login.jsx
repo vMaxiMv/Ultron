@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom';
 import f from "./form_login.module.css"
 import {useForm} from "react-hook-form";
 import {useDispatch, useSelector} from "react-redux";
-import {LoginRegisterThunk, resetRedirectUrlAC} from "../../redux/AuthReducer";
+import {LoginRegisterThunk, resetRedirectUrlAC} from "../../../redux/AuthReducer";
 
 
 function Form_login(props) {

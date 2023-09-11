@@ -1,9 +1,9 @@
 import "./App.css";
 import {BrowserRouter, Routes, Route} from "react-router-dom";
-import Form_login from "./components/form_login/form_login";
+import Form_login from "./components/AuthForms/form_login/form_login";
 import Nav from "./components/nav/nav";
 import Profile from "./components/profile/profile";
-import FormRegistration from "./components/form_registration/form_registration";
+import FormRegistration from "./components/AuthForms/form_registration/form_registration";
 import Test from "./components/test/test";
 import HomeInfPage from "./components/nav/HomeInfPage";
 

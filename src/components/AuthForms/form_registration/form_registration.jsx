@@ -4,7 +4,7 @@ import {NavLink, useNavigate} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
-import {LoginRegisterThunk, resetRedirectUrlAC} from "../../redux/AuthReducer";
+import {LoginRegisterThunk, resetRedirectUrlAC} from "../../../redux/AuthReducer";
 
 function FormRegistration(props) {
     const dispatch = useDispatch()

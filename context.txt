@@ -1,2849 +1,1262 @@
 ---------начало файла "src\components\charts\CommonCharts.jsx"---------
-import React from 'react';
-
-import BarCharts from "./barCharts/BarCharts";
-
-import {useDispatch, useSelector} from "react-redux";
-
-import {editActivityBar, modifyIdEntery} from "../../redux/ProfileReducer";
-
-
-
-import NoteModify from "../profile/Modals/NoteModify";
-
-import {externalTooltipHandler} from "./FunctionCharts/TooltipFunctions";
-
-import {useUserData} from "./FunctionCharts/useUserDataHook";
-
-
-
-
-
-const CommonCharts = (props) => {
-
-    const entry_id = useSelector(state => state.Profile.Id_entry)
-
-    const IsEditActivityBarVisible = useSelector(state=>state.Profile.IsEditActivityBarVisible)
-
-    const dispatch = useDispatch()
-
-    const WhiteColor = 'white'
-
-    const YourName = useSelector(state=>state.Auth.YourName)
-
-    const userData = useUserData(props.data, YourName)
-
-    const handleChartClick = (elements) => {
-
-        if (!elements || elements.length === 0) {
-
-          //  dispatch(editActivityBar(false))
-
-            return;
-
-        }
-
-
-
-        const slot = elements[0]['index']
-
-        const column = elements[0]['datasetIndex']
-
-        const user_id = userData['datasets'][0]['userId'][column]
-
-        dispatch(modifyIdEntery(userData['datasets'][column]['entry_id'][slot]))
-
-
-
-
-
-        // console.log('Clicked on:', elements);
-
-        dispatch(editActivityBar(true))
-
-    };
-
-    const handleTooltip = (context) => {
-
-        externalTooltipHandler(context, dispatch, IsEditActivityBarVisible);
-
-    }
-
-    const options = {
-
-            onClick: (event, elements)=>handleChartClick(elements),
-
-            responsive: true,
-
-            maintainAspectRatio: false,
-
-            scales: {
-
-            x: {
-
-                grid:{
-
-                    color: WhiteColor
-
-                },
-
-                ticks:{
-
-                    color: WhiteColor,
-
-                    font:{
-
-                        size:16
-
-                    }
-
-                }
-
-            },
-
-            y: {
-
-                beginAtZero: true, // Начало оси Y с 0
-
-                grid:{
-
-                    color: WhiteColor
-
-                },
-
-                ticks:{
-
-                    color: WhiteColor,
-
-                    font:{
-
-                        size:16
-
-                    }
-
-                }
-
-            }
-
-        },
-
-        plugins: {
-
-            legend: {
-
-                labels: {
-
-                    render: 'value',
-
-                    color: WhiteColor // Изменение цвета шрифта на черный
-
-                }
-
-            },
-
-                tooltip: {
-
-
-
-                    enabled: false,
-
-                    external: handleTooltip,
-
-                },
-
-            },
-
-        }
-
-
-
-    return (
-
-        <div>
-
-        <BarCharts chartData={userData} options={options} />
-
-            {IsEditActivityBarVisible && <NoteModify entry_id={entry_id}/>}
-
-        </div>
-
-    );
-
-}
-
-
-
-
-
-
-
-
-
-
-
+import React from 'react';
+import BarCharts from "./barCharts/BarCharts";
+import {useDispatch, useSelector} from "react-redux";
+import {modifyIdEntery,editActivityBar} from "../../redux/ProfileReducer";
+import NoteModify from "../profile/Modals/NoteModify";
+import {externalTooltipHandler} from "./FunctionCharts/TooltipFunctions";
+import {useUserData} from "./FunctionCharts/useUserDataHook";
+
+
+const CommonCharts = (props) => {
+    const entry_id = useSelector(state => state.Profile.Id_entry)
+    const {IsEditActivityBarVisible} = useSelector(state=>state.Profile)
+    const dispatch = useDispatch()
+    const WhiteColor = 'white'
+    const YourName = useSelector(state=>state.Auth.YourName)
+    const userData = useUserData(props.data, YourName)
+    const handleChartClick = (elements) => {
+        if (!elements || elements.length === 0) {
+          //  dispatch(editActivityBar(false))
+            return;
+        }
+
+        const slot = elements[0]['index']
+        const column = elements[0]['datasetIndex']
+        //const user_id = userData['datasets'][0]['userId'][column]
+        dispatch(modifyIdEntery(userData['datasets'][column]['entry_id'][slot]))
+
+
+        // console.log('Clicked on:', elements);
+        dispatch(editActivityBar(true))
+    };
+    const handleTooltip = (context) => {
+        externalTooltipHandler(context, dispatch, IsEditActivityBarVisible);
+    }
+    const options = {
+            onClick: (event, elements)=>handleChartClick(elements),
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+            x: {
+                grid:{
+                    color: WhiteColor
+                },
+                ticks:{
+                    color: WhiteColor,
+                    font:{
+                        size:16
+                    }
+                }
+            },
+            y: {
+                beginAtZero: true, // Начало оси Y с 0
+                grid:{
+                    color: WhiteColor
+                },
+                ticks:{
+                    color: WhiteColor,
+                    font:{
+                        size:16
+                    }
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                labels: {
+                    render: 'value',
+                    color: WhiteColor // Изменение цвета шрифта на черный
+                }
+            },
+                tooltip: {
+
+                    enabled: false,
+                    external: handleTooltip,
+                },
+            },
+        }
+
+    return (
+        <div>
+        <BarCharts chartData={userData} options={options} />
+            {IsEditActivityBarVisible && <NoteModify entry_id={entry_id}/>}
+        </div>
+    );
+}
+
+
+
+
+
 export default CommonCharts;
 ---------конец файла "src\components\charts\CommonCharts.jsx"---------
 
 
 
 ---------начало файла "src\components\charts\GraphicWithArrows.jsx"---------
-import React, {useState} from 'react';
-
-import CommonCharts from "./CommonCharts";
-
-import {useDispatch, useSelector} from "react-redux";
-
-import graphic from './GraphicWithArrows.module.css'
-
-import {isMobile} from "react-device-detect";
-
-//import {getSortedDates} from "./FunctionCharts/DataSetsFunctions";
-
-import {fillActivityThunk} from "../../redux/ProfileReducer";
-
-import {setLastDates, setNextDates} from "../../redux/Chart_Modals_Interaction_Reducer";
-
-import { useSwipeable } from 'react-swipeable'
-
-function GraphicWithArrows(props) {
-
-    const UserData = useSelector(state=>state.Profile.UserData)
-
-    const dispatch = useDispatch()
-
-    const LastId = useSelector(state => state.Profile.LastId)
-
-    const StatusView = useSelector(state => state.Profile.StatusView)
-
-    // console.log(getSortedDates(UserData, 5))
-
-    const { visibleDatesFirst, visibleDatesLast } = useSelector(state => state.Chart_Modals);
-
-
-
-    function sliceData(data, startPoint, endPoint) {
-
-        const slicedData = {
-
-            date: data.date.slice(startPoint, endPoint),
-
-            amount: {},
-
-            entry_id: {},
-
-            description: {},
-
-            user_id: data.user_id,
-
-            name: data.name
-
-        };
-
-
-
-        for (const userId in data.amount) {
-
-            slicedData.amount[userId] = data.amount[userId].slice(startPoint, endPoint);
-
-            slicedData.entry_id[userId] = data.entry_id[userId].slice(startPoint, endPoint);
-
-            slicedData.description[userId] = data.description[userId].slice(startPoint, endPoint);
-
-        }
-
-
-
-        return slicedData;
-
-    }
-
-    const NewSlicedData = sliceData(UserData,visibleDatesFirst, visibleDatesLast)
-
-
-
-    const handleMoreClick = () => {
-
-        if (NewSlicedData['date'].length > 10 || UserData['date'].length > visibleDatesLast) {
-
-            dispatch(setNextDates());
-
-            dispatch(fillActivityThunk({ id: LastId, StatusView: StatusView }));
-
-        }
-
-    };
-
-    const handleLessClick = () => {
-
-        if (visibleDatesFirst >= 10) {
-
-            dispatch(setLastDates());
-
-            dispatch(fillActivityThunk({ id: LastId, StatusView: StatusView }));
-
-        }
-
-    };
-
-
-
-    const swipeHandlers = useSwipeable({
-
-        onSwipedLeft: handleMoreClick, // Переключаемся на следующий слайд при свайпе влево
-
-        onSwipedRight: handleLessClick, // Переключаемся на предыдущий слайд при свайпе вправо
-
-    });
-
-    return (
-
-        <div>
-
-            {
-
-                !isMobile ?
-
-                <div className={graphic.graphics}>
-
-                    {visibleDatesFirst >= 10 &&(
-
-                    <button onClick={handleLessClick}><img src="/images/blue-left-arrow-inside-the-circle%20(2).svg" alt="left"/></button>)}
-
-                     <CommonCharts data={NewSlicedData} />
-
-                    {(
-
-                        NewSlicedData['date'].length <= 10  && UserData['date'].length <= visibleDatesLast ? '' :
-
-                       <button onClick={handleMoreClick}><img src="/images/blue-right-arrow-inside-the-circle%20(1).svg" alt="right"/></button>)}
-
-            </div>
-
-            :
-
-                    <div className={graphic.graphics_container}>
-
-                        <div className={graphic.graphics_mobile}  {...swipeHandlers}>
-
-                            <CommonCharts data={NewSlicedData}/>
-
-                        </div>
-
-                        {/*<div className={graphic.buttons}>*/}
-
-                        {/*    {visibleDatesFirst >= 10 &&(*/}
-
-                        {/*    <button onClick={handleLessClick}><img src="/images/blue-left-arrow-inside-the-circle%20(2).svg" alt="left"/></button>)}*/}
-
-                        {/*    {(*/}
-
-                        {/*        NewSlicedData['date'].length <= 10  && UserData['date'].length <= visibleDatesLast ? '' :*/}
-
-                        {/*    <button onClick={handleMoreClick}><img src="/images/blue-right-arrow-inside-the-circle%20(1).svg" alt="right"/></button>)}*/}
-
-                        {/*</div>*/}
-
-                    </div>
-
-            }
-
-        </div>
-
-    );
-
-}
-
-
-
+import React, {useState} from 'react';
+import CommonCharts from "./CommonCharts";
+import {useDispatch, useSelector} from "react-redux";
+import graphic from './GraphicWithArrows.module.css'
+import {isMobile} from "react-device-detect";
+//import {getSortedDates} from "./FunctionCharts/DataSetsFunctions";
+import {fillActivityThunk} from "../../redux/ProfileReducer";
+import {setLastDates, setNextDates} from "../../redux/Chart_Interaction_Reducer";
+import { useSwipeable } from 'react-swipeable'
+import Loading from "../Loading/Loading";
+function GraphicWithArrows(props) {
+    const {UserData, SelectedActivity} = useSelector(state=>state.Profile)
+    const dispatch = useDispatch()
+    //const LastId = useSelector(state => state.Profile.LastId)
+    const {StatusView,LoadingStatus} = useSelector(state=>state.Flags_Reducer)
+    // console.log(getSortedDates(UserData, 5))
+    const { visibleDatesFirst, visibleDatesLast } = useSelector(state => state.Chart_Reducer);
+
+    function sliceData(data, startPoint, endPoint) {
+        const slicedData = {
+            date: data.date.slice(startPoint, endPoint),
+            amount: {},
+            entry_id: {},
+            description: {},
+            user_id: data.user_id,
+            name: data.name
+        };
+
+        for (const userId in data.amount) {
+            slicedData.amount[userId] = data.amount[userId].slice(startPoint, endPoint);
+            slicedData.entry_id[userId] = data.entry_id[userId].slice(startPoint, endPoint);
+            slicedData.description[userId] = data.description[userId].slice(startPoint, endPoint);
+        }
+
+        return slicedData;
+    }
+    const NewSlicedData = sliceData(UserData,visibleDatesFirst, visibleDatesLast)
+
+    const handleMoreClick = () => {
+        if (NewSlicedData['date'].length > 10 || UserData['date'].length > visibleDatesLast) {
+            dispatch(setNextDates());
+            dispatch(fillActivityThunk({ id: SelectedActivity.activity_id, StatusView: StatusView }));
+        }
+    };
+    const handleLessClick = () => {
+        if (visibleDatesFirst >= 10) {
+            dispatch(setLastDates());
+            dispatch(fillActivityThunk({ id: SelectedActivity.activity_id, StatusView: StatusView }));
+        }
+    };
+
+    const swipeHandlers = useSwipeable({
+        onSwipedLeft: handleMoreClick, // Переключаемся на следующий слайд при свайпе влево
+        onSwipedRight: handleLessClick, // Переключаемся на предыдущий слайд при свайпе вправо
+    });
+    return (
+        <div>
+            {
+                !isMobile ?
+                    (LoadingStatus ?  <div className={graphic.loader}></div> : <div className={graphic.graphics}>
+                    {visibleDatesFirst >= 10 &&(
+                    <button onClick={handleLessClick}><img src="/images/blue-left-arrow-inside-the-circle%20(2).svg" alt="left"/></button>)}
+                    <CommonCharts data={NewSlicedData}/>
+                    {(
+                        NewSlicedData['date'].length <= 10  && UserData['date'].length <= visibleDatesLast ? '' :
+                       <button onClick={handleMoreClick}><img src="/images/blue-right-arrow-inside-the-circle%20(1).svg" alt="right"/></button>)}
+            </div>)
+            :
+                    <div className={graphic.graphics_container}>
+                        {LoadingStatus ? <div className={graphic.loader}></div> :  <div className={graphic.graphics_mobile}  {...swipeHandlers}>
+                            <CommonCharts data={NewSlicedData}/>
+                        </div>}
+                        {/*<div className={graphic.buttons}>*/}
+                        {/*    {visibleDatesFirst >= 10 &&(*/}
+                        {/*    <button onClick={handleLessClick}><img src="/images/blue-left-arrow-inside-the-circle%20(2).svg" alt="left"/></button>)}*/}
+                        {/*    {(*/}
+                        {/*        NewSlicedData['date'].length <= 10  && UserData['date'].length <= visibleDatesLast ? '' :*/}
+                        {/*    <button onClick={handleMoreClick}><img src="/images/blue-right-arrow-inside-the-circle%20(1).svg" alt="right"/></button>)}*/}
+                        {/*</div>*/}
+                    </div>
+            }
+        </div>
+    );
+}
+
 export default GraphicWithArrows;
 ---------конец файла "src\components\charts\GraphicWithArrows.jsx"---------
 
 
 
 ---------начало файла "src\components\charts\GraphicWithArrows.module.css"---------
-.graphics{
-
-    width: 100%;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-around;
-
+.graphics{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.graphics button{
+    display: block; /* Делаем кнопку блочным элементом, чтобы можно было применить выравнивание текста */
+    width: fit-content; /* Ширина кнопки будет автоматически подстраиваться под контент */
+    border: none;
+    background-color: transparent;
+    margin: 20px auto
+}
+.graphics button img{
+    width: 40px;
+    height: 40px;
+}
+
+
+.graphics_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px; /* Расстояние между графиком и кнопками */
+}
+
+.graphics {
+    /* Ваши стили для графика */
+}
+
+.buttons {
+    display: flex;
+    gap: 10px; /* Расстояние между кнопками */
+    justify-content: center; /* Выравнивание кнопок по центру горизонтально */
+}
+.buttons img {
+    width: 40px;
+    height: 40px;
+}
+
+.loader{
+    width: 75px;
+    height: 75px;
+    border:10px solid #007bff;
+    border-radius: 50%;
+    border-left-color: #175cc2;
+    animation: loader 1.3s linear infinite;
+}
+@keyframes loader {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+@media screen and (max-width: 767px) {
+    .loader{
+        width: 50px;
+        height: 50px;
+        margin-top: 100px;
+    }
 }
-
-.graphics button{
-
-    display: block; /* Делаем кнопку блочным элементом, чтобы можно было применить выравнивание текста */
-
-    width: fit-content; /* Ширина кнопки будет автоматически подстраиваться под контент */
-
-    border: none;
-
-    background-color: transparent;
-
-    margin: 20px auto
-
-}
-
-.graphics button img{
-
-    width: 40px;
-
-    height: 40px;
-
-}
-
-
-
-
-
-.graphics_container {
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    gap: 20px; /* Расстояние между графиком и кнопками */
-
-}
-
-
-
-.graphics {
-
-    /* Ваши стили для графика */
-
-}
-
-
-
-.buttons {
-
-    display: flex;
-
-    gap: 10px; /* Расстояние между кнопками */
-
-    justify-content: center; /* Выравнивание кнопок по центру горизонтально */
-
-}
-
-.buttons img {
-
-    width: 40px;
-
-    height: 40px;
-
-}
-
-
 ---------конец файла "src\components\charts\GraphicWithArrows.module.css"---------
 
 
 
----------начало файла "src\components\form_login\form_login.jsx"---------
-// todo rsf для быстрого создания функциональной компоненты
-
-
-
-import React, {useEffect} from 'react';
-
-import {useNavigate} from "react-router-dom";
-
-import { NavLink } from 'react-router-dom';
-
-import f from "./form_login.module.css"
-
-import {useForm} from "react-hook-form";
-
-import {useDispatch, useSelector} from "react-redux";
-
-import {LoginRegisterThunk, resetRedirectUrlAC} from "../../redux/AuthReducer";
-
-
-
-
-
-function Form_login(props) {
-
-    const dispatch = useDispatch()
-
-    const navigate = useNavigate()
-
-    const redirectUrl = useSelector(state=>state.Auth.redirectUrl)
-
-    const {register, handleSubmit, formState:{errors}} = useForm()
-
-
-
-    const onSubmit = async (data)=>{
-
-        const {username, password} = data;
-
-        console.log(data)
-
-const name = 'login'
-
-        dispatch(LoginRegisterThunk({username, password, name}))
-
-    }
-
-    useEffect(()=>{
-
-        if(redirectUrl){
-
-            navigate(redirectUrl)
-
-            dispatch(resetRedirectUrlAC())
-
-        }
-
-    },[redirectUrl, navigate])
-
-
-
-    return (
-
-        <div className={f.wrapper}>
-
-            <section className={f.container}>
-
-            <div className={f.form_box}>
-
-                <div className={f.form_value}>
-
-                    <form onSubmit={handleSubmit(onSubmit)}>
-
-                    <h2>Вход</h2>
-
-                <div className={f.inputbox}>
-
-                    <ion-icon name="person-outline"></ion-icon>
-
-                    <input {...register('username',{required:true})} type="text" required/>
-
-                    <label>Name</label>
-
-                </div>
-
-                        {errors.username && <span>Введите имя пользователя</span>}
-
-                <div className={f.inputbox}>
-
-                    <ion-icon name="lock-closed-outline"></ion-icon>
-
-                    <input {...register('password',{required:true})} type="password" required />
-
-                    <label>Password</label>
-
-                </div>
-
-                        {errors.password && <span>Введите пароль</span>}
-
-                <div className={f.forget}>
-
-                    <label htmlFor=""> <input type="checkbox"/>Remember Me <a href="">Forgot Password</a></label>
-
-                </div>
-
-                <button className={f.btn} type="submit" disabled={Object.keys(errors).length > 0}>Войти</button>
-
-                <div className={f.register}>
-
-                    <p>Нет аккаунта? <NavLink to="/registration">Зарегистрироваться</NavLink></p>
-
-                </div>
-
-            </form>
-
-                </div>
-
-            </div>
-
-            </section>
-
-        </div>
-
-    );
-
+---------начало файла "src\components\Loading\Loading.jsx"---------
+import React from 'react';
+import load from './loading.module.css'
+
+function Loading(props) {
+    return (
+        <div>
+            <img className={load.loading} src="/images/loading.gif" alt="Loading..."/>
+        </div>
+    );
+}
+
+export default Loading;
+---------конец файла "src\components\Loading\Loading.jsx"---------
+
+
+
+---------начало файла "src\components\Loading\loading.module.css"---------
+.loading{
+    width: 50px;
 }
-
-
-
-export default Form_login;
----------конец файла "src\components\form_login\form_login.jsx"---------
-
-
-
----------начало файла "src\components\form_login\form_login.module.css"---------
-*{
-
-    margin: 0;
-
-    padding: 0;
-
-}
-
-.form_box{
-
-    position: relative;
-
-    /*max-width: 400px;*/
-
-    width: 100%;
-
-    height: auto;
-
-    background: #1e6073;
-
-    border: 2px solid rgba(255,255,255,0.5);
-
-    /*backdrop-filter: blur(15px);*/
-
-    border-radius: 20px;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    padding: 3rem 3rem 3rem 3rem;
-
-}
-
-h2{
-
-    font-size: 2em;
-
-    color:#fff;
-
-    text-align: center;
-
-}
-
-.inputbox{
-
-    position: relative;
-
-    margin: 2em 0;
-
-    width: 100%;
-
-    border-bottom: 2px solid #fff;
-
-}
-
-.inputbox label{
-
-    position: absolute;
-
-    top:50%;
-
-    left: 5px;
-
-    transform: translateY(-50%);
-
-    color: #fff;
-
-    font-size: 1em;
-
-    pointer-events: none;
-
-    transition: .5s;
-
-}
-
-
-
-input:focus ~ label,
-
-input:valid ~ label{
-
-    top: -5px;
-
-}
-
-
-
-.inputbox input{
-
-    width: 100%;
-
-    height: 3em;
-
-    background: transparent;
-
-    border: none;
-
-    outline: none;
-
-    font-size: 1em;
-
-    padding: 0 35px 0 5px;
-
-    color:#fff;
-
-}
-
-
-
-.inputbox ion-icon{
-
-    position: absolute;
-
-    right: 8px;
-
-    color: #fff;
-
-    font-size: 1.2em;
-
-    top: 20px
-
-}
-
-.forget{
-
-    margin: -15px 0 15px;
-
-    font-size: .9em;
-
-    color: #fff;
-
-    display: flex;
-
-    justify-content: center;
-
-}
-
-.forget label input{
-
-    margin-right: 3px;
-
-}
-
-.forget label a{
-
-    color: #fff;
-
-    font-weight: 600;
-
-    text-decoration: none;
-
-    padding-left: 10px;
-
-}
-
-.forget label a:hover{
-
-    text-decoration: underline;
-
-}
-
-.btn:hover{
-
-    background-color: #499eb4;
-
-    color:#fff;
-
-}
-
-.btn{
-
-    width: 100%;
-
-    height: 40px;
-
-    border-radius: 40px;
-
-    background: #417786;
-
-    border: none;
-
-    outline: none;
-
-    cursor: pointer;
-
-    font-size: 1em;
-
-    font-weight: 600;
-
-}
-
-.register{
-
-    font-size: .9em;
-
-    color: #fff;
-
-    text-align: center;
-
-    margin: 25px 0 10px;
-
-}
-
-.register p a{
-
-    text-decoration: none;
-
-    color: #fff;
-
-    font-weight: 600;
-
-}
-
-.register p a:hover{
-
-    text-decoration: underline;
-
-}
-
-@media (max-width: 900px){
-
-    .form_box {
-
-        margin:0 auto;
-
-        width: 40vw;
-
-        height: auto;
-
-    }
-
-}
-
-@media (max-width: 600px) {
-
-    .form_box {
-
-        margin:0 auto;
-
-        width: 90%;
-
-        height: auto;
-
-        padding: 1.5rem 1rem;
-
-    }
-
-    .btn{
-
-        width: 100%;
-
-        height: 40px;
-
-        border-radius: 40px;
-
-        background: #417786;
-
-        border: none;
-
-        outline: none;
-
-        cursor: pointer;
-
-        font-size: 1em;
-
-        font-weight: 600;
-
-    }
-
-.inputbox{
-
-    margin: 1.8em 0;
-
-}
-
-    h2 {
-
-        font-size: 1.5rem;
-
-    }
-
-.forget{
-
-    font-size: 0.7em;
-
-}
-
-}
----------конец файла "src\components\form_login\form_login.module.css"---------
-
-
-
----------начало файла "src\components\form_registration\form_registration.jsx"---------
-import React, {useEffect} from 'react';
-
-import f from "../form_login/form_login.module.css";
-
-import {NavLink, useNavigate} from "react-router-dom";
-
-import {useForm} from "react-hook-form";
-
-import axios from "axios";
-
-import {useDispatch, useSelector} from "react-redux";
-
-import {LoginRegisterThunk, resetRedirectUrlAC} from "../../redux/AuthReducer";
-
-
-
-function FormRegistration(props) {
-
-    const dispatch = useDispatch()
-
-    const navigate = useNavigate()
-
-    const redirectUrl = useSelector(state=>state.Auth.redirectUrl)
-
-    const {register, handleSubmit, formState:{errors}} = useForm()
-
-
-
-    const onSubmit = async (data)=>{
-
-        const {username, password} = data;
-
-        console.log(data)
-
-        const name = 'register'
-
-        dispatch(LoginRegisterThunk({username, password, name}))
-
-    }
-
-    useEffect(()=>{
-
-        if(redirectUrl){
-
-            navigate(redirectUrl)
-
-            dispatch(resetRedirectUrlAC())
-
-        }
-
-    },[redirectUrl, navigate])
-
-
-
-    return (
-
-        <div className={f.wrapper}>
-
-            <section className={f.container}>
-
-                <div className={f.form_box}>
-
-                    <div className={f.form_value}>
-
-                        <form onSubmit={handleSubmit(onSubmit)}>
-
-                            <h2>Регистрация</h2>
-
-                            <div className={f.inputbox}>
-
-                                <ion-icon name="person-outline"></ion-icon>
-
-                                <input {...register('username',{required:true})} type="text" required/>
-
-                                <label>Name</label>
-
-                            </div>
-
-                            {errors.username && <span>Придумайте имя пользователя</span>}
-
-                            <div className={f.inputbox}>
-
-                                <ion-icon name="lock-closed-outline"></ion-icon>
-
-                                <input {...register('password',{required:true})} type="password" required />
-
-                                <label>Password</label>
-
-                            </div>
-
-                            {errors.password && <span>Придумайте пароль</span>}
-
-                            <div className={f.forget}>
-
-                                <label htmlFor=""> <input type="checkbox"/>Remember Me</label>
-
-                            </div>
-
-                            <button className={f.btn} disabled={Object.keys(errors).length > 0} type="submit">Зарегистрироваться</button>
-
-                        </form>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-        </div>
-
-    );
-
-}
-
-
-
-export default FormRegistration;
----------конец файла "src\components\form_registration\form_registration.jsx"---------
+---------конец файла "src\components\Loading\loading.module.css"---------
 
 
 
 ---------начало файла "src\components\nav\HomeInfPage.jsx"---------
-import React, {useState} from 'react';
-
-import n from "./nav.module.css";
-
-import {NavLink} from "react-router-dom";
-
-
-
-function HomeInfPage(props) {
-
-    const [currentIndex, setCurrentIndex] = useState(0);
-
-    const texts = [
-
-        'Приветственный текст, который вводит в курс дела, что это за продукт, какие функции, что может дать пользователю',
-
-        'Еще один текст, который также вводил в курс дела и что-то рассказывает пользователю',
-
-        'Финальный текст-инструкция, еще о чем-то информирующая пользователя',
-
-    ];
-
-
-
-
-
-    const handlePrev = () => {
-
-        setCurrentIndex((currentIndex) => (currentIndex === 0 ? texts.length - 1 : currentIndex - 1));
-
-    };
-
-
-
-    const handleNext = () => {
-
-        setCurrentIndex((currentIndex) => (currentIndex === texts.length - 1 ? 0 : currentIndex + 1));
-
-    };
-
-    return (
-
-        <div className="wrapper">
-
-            <div className={n.container}>
-
-                <img src="images/strong-robot-white.svg" alt="logo" className={n.logo} />
-
-                <div className={n.main_block}>
-
-                    <div className={n.text_block}>
-
-                        <p>{texts[currentIndex]}</p>
-
-                        <div className={n.slider_btns}>
-
-                            <div><ion-icon onClick={handlePrev} name="caret-back-outline"></ion-icon></div>
-
-                            <div><ion-icon onClick={handleNext} name="caret-forward-outline"></ion-icon></div>
-
-                        </div>
-
-
-
-                    </div>
-
-
-
-                    <div className={n.buttons}>
-
-
-
-                        <NavLink to="/profile" className={n.first_btn}>
-
-                            <div><span>Мой профиль</span></div>
-
-                        </NavLink>
-
-
-
-
-
-                    </div>
-
-                </div>
-
-                <div className={n.user_img}>
-
-                    <img src="images/strong-robot-white.svg" alt="Image" />
-
-                </div>
-
-            </div>
-
-        </div>
-
-    );
-
-}
-
-
-
+import React, {useState} from 'react';
+import n from "./nav.module.css";
+import {NavLink} from "react-router-dom";
+import { useSwipeable } from 'react-swipeable';
+
+function HomeInfPage(props) {
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const texts = [
+        'Приветственный текст, который вводит в курс дела, что это за продукт, какие функции, что может дать пользователю',
+        'Еще один текст, который также вводил в курс дела и что-то рассказывает пользователю',
+        'Финальный текст-инструкция, еще о чем-то информирующая пользователя',
+    ];
+
+
+    const handlePrev = () => {
+        setCurrentIndex((currentIndex) => (currentIndex === 0 ? texts.length - 1 : currentIndex - 1));
+    };
+
+    const handleNext = () => {
+        setCurrentIndex((currentIndex) => (currentIndex === texts.length - 1 ? 0 : currentIndex + 1));
+    };
+    const handlers = useSwipeable({
+        onSwipedLeft: handleNext, // Переключаемся на следующий слайд при свайпе влево
+        onSwipedRight: handlePrev, // Переключаемся на предыдущий слайд при свайпе вправо
+    });
+
+    return (
+        <div className="wrapper">
+            <div className={n.container}>
+                <img src="images/strong-robot-white.svg" alt="logo" className={n.logo} />
+                <div className={n.main_block}>
+                    <div className={n.text_block}>
+                        <div className={n.slider_text}> <p {...handlers}>{texts[currentIndex]}</p></div>
+                        <div className={n.slider_btns}>
+                            <div><ion-icon onClick={handlePrev} name="caret-back-outline"></ion-icon></div>
+                            <div><ion-icon onClick={handleNext} name="caret-forward-outline"></ion-icon></div>
+                        </div>
+
+                    </div>
+
+                    <div className={n.buttons}>
+
+                        <NavLink to="/profile" className={n.first_btn}>
+                            <div><span>Мой профиль</span></div>
+                        </NavLink>
+
+
+                    </div>
+                </div>
+                <div className={n.user_img}>
+                    <img src="images/strong-kind-robot.svg" alt="Image" />
+                </div>
+            </div>
+        </div>
+    );
+}
+
 export default HomeInfPage;
 ---------конец файла "src\components\nav\HomeInfPage.jsx"---------
 
 
 
 ---------начало файла "src\components\nav\nav.jsx"---------
-import React, {useState} from 'react';
-
-import { NavLink } from 'react-router-dom';
-
-import n from './nav.module.css'
-
-import { useSwipeable } from 'react-swipeable';
-
-
-
-function Nav(props) {
-
-        const [currentIndex, setCurrentIndex] = useState(0);
-
-        const texts = [
-
-            'Приветственный текст, который вводит в курс дела, что это за продукт, какие функции, что может дать пользователю',
-
-            'Еще один текст, который также вводил в курс дела и что-то рассказывает пользователю',
-
-            'Финальный текст-инструкция, еще о чем-то информирующая пользователя',
-
-        ];
-
-
-
-
-
-        const handlePrev = () => {
-
-            setCurrentIndex((currentIndex) => (currentIndex === 0 ? texts.length - 1 : currentIndex - 1));
-
-        };
-
-
-
-        const handleNext = () => {
-
-            setCurrentIndex((currentIndex) => (currentIndex === texts.length - 1 ? 0 : currentIndex + 1));
-
-        };
-
-
-
-    const handlers = useSwipeable({
-
-        onSwipedLeft: handleNext, // Переключаемся на следующий слайд при свайпе влево
-
-        onSwipedRight: handlePrev, // Переключаемся на предыдущий слайд при свайпе вправо
-
-    });
-
-
-
-    return (
-
-            <div className="wrapper">
-
-                <div className={n.container}>
-
-                    <img src="images/strong-robot-white.svg" alt="logo" className={n.logo} />
-
-                    <div className={n.main_block}>
-
-                        <div className={n.text_block}>
-
-                            <p {...handlers}>{texts[currentIndex]}</p>
-
-                            <div className={n.slider_btns}>
-
-                                <div><ion-icon onClick={handlePrev} name="caret-back-outline"></ion-icon></div>
-
-                                <div><ion-icon onClick={handleNext} name="caret-forward-outline"></ion-icon></div>
-
-                            </div>
-
-
-
-                        </div>
-
-
-
-                        <div className={n.buttons}>
-
-
-
-                            <NavLink to="/login" className={n.first_btn}>
-
-                                <span > Вход</span>
-
-                            </NavLink>
-
-
-
-                            <NavLink to="/registration" className={n.second_btn}>
-
-                                <span > Регистрация</span>
-
-                            </NavLink>
-
-
-
-                        </div>
-
-                    </div>
-
-                    <div className={n.user_img}>
-
-                        <img src="images/strong-robot-white.svg" alt="Image" />
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-
-    );
-
-}
-
-
-
+import React, {useState} from 'react';
+import { NavLink } from 'react-router-dom';
+import n from './nav.module.css'
+import { useSwipeable } from 'react-swipeable';
+
+function Nav(props) {
+        const [currentIndex, setCurrentIndex] = useState(0);
+        const texts = [
+            'Приветственный текст, который вводит в курс дела, что это за продукт, какие функции, что может дать пользователю',
+            'Еще один текст, который также вводил в курс дела и что-то рассказывает пользователю',
+            'Финальный текст-инструкция, еще о чем-то информирующая пользователя',
+        ];
+
+
+        const handlePrev = () => {
+            setCurrentIndex((currentIndex) => (currentIndex === 0 ? texts.length - 1 : currentIndex - 1));
+        };
+
+        const handleNext = () => {
+            setCurrentIndex((currentIndex) => (currentIndex === texts.length - 1 ? 0 : currentIndex + 1));
+        };
+
+    const handlers = useSwipeable({
+        onSwipedLeft: handleNext, // Переключаемся на следующий слайд при свайпе влево
+        onSwipedRight: handlePrev, // Переключаемся на предыдущий слайд при свайпе вправо
+    });
+
+    return (
+            <div className="wrapper">
+                <div className={n.container}>
+                    <img src="images/strong-robot-white.svg" alt="logo" className={n.logo} />
+                    <div className={n.main_block}>
+                        <div className={n.text_block}>
+                            <div className={n.slider_text}> <p {...handlers}>{texts[currentIndex]}</p></div>
+                            <div className={n.slider_btns}>
+                                <div><ion-icon onClick={handlePrev} name="caret-back-outline"></ion-icon></div>
+                                <div><ion-icon onClick={handleNext} name="caret-forward-outline"></ion-icon></div>
+                            </div>
+
+                        </div>
+
+                        <div className={n.buttons}>
+
+                            <NavLink to="/login" className={n.first_btn}>
+                                <span > Вход</span>
+                            </NavLink>
+
+                            <NavLink to="/registration" className={n.second_btn}>
+                                <span > Регистрация</span>
+                            </NavLink>
+
+                        </div>
+                    </div>
+                    <div className={n.user_img}>
+                        <img src="images/strong-kind-robot.svg" alt="Image" />
+                    </div>
+                </div>
+            </div>
+
+    );
+}
+
 export default Nav;
 ---------конец файла "src\components\nav\nav.jsx"---------
 
 
 
 ---------начало файла "src\components\nav\nav.module.css"---------
-.logo{
-
-    position: absolute; /* Устанавливаем позицию логотипа */
-
-    top: 10px; /* Располагаем его сверху с отступом 10 пикселей */
-
-    left: 50px; /* Располагаем его справа с отступом 10 пикселей */
-
-    width: 4em;
-
-}
-
-.container{
-
-    position: relative;
-
-    display: flex;
-
-    justify-content: space-evenly;
-
-    align-items: center;
-
-    width: 95vw;
-
-    height: 100vh;
-
-    border-radius: 100px;
-
-    background: linear-gradient(to bottom, #252d3d, #499eb4);
-
-}
-
-.text_block{
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    justify-content: center;
-
-    padding: 1.5em;
-
-    background: linear-gradient(to right, #f1f0eb, #cae2e5);
-
-    border-radius: 30px;
-
-    width: 100%;
-
-    max-width: 400px;
-
-}
-
-.text_block p{
-
-    margin: 0 ;
-
-    font-size: 1.5em;
-
-    text-align: center;
-
-}
-
-.slider_btns{
-
-    display: flex;
-
-    justify-content: space-around;
-
-    width: 100%;
-
-}
-
-
-
-ion-icon{
-
-    margin-top: 0.5em;
-
-    font-size: 3rem;
-
-    cursor: pointer;
-
-}
-
-
-
-.buttons{
-
-   display: flex;
-
-   justify-content: space-around;
-
-   margin-top: 3vh;
-
-}
-
-.buttons a{
-
-  display: inline-block;
-
-    margin: 10px;
-
-  padding: 15px 30px;
-
-  text-decoration: none;
-
-  color: #333;
-
-  font-weight: bold;
-
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-
-  transition: background-color 0.3s ease;
-
-
-
-}
-
-.first_btn:hover {
-
-    background-color: #ce9416;
-
-}
-
-.second_btn:hover {
-
-    background-color: #1db28a;
-
-}
-
-.first_btn{
-
-    background-color: #f9b321;
-
-}
-
-.second_btn{
-
-    background-color: #24d7a6;
-
-}
-
-.user_img {
-
-    display: flex;
-
-    justify-content: center;
-
-    margin-bottom: 3em;
-
-}
-
-.user_img img {
-
-    width: 100%;
-
-    max-width: 500px;
-
-    height: auto;
-
-}
-
-
-
-@media screen and (max-width: 767px) {
-
-    .container {
-
-        height: 100vh;
-
-        flex-direction: column-reverse; /* Меняем направление контейнера на вертикальное */
-
-        justify-content: space-evenly;
-
-    }
-
-    .logo{
-
-        width: 3em;
-
-    }
-
-    .user_img{
-
-        margin-bottom: 0;
-
-    }
-
-    .user_img img{
-
-        width: 65%; /* Уменьшаем отступ снизу для изображения */
-
-    }
-
-    .text_block{
-
-        margin: 0 auto;
-
-        padding: 1em;
-
-        background: linear-gradient(to right, #f1f0eb, #cae2e5);
-
-        border-radius: 30px;
-
-        width: 70%;
-
-        max-width: 400px;
-
-    }
-
-    .text_block p{
-
-        margin: 0 ;
-
-        font-size: 1em;
-
-        text-align: center;
-
-    }
-
-    .buttons{
-
-        justify-content: center;
-
-    }
-
-    .buttons a{
-
-        padding: 10px 20px;
-
-    }
-
-}
-
+.logo{
+    position: absolute; /* Устанавливаем позицию логотипа */
+    top: 10px; /* Располагаем его сверху с отступом 10 пикселей */
+    left: 50px; /* Располагаем его справа с отступом 10 пикселей */
+    width: 4em;
+}
+.container{
+    position: relative;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 95vw;
+    height: 100vh;
+    border-radius: 100px;
+    background: linear-gradient(to bottom, #252d3d, #499eb4);
+}
+.text_block{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5em;
+    background: linear-gradient(to right, #f1f0eb, #cae2e5);
+    border-radius: 30px;
+    width: 100%;
+    max-width: 400px;
+}
+.slider_text{
+    height: 170px;
+}
+.text_block p{
+    margin: 0 ;
+    font-size: 1.5em;
+    text-align: center;
+}
+.slider_btns{
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+ion-icon{
+    margin-top: 0.5em;
+    font-size: 3rem;
+    cursor: pointer;
+}
+
+.buttons{
+   display: flex;
+   justify-content: space-around;
+   margin-top: 3vh;
+}
+.buttons a{
+  display: inline-block;
+    margin: 10px;
+  padding: 15px 30px;
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  transition: background-color 0.3s ease;
+    border-radius: 30px;
+}
+.first_btn:hover {
+    background-color: #ce9416;
+}
+.second_btn:hover {
+    background-color: #1db28a;
+}
+.first_btn{
+    background-color: #f9b321;
+}
+.second_btn{
+    background-color: #24d7a6;
+}
+.user_img {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 3em;
+}
+.user_img img {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+}
+
+@media screen and (max-width: 767px) {
+    .container {
+        height: 100vh;
+        flex-direction: column-reverse; /* Меняем направление контейнера на вертикальное */
+        justify-content: space-evenly;
+    }
+    .logo{
+        width: 3em;
+    }
+    .user_img{
+        margin-bottom: 0;
+    }
+    .user_img img{
+        width: 65%; /* Уменьшаем отступ снизу для изображения */
+    }
+    .text_block{
+        margin: 0 auto;
+        padding: 1em;
+        background: linear-gradient(to right, #f1f0eb, #cae2e5);
+        border-radius: 30px;
+        width: 70%;
+        max-width: 400px;
+    }
+    .slider_text{
+        height:120px;
+    }
+    .text_block p{
+        margin: 0 ;
+        font-size: 1em;
+        text-align: center;
+    }
+    .buttons{
+        justify-content: center;
+    }
+    .buttons a{
+        padding: 10px 20px;
+    }
+}
 
 ---------конец файла "src\components\nav\nav.module.css"---------
 
 
 
 ---------начало файла "src\components\profile\profile.css"---------
-*{
-
-    list-style-type: none;
-
-    box-sizing: border-box;
-
-}
-
-.CommonMenu{
-
-    z-index: 1;
-
-}
-
-.wrapper {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    width: 100vw;
-
-    min-height: 100vh;
-
-    background: linear-gradient(to bottom, #a2afae, #dfc28f);
-
-    position: relative;
-
-}
-
-
-
-.container {
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: center;
-
-    width: 95vw;
-
-    height: 100vh;
-
-    border-radius: 100px;
-
-    background: linear-gradient(to bottom, #252d3d, #499eb4);
-
-}
-
-.Profile_title{
-
-    width: 85%;
-
-}
-
-.main_block {
-
-    position: absolute;
-
-    top: .5em !important;
-
-    right: 1.5em !important;
-
-}
-
-
-
-.main_block .profile-button {
-
-    cursor: pointer;
-
-    background: none;
-
-    border: none; /* Убираем границу кнопки */
-
-    padding: 0; /* Убираем внутренние отступы */
-
-}
-
-
-
-.main_block img {
-
-    width: 3.5em;
-
-    height: 3.5em;
-
-    border-radius: 50%;
-
-}
-
-
-
-.mini_container {
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: space-evenly;
-
-    align-items: center;
-
-    width: 100%;
-
-    flex-grow: 0.5;
-
-}
-
- button {
-
-    font-size: 1em;
-
-    margin: 17px 0;
-
-    width: 100%;
-
-    height: 30px;
-
-    border-radius: 20px;
-
-    cursor: pointer;
-
-     background-color: #007bff;
-
-     color: #fff;
-
-     border: none;
-
-}
-
-
-
-.list {
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-}
-
-
-
-.graphics{
-
-    width: 100%;
-
-    display: flex;
-
-    align-items: center;
-
-}
-
-.graphics button{
-
-    display: block; /* Делаем кнопку блочным элементом, чтобы можно было применить выравнивание текста */
-
-    width: fit-content; /* Ширина кнопки будет автоматически подстраиваться под контент */
-
-    border: none;
-
-    background-color: transparent;
-
-    margin: 20px auto
-
-}
-
-.graphics button img{
-
-    width: 40px;
-
-    height: 40px;
-
-}
-
-/*.GraphicContainer{*/
-
-/*    width: 100%;*/
-
-/*}*/
-
-
-
-@media screen and (max-width: 767px) {
-
-    .container {
-
-        border-radius: 60px;
-
-
-
-    }
-
-    /*.wrapper {*/
-
-    /*    display: flex;*/
-
-    /*    align-items: center;*/
-
-    /*    justify-content: center;*/
-
-    /*    width: 100vw;*/
-
-    /*    min-height: 100vh;*/
-
-    /*    background: linear-gradient(to bottom, #a2afae, #dfc28f);*/
-
-    /*    position: relative;*/
-
-    /*}*/
-
-
-
-    .main_block button{
-
-        width: 100%;
-
-        height: 2em;
-
-        font-size: 10px;
-
-    }
-
-
-
-h2{
-
-    margin-top: 20px;
-
-    font-size: 25px;
-
-}
-
-.list button{
-
-    font-size: 12px;
-
-
-
-}
-
-
-
-
-
-}
-
-
-
-
-
-
-
+*{
+    list-style-type: none;
+    box-sizing: border-box;
+}
+.CommonMenu{
+    z-index: 1;
+}
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    min-height: 100vh;
+    background: linear-gradient(to bottom, #a2afae, #dfc28f);
+    position: relative;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 95vw;
+    height: 100vh;
+    border-radius: 100px;
+    background: linear-gradient(to bottom, #252d3d, #499eb4);
+}
+.Profile_title{
+    width: 85%;
+}
+.main_block {
+    position: absolute;
+    top: .5em !important;
+    right: 1.5em !important;
+}
+
+.main_block .profile-button {
+    cursor: pointer;
+    background: none;
+    border: none; /* Убираем границу кнопки */
+    padding: 0; /* Убираем внутренние отступы */
+}
+
+.main_block img {
+    width: 3.5em;
+    height: 3.5em;
+    border-radius: 50%;
+}
+
+.mini_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+    flex-grow: 0.5;
+}
+ button {
+    font-size: 1em;
+    margin: 17px 0;
+    width: 150px;
+    height: 30px;
+    border-radius: 20px;
+    cursor: pointer;
+     background-color: #007bff;
+     color: #fff;
+     border: none;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.graphics{
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+.graphics button{
+    display: block; /* Делаем кнопку блочным элементом, чтобы можно было применить выравнивание текста */
+    width: fit-content; /* Ширина кнопки будет автоматически подстраиваться под контент */
+    border: none;
+    background-color: transparent;
+    margin: 20px auto
+}
+.graphics button img{
+    width: 40px;
+    height: 40px;
+}
+/*.GraphicContainer{*/
+/*    width: 100%;*/
+/*}*/
+
+@media screen and (max-width: 767px) {
+    .container {
+        border-radius: 60px;
+
+    }
+    .mini_container{
+        flex-grow: 0;
+    }
+
+    .main_block button{
+        width: 100%;
+        height: 2em;
+        font-size: 10px;
+    }
+
+    h2{
+        margin-top: 20px;
+        font-size: 25px;
+        }
+
+    .list button{
+        font-size: 12px;
+        }
+    .sad_robot{
+        width: 300px;
+        }
+
+
+}
+
+
+
 
 ---------конец файла "src\components\profile\profile.css"---------
 
 
 
 ---------начало файла "src\components\profile\profile.jsx"---------
-import React, {useEffect, useState} from 'react';
-
-import axios from 'axios';
-
-import { useNavigate } from 'react-router-dom';
-
-import  './profile.css';
-
-import CommonCharts from '../charts/CommonCharts';
-
-import {useDispatch, useSelector} from "react-redux";
-
-import {
-
-    activityButtonsThunk, ActivityModalVisible2AC2, ActivityModalVisibleAC, changeIdEntryThunk,
-
-    changeStatusView, createActivityThunk, editActivityThunk,
-
-    fillActivityThunk, OutputWindowIsOpenAC, setFlagCreateNote, setIdActivity
-
-} from "../../redux/ProfileReducer";
-
-import {GetYourNameThunk, LogoutThunk, resetRedirectUrlAC} from "../../redux/AuthReducer";
-
-import ToolBar from "./ProfileSideBar/ToolBar";
-
-import MobileMenu from "./ProfileSideBar/ToolBarMobile";
-
-import NoteCreate from "./Modals/NoteCreate";
-
-import AddActivityModal from "./Modals/AddActivityModal";
-
-import AcivityInteraction from "./ActivityInteraction/AcivityInteraction";
-
-import CheckBoxActivity from "./ActivityInteraction/CheckBoxActivity";
-
-import YourProfileModal from "./Modals/YourProfileModal";
-
-import GraphicWithArrows from "../charts/GraphicWithArrows";
-
-
-
-axios.defaults.withCredentials = true;
-
-
-
-
-
-function Profile(props) {
-
-    const UserData = useSelector(state=>state.Profile.UserData)
-
-    const dispatch = useDispatch()
-
-    const navigate = useNavigate();
-
-    const {
-
-        ActivityButtons,
-
-        redirectUrl,
-
-        StatusView,
-
-        LastId,
-
-        Id_entry,
-
-        IsEditActivityBarVisible,
-
-        Id_activity,
-
-        ActivityModalVisible,
-
-        ActivityModalVisible2,
-
-        SelectedActivity,
-
-        FlagCreateNote,
-
-        HideMobileToolBarFlag
-
-    } = useSelector(state => state.Profile);
-
-
-
-
-
-    // const [OutputModal, openOutputModal] = useState(false)
-
-    useEffect(()=>{
-
-
-
-    dispatch(fillActivityThunk({id:LastId, StatusView:StatusView}))
-
-    },[Id_entry, IsEditActivityBarVisible, Id_activity])
-
-    useEffect(()=>{
-
-        dispatch(fillActivityThunk({id:LastId, StatusView:StatusView}))
-
-    },[StatusView])
-
-
-
-    useEffect(()=>{
-
-        dispatch(activityButtonsThunk())
-
-    },[])
-
-
-
-    useEffect(()=>{
-
-        if(redirectUrl){
-
-            navigate(redirectUrl)
-
-            dispatch(resetRedirectUrlAC())
-
-
-
-        }
-
-    },[redirectUrl, navigate])
-
-
-
-    useEffect(()=>{
-
-        dispatch(GetYourNameThunk())
-
-    },[])
-
-
-
-    return (
-
-        <div className='wrapper'>
-
-            <div className='container'>
-
-                <ToolBar/>
-
-                <div className='CommonMenu'>
-
-                    {HideMobileToolBarFlag && <MobileMenu/>}
-
-                </div>
-
-                <div className="Profile_title"><h2>{SelectedActivity.value}</h2></div>
-
-                <AcivityInteraction/>
-
-            <div className='main_block'>
-
-                <button className="profile-button" onClick={()=>dispatch(OutputWindowIsOpenAC(true))}>
-
-                    <img src="/images/full-face-robot-.svg" alt="Your profile"/>
-
-                </button>
-
-                { <YourProfileModal/>}
-
-            </div>
-
-            <div className='mini_container'>
-
-                <div className='list'>
-
-                    <CheckBoxActivity/>
-
-                    {SelectedActivity.activity_id !== null ? (<button onClick={()=>dispatch(setFlagCreateNote(true))}>Добавить запись</button>) :null}
-
-                    {FlagCreateNote&& <NoteCreate ActivityButtons={ActivityButtons}/>}
-
-                </div>
-
-                {/*<div className='graphics'>*/}
-
-                {/*    <button><img src="/images/blue-left-arrow-inside-the-circle%20(2).svg" alt="left"/></button>*/}
-
-                {/*    {  <CommonCharts data={UserData}/> }*/}
-
-                {/*    <button><img src="/images/blue-right-arrow-inside-the-circle%20(1).svg" alt="right"/></button>*/}
-
-                {/*</div>*/}
-
-                <div className='GraphicContainer'> {Object.keys(UserData).length > 0 && <GraphicWithArrows />}</div>
-
-                {ActivityModalVisible &&  <AddActivityModal
-
-                    title='Добавление активности'
-
-                    onSubmitHandler={(data) => dispatch(createActivityThunk({ addActivityObj:data }))}
-
-                    CloseModalActivityHanldeClick={ ActivityModalVisibleAC(false)}
-
-                    OpenModalActivity={ActivityModalVisible}/>}
-
-
-
-                {ActivityModalVisible2 &&  <AddActivityModal
-
-                    title='Редактирование активности'
-
-                    onSubmitHandler={(data) => dispatch(editActivityThunk({ addActivityObj:data, activity_id: SelectedActivity.activity_id}))}
-
-                    CloseModalActivityHanldeClick={ ActivityModalVisible2AC2(false)}
-
-                    OpenModalActivity={ActivityModalVisible2}
-
-                />}
-
-            </div>
-
-            </div>
-
-        </div>
-
-    );
-
-}
-
-
-
-export default Profile;
-
+import React, {useEffect} from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import  './profile.css';
+import {useDispatch, useSelector} from "react-redux";
+import {activityButtonsThunk, fillActivityThunk, setIdActivity, setLastId} from "../../redux/ProfileReducer";
+import {OutputWindowIsOpenAC, setFlagCreateNote} from '../../redux/FlagsBooleanReducer'
+import {GetYourNameThunk, resetRedirectUrlAC} from "../../redux/AuthReducer";
+import ToolBar from "./ProfileSideBar/ToolBar";
+import MobileMenu from "./ProfileSideBar/ToolBarMobile";
+import NoteCreate from "./Modals/NoteCreate";
+import AcivityInteraction from "./ActivityInteraction/AcivityInteraction";
+import CheckBoxActivity from "./ActivityInteraction/CheckBoxActivity";
+import YourProfileModal from "./Modals/YourProfileModal";
+import GraphicWithArrows from "../charts/GraphicWithArrows";
+import ActivityInteractionRoot from "./Modals/ActivityInteractionRoot";
+import NoteAddButton from "./Modals/NoteAddButton";
+
+axios.defaults.withCredentials = true;
+
+
+function Profile(props) {
+    const UserData = useSelector(state=>state.Profile.UserData)
+    const dispatch = useDispatch()
+    const navigate = useNavigate();
+    const {ActivityButtons, redirectUrl, Id_activity, SelectedActivity} = useSelector(state => state.Profile);
+    const {HideMobileToolBarFlag,FlagCreateNote,StatusView} = useSelector(state=>state.Flags_Reducer)
+
+    useEffect(()=>{
+    dispatch(fillActivityThunk({id:SelectedActivity.activity_id, StatusView:StatusView}))
+    },[Id_activity,StatusView])
+
+
+    useEffect(()=>{
+        dispatch(activityButtonsThunk())
+        dispatch(GetYourNameThunk())
+    },[])
+
+    useEffect(()=>{
+        if(redirectUrl){
+            navigate(redirectUrl)
+            dispatch(resetRedirectUrlAC())
+        }
+    },[redirectUrl, navigate])
+
+    return (
+        <div className='wrapper'>
+            <div className='container'>
+                <ToolBar/>
+                <div className='CommonMenu'>
+                    {HideMobileToolBarFlag && <MobileMenu/>}
+                </div>
+                <div className="Profile_title"><h2>{SelectedActivity.value}</h2></div>
+                <AcivityInteraction/>
+            <div className='main_block'>
+                <button className="profile-button" onClick={()=>dispatch(OutputWindowIsOpenAC(true))}>
+                    <img src="/images/full-face-robot-.svg" alt="Your profile"/>
+                </button>
+                { <YourProfileModal/>}
+            </div>
+            <div className='mini_container'>
+                <div className='list'>
+                    {Object.keys(UserData).length !== 0 ? <CheckBoxActivity/> : null}
+                    <NoteAddButton/>
+                    {FlagCreateNote && <NoteCreate ActivityButtons={ActivityButtons}/>}
+                    {Object.keys(UserData).length == 0 ? (<img className="sad_robot" src="/images/sad-strong-robot.svg" alt="Nothing here"/>): null}
+                </div>
+                <div className='GraphicContainer'> {Object.keys(UserData).length > 0 && <GraphicWithArrows />}</div>
+                <div>
+                        <ActivityInteractionRoot/>
+                </div>
+            </div>
+            </div>
+        </div>
+    );
+}
+
+export default Profile;
 
 ---------конец файла "src\components\profile\profile.jsx"---------
 
 
 
 ---------начало файла "src\components\test\test.css"---------
-.test {
-
-    position: fixed;
-
-    top: 50%;
-
-    left: 50%;
-
-    transform: translate(-50%, -50%);
-
-    width: 300px;
-
-    max-width: 90%;
-
-    padding: 20px;
-
-    background: rgba(20, 20, 20, 0.5);
-
-    border-radius: 10px;
-
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-
-}
-
-
-
-.test_title {
-
-    text-align: center;
-
-    margin-bottom: 15px;
-
-}
-
-
-
-.test_title h2 {
-
-    color: white;
-
-    font-size: 24px;
-
-}
-
-
-
-.test_menu {
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-}
-
-
-
-.test_menu ul {
-
-    list-style-type: none;
-
-    padding: 0;
-
-}
-
-
-
-.test_menu li {
-
-    margin: 5px 0;
-
-}
-
-
-
-.test_menu button {
-
-    background: none;
-
-    border: none;
-
-    color: white;
-
-    font-size: 16px;
-
-    cursor: pointer;
-
-    transition: opacity 0.3s;
-
-}
-
-
-
-.test_menu button:hover {
-
-    opacity: 0.7;
-
-}
-
+.test {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    max-width: 90%;
+    padding: 20px;
+    background: rgba(20, 20, 20, 0.5);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.test_title {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.test_title h2 {
+    color: white;
+    font-size: 24px;
+}
+
+.test_menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.test_menu ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.test_menu li {
+    margin: 5px 0;
+}
+
+.test_menu button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: opacity 0.3s;
+}
+
+.test_menu button:hover {
+    opacity: 0.7;
+}
 
 ---------конец файла "src\components\test\test.css"---------
 
 
 
 ---------начало файла "src\components\test\test.jsx"---------
-import React from 'react';
-
-import "./test.css"
-
-import AcivityInteraction from "../profile/ActivityInteraction/AcivityInteraction";
-
-function Test(props) {
-
-    return (
-
-        <div>
-
-                  <AcivityInteraction/>
-
-        </div>
-
-    );
-
-}
-
-
-
+import React from 'react';
+import "./test.css"
+import AcivityInteraction from "../profile/ActivityInteraction/AcivityInteraction";
+function Test(props) {
+    return (
+        <div>
+                  <AcivityInteraction/>
+        </div>
+    );
+}
+
 export default Test;
 ---------конец файла "src\components\test\test.jsx"---------
 
 
 
 ---------начало файла "src\redux\AuthReducer.js"---------
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-
-import axios from "axios";
-
-let baseUrl = 'http://localhost:5000/api'
-
-baseUrl = 'https://Akwinchester.pythonanywhere.com/api'
-
-
-
-export const LoginRegisterThunk = createAsyncThunk(
-
-    'auth/loginRegister',
-
-    async ({username, password, name},{dispatch}) =>{
-
-        const response = await axios.post(`${baseUrl}/${name}`, {username, password})
-
-        const redirectUrl = response.data['redirect_url'];
-
-        dispatch(setRedirectUrl(redirectUrl))
-
-        return {username, password}
-
-    }
-
-)
-
-export const LogoutThunk = createAsyncThunk(
-
-    'auth/logout',
-
-    async (_,{dispatch}) =>{
-
-        const response = await axios.post(`${baseUrl}/logout`)
-
-        const redirectUrl = response.data['redirect_url'];
-
-        dispatch(setRedirectUrl(redirectUrl));
-
-        window.location.href = redirectUrl;
-
-    }
-
-)
-
-export const GetYourNameThunk = createAsyncThunk(
-
-    'auth/yourName',
-
-    async () => {
-
-        try {
-
-            const response = await axios.get(`${baseUrl}/get_username`); // Replace with your actual API endpoint
-
-            return response.data.userName;
-
-        } catch (error) {
-
-            throw error;
-
-        }
-
-    }
-
-);
-
-const initialState = {
-
-    redirectUrl: null,
-
-    YourName: ''
-
-}
-
-
-
-const authSlice = createSlice({
-
-    name: 'auth',
-
-    initialState,
-
-    reducers:{
-
-        setRedirectUrl:(state,action)=>{
-
-            state.redirectUrl= action.payload
-
-        },
-
-        resetRedirectUrlAC: (state)=>{
-
-            state.redirectUrl = null
-
-        },
-
-
-
-    },
-
-    extraReducers:(builder)=>{
-
-        builder
-
-            .addCase(GetYourNameThunk.fulfilled, (state, action)=>{
-
-                    state.YourName= action.payload
-
-            })
-
-    }
-
-})
-
-export const { setRedirectUrl, resetRedirectUrlAC } = authSlice.actions;
-
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import axios from "axios";
+let baseUrl = 'http://localhost:5000/api'
+baseUrl = 'https://Akwinchester.pythonanywhere.com/api'
+
+export const LoginRegisterThunk = createAsyncThunk(
+    'auth/loginRegister',
+    async ({username, password, name},{dispatch}) =>{
+        const response = await axios.post(`${baseUrl}/${name}`, {username, password})
+        const redirectUrl = response.data['redirect_url'];
+        dispatch(setRedirectUrl(redirectUrl))
+        return {username, password}
+    }
+)
+export const LogoutThunk = createAsyncThunk(
+    'auth/logout',
+    async (_,{dispatch}) =>{
+        const response = await axios.post(`${baseUrl}/logout`)
+        const redirectUrl = response.data['redirect_url'];
+        dispatch(setRedirectUrl(redirectUrl));
+        window.location.href = redirectUrl;
+    }
+)
+export const GetYourNameThunk = createAsyncThunk(
+    'auth/yourName',
+    async () => {
+        try {
+            const response = await axios.get(`${baseUrl}/get_username`); // Replace with your actual API endpoint
+            return response.data.userName;
+        } catch (error) {
+            throw error;
+        }
+    }
+);
+const initialState = {
+    redirectUrl: null,
+    YourName: ''
+}
+
+const authSlice = createSlice({
+    name: 'auth',
+    initialState,
+    reducers:{
+        setRedirectUrl:(state,action)=>{
+            state.redirectUrl= action.payload
+        },
+        resetRedirectUrlAC: (state)=>{
+            state.redirectUrl = null
+        },
+
+    },
+    extraReducers:(builder)=>{
+        builder
+            .addCase(GetYourNameThunk.fulfilled, (state, action)=>{
+                    state.YourName= action.payload
+            })
+    }
+})
+export const { setRedirectUrl, resetRedirectUrlAC } = authSlice.actions;
 export default authSlice.reducer
 ---------конец файла "src\redux\AuthReducer.js"---------
 
 
 
 ---------начало файла "src\redux\Chart_Interaction_Reducer.js"---------
-import {createSlice} from "@reduxjs/toolkit";
-
-
-
-const initialState = {
-
-    visibleDatesFirst: 0,
-
-    visibleDatesLast: 10,
-
-    valueOfEntryAmount:  '',
-
-    valueOfEntryDescription: ''
-
-}
-
-
-
-const Chart_Modals_Slice = createSlice({
-
-    name: 'Chart_Modals',
-
-    initialState,
-
-    reducers: {
-
-        setNextDates: (state, action)=>{
-
-            state.visibleDatesFirst += 10;
-
-            state.visibleDatesLast += 10;
-
-        },
-
-        setLastDates: (state, action)=>{
-
-            state.visibleDatesFirst -= 10;
-
-            state.visibleDatesLast -= 10;
-
-},
-
-        valueOfEntryAmountAC: (state, action)=>{
-
-            state.valueOfEntryAmount = action.payload
-
-        },
-
-        valueOfEntryDescriptionAC:(state, action)=>{
-
-            state.valueOfEntryDescription = action.payload
-
-        }
-
-    }
-
-})
-
-
-
-export const { setNextDates, setLastDates,valueOfEntryAmountAC,valueOfEntryDescriptionAC } = Chart_Modals_Slice.actions;
-
-export default Chart_Modals_Slice.reducer
+import {createSlice} from "@reduxjs/toolkit";
+
+const initialState = {
+    visibleDatesFirst: 0,
+    visibleDatesLast: 10,
+    valueOfEntryAmount:  '',
+    valueOfEntryDescription: ''
+}
+
+const Chart_Interaction_Slice = createSlice({
+    name: 'Chart_Interaction',
+    initialState,
+    reducers: {
+        setNextDates: (state, action)=>{
+            state.visibleDatesFirst += 10;
+            state.visibleDatesLast += 10;
+        },
+        setLastDates: (state, action)=>{
+            state.visibleDatesFirst -= 10;
+            state.visibleDatesLast -= 10;
+},
+        valueOfEntryAmountAC: (state, action)=>{
+            state.valueOfEntryAmount = action.payload
+        },
+        valueOfEntryDescriptionAC:(state, action)=>{
+            state.valueOfEntryDescription = action.payload
+        }
+    }
+})
+
+export const { setNextDates, setLastDates,valueOfEntryAmountAC,valueOfEntryDescriptionAC } = Chart_Interaction_Slice.actions;
+export default Chart_Interaction_Slice.reducer
 ---------конец файла "src\redux\Chart_Interaction_Reducer.js"---------
 
 
 
+---------начало файла "src\redux\FlagsBooleanReducer.js"---------
+import { createSlice } from "@reduxjs/toolkit";
+
+const initialState = {
+    StatusView: false,
+    FlagChangeNote: false,
+    FlagCreateNote: false,
+    ActivityModalVisible: false,
+    ActivityModalVisible2: false,
+    HideMobileToolBarFlag: true,
+    OutputWindowIsOpen: false,
+    LoadingStatus: false
+};
+
+const booleanSlice = createSlice({
+    name: "booleans",
+    initialState,
+    reducers: {
+        changeStatusView: (state, action) => {
+            state.StatusView = action.payload;
+        },
+        changeNote: (state, action) => {
+            state.FlagChangeNote = action.payload;
+        },
+        setFlagCreateNote: (state, action) => {
+            state.FlagCreateNote = action.payload;
+        },
+        ActivityModalVisibleAC: (state, action) => {
+            state.ActivityModalVisible = action.payload;
+        },
+        ActivityModalVisible2AC2: (state, action) => {
+            state.ActivityModalVisible2 = action.payload;
+        },
+        HideMobileToolBarFlagAC: (state, action) => {
+            state.HideMobileToolBarFlag = action.payload;
+        },
+        OutputWindowIsOpenAC: (state, action) => {
+            state.OutputWindowIsOpen = action.payload;
+        },
+        SetLoadingStatusAC: (state, action)=>{
+            state.LoadingStatus = action.payload
+        }
+    },
+});
+export const {
+    StatusView,
+    FlagChangeNote,
+    FlagCreateNote,
+    ActivityModalVisible,
+    ActivityModalVisible2,
+    HideMobileToolBarFlag,
+    OutputWindowIsOpen,
+    LoadingStatus
+} = initialState
+export const {
+    changeStatusView,
+    changeNote,
+    setFlagCreateNote,
+    ActivityModalVisibleAC,
+    ActivityModalVisible2AC2,
+    HideMobileToolBarFlagAC,
+    OutputWindowIsOpenAC,
+    SetLoadingStatusAC
+} = booleanSlice.actions;
+
+export default booleanSlice.reducer;
+
+---------конец файла "src\redux\FlagsBooleanReducer.js"---------
+
+
+
 ---------начало файла "src\redux\ProfileReducer.js"---------
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-
-import axios from "axios";
-
-
-
-let baseUrl = 'http://localhost:5000/api'
-
-baseUrl = 'https://Akwinchester.pythonanywhere.com/api'
-
-
-
-export const fillActivityThunk = createAsyncThunk(
-
-    'profile/fillActivity',
-
-    async ({ id, StatusView }, { dispatch }) => {
-
-        dispatch(setLastId(id));
-
-       const response = await axios.post(`${baseUrl}/data_for_chart`, { id, StatusView });
-
-        return response.data
-
-
-
-    }
-
- );
-
-
-
-export const activityButtonsThunk = createAsyncThunk(
-
-    'profile/activityButtons',
-
-    async (_, { dispatch }) => {
-
-        const response = await axios.get(`${baseUrl}/data_for_chart`);
-
-        return response.data;
-
-    }
-
-);
-
-
-
-export const deleteIdEntryThunk = createAsyncThunk(
-
-    'profile/deleteIdEntry',
-
-    async (idEntry) => {
-
-        const response = await axios.delete(`${baseUrl}/delete_entry/${idEntry}`);
-
-        return response.data.Id_entry;
-
-    }
-
-);
-
-export const changeIdEntryThunk = createAsyncThunk(
-
-    'profile/changeIdEntry',
-
-    async ( {idEntry, changesNoteObj} ) => {
-
-        const response = await axios.post(`${baseUrl}/edit_entry/${idEntry}`, changesNoteObj);
-
-        return response.data.Id_entry;
-
-    }
-
-);
-
-export const createIdActivityThunk = createAsyncThunk(
-
-    'profile/createIdActivity',
-
-    async ({idActivity, changesNoteObj} ) => {
-
-        const response = await axios.post(`${baseUrl}/create_entry/${idActivity}`, changesNoteObj);
-
-        return response.data.Id_activity;
-
-    }
-
-);
-
-export const createActivityThunk = createAsyncThunk(
-
-    'profile/createActivity',
-
-    async ({addActivityObj},{dispatch})=>{
-
-        const response = await axios.post(`${baseUrl}/create_activity`, addActivityObj);
-
-        const  [[key, value]]  = Object.entries(response.data)
-
-        dispatch(activityButtonsThunk());
-
-        dispatch(SelectedActivityAC({ activity_id: key, value: value }));
-
-        return response
-
-    }
-
-)
-
-export const deleteActivityThunk = createAsyncThunk(
-
-    'profile/deleteActivity',
-
-        async (activity_id,{dispatch})=>{
-
-        const response = await axios.delete(`${baseUrl}/delete_activity/${activity_id}`)
-
-            dispatch(activityButtonsThunk());
-
-            return response.data.activity_id
-
-        }
-
-)
-
-export const editActivityThunk = createAsyncThunk(
-
-    'profile/editActivity',
-
-    async ({addActivityObj,activity_id}, { dispatch })=>{
-
-        const response = await axios.post(`${baseUrl}/edit_activity/${activity_id}`, addActivityObj);
-
-        dispatch(activityButtonsThunk());
-
-        dispatch(SelectedActivityAC({ activity_id:activity_id , value: addActivityObj.name}))
-
-        return response.data
-
-    }
-
-)
-
-
-
-
-
-const initialState = {
-
-    UserData: {},
-
-    ActivityButtons: {},
-
-    StatusView: false,
-
-    LastId: null,
-
-    IsEditActivityBarVisible: false,
-
-    Id_entry: null,
-
-    ChangeNoteBool: false,
-
-    FlagCreateNote:false,
-
-    Id_activity: null,
-
-    ActivityModalVisible:false,
-
-    SelectedActivity: {activity_id:null, value:"Активность не выбрана"},
-
-    ActivityModalVisible2:false,
-
-    HideMobileToolBarFlag: true,
-
-    OutputWindowIsOpen:false,
-
-    SelectedActivityValue: ''
-
-
-
-}
-
-
-
-
-
-const profileSlice = createSlice({
-
-    name: 'profile',
-
-    initialState,
-
-    reducers:{
-
-        fillActivityArray: (state, action) => {
-
-            state.UserData = action.payload;
-
-        },
-
-        nameActivityBtn: (state, action) => {
-
-            state.ActivityButtons = action.payload;
-
-        },
-
-        changeStatusView: (state, action) => {
-
-            state.StatusView = action.payload;
-
-        },
-
-        setLastId: (state, action) => {
-
-            state.LastId = action.payload;
-
-        },
-
-        editActivityBar: (state, action) => {
-
-            state.IsEditActivityBarVisible = action.payload;
-
-        },
-
-        modifyIdEntery: (state, action) => {
-
-            state.Id_entry = action.payload;
-
-            state.IsEditActivityBarVisible = false;
-
-        },
-
-        changeNote: (state, action) => {
-
-            state.ChangeNoteBool = action.payload;
-
-        },
-
-        setIdActivity: (state, action) => {
-
-            state.Id_activity = action.payload;
-
-            state.IsEditActivityBarVisible = false;
-
-        },
-
-        setFlagCreateNote: (state, action)=>{
-
-            state.FlagCreateNote = action.payload
-
-        },
-
-        ActivityModalVisibleAC:(state, action)=>{
-
-            state.ActivityModalVisible = action.payload
-
-        },
-
-        SelectedActivityAC:(state, action)=>{
-
-            state.SelectedActivity = action.payload
-
-        },
-
-        ActivityModalVisible2AC2:(state, action)=>{
-
-            state.ActivityModalVisible2 = action.payload
-
-},
-
-        HideMobileToolBarFlagAC:(state, action)=>{
-
-            state.HideMobileToolBarFlag = action.payload
-
-        },
-
-        OutputWindowIsOpenAC: (state, action)=>{
-
-            state.OutputWindowIsOpen = action.payload
-
-        },
-
-        SelectedActivityValueAC: (state, action)=>{
-
-            state.SelectedActivityValue = action.payload
-
-        }
-
-    },
-
-    extraReducers:(builder)=>{
-
-        builder
-
-            .addCase(fillActivityThunk.fulfilled, (state, action)=>{
-
-                state.UserData = action.payload
-
-            })
-
-            .addCase(activityButtonsThunk.fulfilled, (state, action) => {
-
-                state.ActivityButtons = action.payload;
-
-            })
-
-            .addCase(deleteIdEntryThunk.fulfilled, (state, action) => {
-
-                state.Id_entry = action.payload;
-
-                state.IsEditActivityBarVisible = false;
-
-            })
-
-            .addCase(changeIdEntryThunk.fulfilled, (state, action) => {
-
-                state.Id_entry = action.payload;
-
-                state.IsEditActivityBarVisible = false;
-
-            })
-
-            .addCase(createIdActivityThunk.fulfilled, (state, action) => {
-
-                state.Id_activity = action.payload;
-
-                state.IsEditActivityBarVisible = false;
-
-            })
-
-            .addCase(createActivityThunk.fulfilled, (state, action) => {
-
-                state.ActivityModalVisible = false;
-
-            })
-
-            .addCase(createActivityThunk.rejected, (state, action) => {
-
-                state.ActivityModalVisible = false;
-
-            })
-
-            .addCase(deleteActivityThunk.fulfilled, (state, action) => {
-
-                state.SelectedActivity = {activity_id:null, value:"Активность не выбрана"};
-
-                state.UserData = {}
-
-            })
-
-            .addCase(editActivityThunk.fulfilled, (state, action) => {
-
-                state.ActivityModalVisible2 = false;
-
-            })
-
-            .addCase(editActivityThunk.rejected, (state, action) => {
-
-                state.ActivityModalVisible2 = false;
-
-            })
-
-    }
-
-})
-
-
-
-export const {
-
-    fillActivityArray,
-
-    nameActivityBtn,
-
-    changeStatusView,
-
-    setLastId,
-
-    editActivityBar,
-
-    modifyIdEntery,
-
-    changeNote,
-
-    setIdActivity,
-
-    ActivityModalVisibleAC,
-
-    SelectedActivityAC,
-
-    setFlagCreateNote,
-
-    ActivityModalVisible2AC2,
-
-    HideMobileToolBarFlagAC,
-
-    OutputWindowIsOpenAC,
-
-    SelectedActivityValueAC
-
-} = profileSlice.actions
-
-
-
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import { StatusView, FlagChangeNote, FlagCreateNote, ActivityModalVisible, ActivityModalVisible2, HideMobileToolBarFlag, OutputWindowIsOpen, LoadingStatus} from "./FlagsBooleanReducer"
+import axios from "axios";
+import {SetLoadingStatusAC} from "./FlagsBooleanReducer"
+
+let baseUrl = 'http://localhost:5000/api'
+baseUrl = 'https://Akwinchester.pythonanywhere.com/api'
+
+
+export const fillActivityThunk = createAsyncThunk(
+    'profile/fillActivity',
+    async ({ id, StatusView }, { dispatch }) => {
+        //dispatch(setLastId(id));
+        // dispatch(SetLoadingStatusAC(true))
+       const response = await axios.post(`${baseUrl}/data_for_chart`, { id, StatusView });
+       console.log(response.data)
+        // dispatch(SetLoadingStatusAC(false))
+        return response.data
+
+    }
+ );
+
+export const activityButtonsThunk = createAsyncThunk(
+    'profile/activityButtons',
+    async (_, { dispatch }) => {
+        const response = await axios.get(`${baseUrl}/data_for_chart`);
+        return response.data;
+    }
+);
+
+export const deleteIdEntryThunk = createAsyncThunk(
+    'profile/deleteIdEntry',
+    async ({idEntry, ActivitySendingId, StatusView},{dispatch}) => {
+        const response = await axios.delete(`${baseUrl}/delete_entry/${idEntry}`);
+        dispatch(fillActivityThunk({ id: ActivitySendingId, StatusView: StatusView }))
+        return response.data.Id_entry;
+    }
+);
+export const changeIdEntryThunk = createAsyncThunk(
+    'profile/changeIdEntry',
+    async ( { idEntry, changesNoteObj, ActivitySendingId, StatusView }, { dispatch } ) => {
+        const response = await axios.post(`${baseUrl}/edit_entry/${idEntry}`, changesNoteObj);
+        dispatch(fillActivityThunk({ id: ActivitySendingId, StatusView: StatusView }))
+        return response.data.Id_entry;
+    }
+);
+export const createIdEntryThunk = createAsyncThunk(
+    'profile/createIdActivity',
+    async ({idActivity, changesNoteObj} ) => {
+        const response = await axios.post(`${baseUrl}/create_entry/${idActivity}`, changesNoteObj);
+        return response.data.Id_activity;
+    }
+);
+export const createActivityThunk = createAsyncThunk(
+    'profile/createActivity',
+    async ({addActivityObj},{dispatch})=>{
+        const response = await axios.post(`${baseUrl}/create_activity`, addActivityObj);
+        const  [[key, value]]  = Object.entries(response.data)
+        dispatch(activityButtonsThunk());
+        dispatch(SelectedActivityAC({ activity_id: key, value: value }));
+        return response.data
+    }
+)
+export const deleteActivityThunk = createAsyncThunk(
+    'profile/deleteActivity',
+        async (activity_id,{dispatch})=>{
+        const response = await axios.delete(`${baseUrl}/delete_activity/${activity_id}`)
+            dispatch(activityButtonsThunk());
+            return response.data.activity_id
+        }
+)
+export const editActivityThunk = createAsyncThunk(
+    'profile/editActivity',
+    async ({addActivityObj,activity_id}, { dispatch })=>{
+        const response = await axios.post(`${baseUrl}/edit_activity/${activity_id}`, addActivityObj);
+        dispatch(activityButtonsThunk());
+        dispatch(SelectedActivityAC({ activity_id:activity_id , value: addActivityObj.name}))
+        return response.data
+    }
+)
+
+const initialState = {
+    UserData: {},
+    ActivityButtons: {},
+    IsEditActivityBarVisible: false,
+    // LastId: null,
+    Id_entry: null,
+    Id_activity: null,
+    SelectedActivity: {activity_id:null, value:"Активность не выбрана"},
+
+    StatusView,
+    FlagChangeNote,
+    ActivityModalVisible,
+    ActivityModalVisible2,
+    HideMobileToolBarFlag,
+    OutputWindowIsOpen,
+    FlagCreateNote
+}
+
+const profileSlice = createSlice({
+    name: 'profile',
+    initialState,
+    reducers:{
+        fillActivityArray: (state, action) => {
+            state.UserData = action.payload;
+        },
+        nameActivityBtn: (state, action) => {
+            state.ActivityButtons = action.payload;
+        },
+        // setLastId: (state, action) => {
+        //     state.LastId = action.payload;
+        // },
+        modifyIdEntery: (state, action) => {
+            state.Id_entry = action.payload;
+        },
+        setIdActivity: (state, action) => {
+            state.Id_activity = action.payload;
+        },
+        SelectedActivityAC:(state, action)=>{
+            state.SelectedActivity = action.payload
+        },
+        editActivityBar: (state, action) => {
+            state.IsEditActivityBarVisible = action.payload;
+        },
+
+    },
+    extraReducers:(builder)=>{
+        builder
+            .addCase(fillActivityThunk.fulfilled, (state, action)=>{
+                state.UserData = action.payload
+            })
+            .addCase(activityButtonsThunk.fulfilled, (state, action) => {
+                state.ActivityButtons = action.payload;
+            })
+            .addCase(deleteIdEntryThunk.fulfilled, (state, action) => {
+                state.Id_entry = action.payload;
+                state.IsEditActivityBarVisible = false;
+            })
+            .addCase(changeIdEntryThunk.fulfilled, (state, action) => {
+                state.Id_entry = action.payload;
+                state.IsEditActivityBarVisible = false;
+            })
+            .addCase(createIdEntryThunk.fulfilled, (state, action) => {
+                state.Id_activity = action.payload;
+            })
+            .addCase(createActivityThunk.fulfilled, (state, action) => {
+                state.UserData = {}
+            })
+            .addCase(deleteActivityThunk.fulfilled, (state, action) => {
+                state.SelectedActivity = {activity_id:null, value:"Активность не выбрана"};
+                state.UserData = {}
+            })
+    }
+})
+
+export const {
+    fillActivityArray,
+    nameActivityBtn,
+    //setLastId,
+    modifyIdEntery,
+    setIdActivity,
+    SelectedActivityAC,
+    editActivityBar
+} = profileSlice.actions
+
 export default profileSlice.reducer
 ---------конец файла "src\redux\ProfileReducer.js"---------
 
 
 
 ---------начало файла "src\redux\redux-store.js"---------
-import AuthReducer from "./AuthReducer";
-
-import {configureStore} from "@reduxjs/toolkit";
-
-import profileReducer from "./ProfileReducer";
-
-import Chart_Modals_Slice from "./Chart_Modals_Interaction_Reducer"
-
-
-
-const store = configureStore({
-
-    reducer:{
-
-        Profile: profileReducer,
-
-        Auth: AuthReducer,
-
-        Chart_Modals: Chart_Modals_Slice
-
-    }
-
-})
-
-
-
-
-
-
-
+import AuthReducer from "./AuthReducer";
+import {configureStore} from "@reduxjs/toolkit";
+import profileReducer from "./ProfileReducer";
+import Chart_Interaction_Slice from "./Chart_Interaction_Reducer"
+import booleanReducer from "./FlagsBooleanReducer"
+
+const store = configureStore({
+    reducer:{
+        Profile: profileReducer,
+        Auth: AuthReducer,
+        Chart_Reducer: Chart_Interaction_Slice,
+        Flags_Reducer: booleanReducer
+    }
+})
+
+
+
 export default store;
 ---------конец файла "src\redux\redux-store.js"---------
 
 
 
 ---------начало файла "src\App.css"---------
-*{
-
-  font-family: 'Lora', serif;
-
-}
-
-html, body {
-
-  margin: 0;
-
-  padding: 0;
-
-}
-
-
-
-/*.wrapper {*/
-
-/*  display: flex;*/
-
-/*  align-items: center;*/
-
-/*  justify-content: center;*/
-
-/*  width: 100vw;*/
-
-/*  min-height: 100vh;*/
-
-/*  background: linear-gradient(to bottom, #a2afae, #dfc28f);*/
-
-/*  position: relative;*/
-
-/*}*/
-
-.container{
-
-  position: relative;
-
-  display: flex;
-
-  justify-content: space-evenly;
-
-  align-items: center;
-
-  width: 95vw;
-
-  height: 100vh;
-
-  border-radius: 100px;
-
-  background: linear-gradient(to bottom, #252d3d, #499eb4);
-
-}
-
+*{
+  font-family: 'Lora', serif;
+}
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+/*.wrapper {*/
+/*  display: flex;*/
+/*  align-items: center;*/
+/*  justify-content: center;*/
+/*  width: 100vw;*/
+/*  min-height: 100vh;*/
+/*  background: linear-gradient(to bottom, #a2afae, #dfc28f);*/
+/*  position: relative;*/
+/*}*/
+.container{
+  position: relative;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 95vw;
+  height: 100vh;
+  border-radius: 100px;
+  background: linear-gradient(to bottom, #252d3d, #499eb4);
+}
 
 ---------конец файла "src\App.css"---------
 
 
 
 ---------начало файла "src\App.js"---------
-import "./App.css";
-import {BrowserRouter, Routes, Route} from "react-router-dom";
-import Form_login from "./components/form_login/form_login";
-import Nav from "./components/nav/nav";
-import Profile from "./components/profile/profile";
-import FormRegistration from "./components/form_registration/form_registration";
-import Test from "./components/test/test";
-import HomeInfPage from "./components/nav/HomeInfPage";
-
-
-function App() {
-  return(
-  <BrowserRouter>
-<div className="wrapper">
-  <div className="container">
-    <Routes>
-      <Route path={""} element={<Nav/>}/>
-      <Route path="/home" element={<HomeInfPage/>}/>
-      <Route path="/login" element={<Form_login />} />
-      <Route path="/registration" element={<FormRegistration />} />
-      <Route path="/profile" element={<Profile />} />
-      <Route path="/test" element={<Test />} />
-      {/*<Route path="/barChart" element={<CommonCharts />} />*/}
-    </Routes>
-  </div>
-</div>
-  </BrowserRouter>
-)
-}
-
-export default App;
+import "./App.css";
+import {BrowserRouter, Routes, Route} from "react-router-dom";
+import Form_login from "./components/AuthForms/form_login/form_login";
+import Nav from "./components/nav/nav";
+import Profile from "./components/profile/profile";
+import FormRegistration from "./components/AuthForms/form_registration/form_registration";
+import Test from "./components/test/test";
+import HomeInfPage from "./components/nav/HomeInfPage";
+
+
+function App() {
+  return(
+  <BrowserRouter>
+<div className="wrapper">
+  <div className="container">
+    <Routes>
+      <Route path={""} element={<Nav/>}/>
+      <Route path="/home" element={<HomeInfPage/>}/>
+      <Route path="/login" element={<Form_login />} />
+      <Route path="/registration" element={<FormRegistration />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/test" element={<Test />} />
+      {/*<Route path="/barChart" element={<CommonCharts />} />*/}
+    </Routes>
+  </div>
+</div>
+  </BrowserRouter>
+)
+}
+
+export default App;
 
 ---------конец файла "src\App.js"---------
 

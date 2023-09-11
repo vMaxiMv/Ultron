@@ -1,8 +1,4 @@
-import {useEffect} from "react";
-import {activityButtonsThunk} from "../../../redux/ProfileReducer";
-
 export function getDatasets(data, YourName) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
 
     const username = YourName
 
