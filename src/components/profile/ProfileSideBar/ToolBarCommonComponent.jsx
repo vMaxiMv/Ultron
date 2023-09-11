@@ -16,11 +16,12 @@ function ToolBarCommonComponent(props) {
     const { StatusView, HideMobileToolBarFlag} = useSelector(state=>state.Flags_Reducer)
 
     const buttonActivityHandleClick = async (key,value)=>{
+        dispatch(HideMobileToolBarFlagAC(false))
         dispatch(SetLoadingStatusAC(true))
         await dispatch(fillActivityThunk({ id: key, StatusView: StatusView }))
         dispatch(SetLoadingStatusAC(false))
         dispatch(SelectedActivityAC({ activity_id: key, value: value }))
-        dispatch(HideMobileToolBarFlagAC(false))
+
     }
     const ModalActivityHanldeClick = ()=>{
         dispatch(ActivityModalVisibleAC(true))
