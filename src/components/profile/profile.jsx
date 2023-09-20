@@ -15,6 +15,7 @@ import YourProfileModal from "./Modals/YourProfileModal";
 import GraphicWithArrows from "../charts/GraphicWithArrows";
 import ActivityInteractionRoot from "./Modals/ActivityInteractionRoot";
 import NoteAddButton from "./Modals/NoteAddButton";
+import RemoveActivityModalComponent from "./Modals/RemoveActivityModalComponent";
 
 axios.defaults.withCredentials = true;
 
@@ -24,7 +25,7 @@ function Profile(props) {
     const dispatch = useDispatch()
     const navigate = useNavigate();
     const {ActivityButtons, redirectUrl, Id_activity, SelectedActivity} = useSelector(state => state.Profile);
-    const {HideMobileToolBarFlag,FlagCreateNote,StatusView} = useSelector(state=>state.Flags_Reducer)
+    const {HideMobileToolBarFlag,FlagCreateNote,StatusView,RemoveActivityModal} = useSelector(state=>state.Flags_Reducer)
 
     useEffect(()=>{
     dispatch(fillActivityThunk({id:SelectedActivity.activity_id, StatusView:StatusView}))
@@ -58,6 +59,7 @@ function Profile(props) {
                 </button>
                 { <YourProfileModal/>}
             </div>
+                <div>{RemoveActivityModal && <RemoveActivityModalComponent/>}</div>
             <div className='mini_container'>
                 <div className='list'>
                     {Object.keys(UserData).length !== 0 ? <CheckBoxActivity/> : null}

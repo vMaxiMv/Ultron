@@ -1,5 +1,15 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import { StatusView, FlagChangeNote, FlagCreateNote, ActivityModalVisible, ActivityModalVisible2, HideMobileToolBarFlag, OutputWindowIsOpen, LoadingStatus} from "./FlagsBooleanReducer"
+import {
+    StatusView,
+    FlagChangeNote,
+    FlagCreateNote,
+    ActivityModalVisible,
+    ActivityModalVisible2,
+    HideMobileToolBarFlag,
+    OutputWindowIsOpen,
+    LoadingStatus,
+    RemoveActivityModalAC
+} from "./FlagsBooleanReducer"
 import axios from "axios";
 import {SetLoadingStatusAC} from "./FlagsBooleanReducer"
 
@@ -66,6 +76,7 @@ export const deleteActivityThunk = createAsyncThunk(
         async (activity_id,{dispatch})=>{
         const response = await axios.delete(`${baseUrl}/delete_activity/${activity_id}`)
             dispatch(activityButtonsThunk());
+            dispatch(RemoveActivityModalAC(false))
             return response.data.activity_id
         }
 )
