@@ -89,6 +89,7 @@ ion-icon{
         height: 100vh;
         flex-direction: column-reverse; /* Меняем направление контейнера на вертикальное */
         justify-content: space-evenly;
+        border-radius: 30px;
     }
     .logo{
         width: 3em;
