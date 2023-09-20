@@ -28,7 +28,7 @@ function Nav(props) {
     return (
             <div className="wrapper">
                 <div className={n.container}>
-                    <img src="images/strong-robot-white.svg" alt="logo" className={n.logo} />
+                    <img src="/images/main_logo.svg" alt="logo" className={n.logo} />
                     <div className={n.main_block}>
                         <div className={n.text_block}>
                             <div className={n.slider_text}> <p {...handlers}>{texts[currentIndex]}</p></div>
