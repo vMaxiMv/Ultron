@@ -28,8 +28,8 @@
 ## Установка
 
 1. Клонировать репозиторий
-2. Установить зависимости ### `npm install` или ### `yarn install`
-3. Запустить  ### `npm start` или ### `yarn start`
+2. Установить зависимости  `npm install` или  `yarn install`
+3. Запустить   `npm start` или  `yarn start`
 
 ## Использование
 
